@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "horo.fullname" . }}-api
+  labels:
+    {{- include "horo.labels" . | nindent 4 }}
+    app: api
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "horo.selectorLabels" . | nindent 6 }}
+      app: api
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "horo.selectorLabels" . | nindent 8 }}
+        app: api
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "horo.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: download-swe
+          image: alpine
+          imagePullPolicy: IfNotPresent
+          command:
+            [
+              "/bin/sh",
+              "-c",
+              "for i in {{ .Values.swe.files }};do wget -O /swe/$i {{ .Values.swe.uri }}/$i;done",
+              ]
+          volumeMounts:
+            - name: swe
+              mountPath: /swe
+      containers:
+        - name: {{ .Chart.Name }}-api
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.api.repository }}:{{ .Values.image.api.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.api.pullPolicy }}
+          env:
+            - name: LOG4RS_CONFIG
+              value: /app/config/log4rs.yaml
+            - name: EPHE_PATH
+              value: "/swe"
+          volumeMounts:
+            - name: log4rs-config
+              mountPath: /app/config
+            - name: swe
+              mountPath: /swe
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.api.targetPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: log4rs-config
+          configMap:
+            name: log4rs
+        - name: swe
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

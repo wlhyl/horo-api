@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>小限</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">小限</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-alert [isOpen]="isAlertOpen" header="Alert" subHeader="错误！" [message]="message" [buttons]="alertButtons"
+    (didDismiss)="isAlertOpen=false"></ion-alert>
+<ul>
+  <li>此处没有按2.5天一个宫位，而是将每月的天数12等分</li>
+  <li>2.5天小限的时间已经扣除夏令时</li>
+  </ul>
+
+  <ion-grid style="margin: 2rem;">
+    <ion-row>
+      <ion-col><h2>年小限</h2></ion-col>
+      <ion-col><h3>月小限</h3></ion-col>
+      <ion-col><h2>日小限</h2></ion-col>
+      <ion-col size="5"><h2>2.5天小限</h2></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>第{{profection.year_house}}宫</ion-col>
+      <ion-col>第{{profection.month_house}}宫</ion-col>
+      <ion-col>第{{profection.day_house}}宫</ion-col>
+      <ion-col size="5">
+        <div style="margin-bottom: 1rem;" *ngFor="let item of profection.date_per_house">{{item.year}}-{{item.month.toString().padStart(2,
+          "0")}}-{{item.day.toString().padStart(2, "0")}} {{item.hour.toString().padStart(2,
+          "0")}}:{{item.minute.toString().padStart(2, "0")}}:{{item.second.toString().padStart(2, "0")}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>

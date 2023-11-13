@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      星盘
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">星盘</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <div class="item" (click)="navigate('/native')">
+      <div class="icon">
+
+        <ion-icon name="star-outline"></ion-icon>
+      </div>
+      <ion-label>本命</ion-label>
+    </div>
+    <div class="item" (click)="navigate('/process')">
+      <div class="icon">
+        <ion-icon name="play-forward-outline"></ion-icon>
+      </div>
+      <ion-label>推运</ion-label>
+    </div>
+    <div class="item" (click)="navigate('/qizheng')">
+      <div class="icon">
+        <ion-icon name="star"></ion-icon>
+      </div>
+      <ion-label>七政</ion-label>
+    </div>
+  </div>
+</ion-content>

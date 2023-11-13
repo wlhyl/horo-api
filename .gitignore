@@ -1,0 +1,10 @@
+/target
+/Cargo.lock
+
+libswe.so
+log4rs.yaml
+.env
+
+.idea
+
+.DS_Store

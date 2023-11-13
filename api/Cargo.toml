@@ -1,0 +1,32 @@
+[package]
+name = "horo_api"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+swagger = ["dep:utoipa", "dep:utoipa-swagger-ui", "horo/swagger"]
+cors = ["dep:actix-cors"]
+
+[dependencies]
+horo = { path = "../horo", features = ["serde"] }
+
+actix-cors = { version = "0.6.4", optional = true }
+actix-web = "4.4.0"
+clap = { version = "4.4.7", features = ["derive"] }
+dotenv = "0.15.0"
+log = "0.4.20"
+log4rs = "1.2.0"
+
+serde = { version = "1.0.190", features = ["derive"] }
+serde_json = "1.0.107"
+
+# swagger
+utoipa = { version = "4.0.0", features = ["actix_extras"], optional = true }
+utoipa-swagger-ui = { version = "4.0.0", features = [
+    "actix-web",
+], optional = true }
+
+# 验证
+actix-web-validator = "5.0.1"
+validator = { version = "0.16.1", features = ["derive", "unic"] }

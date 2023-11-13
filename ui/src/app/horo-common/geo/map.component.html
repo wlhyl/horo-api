@@ -1,0 +1,30 @@
+<ion-icon name="navigate-outline" (click)="open()"></ion-icon>
+
+<ion-modal [isOpen]="isModalOpen" animated="true" [showBackdrop]="true" [backdropDismiss]="false"
+  (didPresent)="shown()">
+  <ng-template>
+    <ion-header [translucent]="true">
+      <ion-toolbar>
+        <ion-title>
+          经纬度查询
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-item>
+        <ion-input type="search" placeholder="输入需要查询的位置" [(ngModel)]="localName"></ion-input>
+        <ion-button (click)="queryGeo()">查询</ion-button>
+      </ion-item>
+
+      <ion-label *ngIf="query.error" style="color: red;"> {{ query.errorMessage }} </ion-label>
+      <div id="container" style="height: 100%;"></div>
+    </ion-content>
+
+    <ion-footer class="ion-text-right">
+      <ion-button (click)="cancel()">取消</ion-button>
+      <ion-button (click)="ok()">确定</ion-button>
+    </ion-footer>
+
+  </ng-template>
+</ion-modal>

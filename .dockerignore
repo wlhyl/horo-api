@@ -1,0 +1,10 @@
+target
+.env
+.dockerignore 
+.git 
+.gitignore
+Dockerfile 
+Cargo.lock
+
+/ui/www
+/ui/node_modules
