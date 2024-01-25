@@ -1,35 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { fabric } from 'fabric';
-import { ImageBasic } from '../base-component/image-basic/image-basic';
-import { Horoscope } from '../type/interface/respone-data';
-import { Horoconfig } from '../services/config/horo-config.service';
-import { HorostorageService } from '../services/horostorage/horostorage.service';
-import { ApiService } from '../services/api/api.service';
+import { ApiService } from 'src/app/services/api/api.service';
+import { HorostorageService } from 'src/app/services/horostorage/horostorage.service';
+import { TransitData } from 'src/app/type/interface/request-data';
+import { HoroscopeCompare } from 'src/app/type/interface/respone-data';
 import { lastValueFrom } from 'rxjs';
+import { Canvas } from 'src/app/type/alias/canvas';
+import { drawAspect, drawHorosco } from 'src/app/utils/image-compare';
+import { Horoconfig } from 'src/app/services/config/horo-config.service';
 import { Platform } from '@ionic/angular';
-import { Canvas } from '../type/alias/canvas';
 
 @Component({
-  selector: 'teanote-image',
-  templateUrl: 'image.component.html',
-  styleUrls: ['image.component.scss'],
+  selector: 'app-transit',
+  templateUrl: './transit.component.html',
+  styleUrls: ['./transit.component.scss'],
 })
-export class ImageComponent extends ImageBasic {
-  public horoData = this.storage.horoData;
-
-  isAlertOpen = false;
-  alertButtons = ['OK'];
-  message = '';
-
-  loading = false;
-
-  public horoscoData: Horoscope | null = null;
+export class TransitComponent implements OnInit {
+  horoData = this.storage.horoData;
+  processData = this.storage.processData;
+  transitData: HoroscopeCompare | null = null;
   isAspect = false; // 默认绘制星盘
   // canvas缓存，手机浏览器this.draw()执行慢，因此切换horo、aspect时使用此缓存
   private horoJson: { version: string; objects: Object[] } | undefined =
     undefined;
   private aspectJson: { version: string; objects: Object[] } | undefined =
     undefined;
+
+  loading = false;
+
+  isAlertOpen = false;
+  alertButtons = ['OK'];
+  message = '';
 
   private canvas?: Canvas;
 
@@ -40,24 +41,49 @@ export class ImageComponent extends ImageBasic {
   constructor(
     private platform: Platform,
     private api: ApiService,
-    protected override config: Horoconfig,
-    protected storage: HorostorageService
-  ) {
-    super(config);
-  }
+    private storage: HorostorageService,
+    private config: Horoconfig
+  ) {}
+
   async ngOnInit() {
     this.canvas = new fabric.StaticCanvas('canvas');
+
     await this.drawHoroscope();
   }
 
   private async drawHoroscope() {
+    this.loading = true;
+    const transitData: TransitData = {
+      year: this.horoData.year,
+      month: this.horoData.month,
+      day: this.horoData.day,
+      hour: this.horoData.hour,
+      minute: this.horoData.minute,
+      second: this.horoData.second,
+      tz: this.horoData.tz,
+      st: this.horoData.st,
+
+      geo_long: this.horoData.geo_long,
+      geo_lat: this.horoData.geo_lat,
+
+      house: this.horoData.house,
+
+      process_year: this.processData.year,
+      process_month: this.processData.month,
+      process_day: this.processData.day,
+      process_hour: this.processData.hour,
+      process_minute: this.processData.minute,
+      process_second: this.processData.second,
+    };
+
     try {
       this.loading = true;
-      this.horoscoData = await lastValueFrom(this.api.getNative(this.horoData));
+      this.transitData = await lastValueFrom(this.api.transit(transitData));
       this.isAlertOpen = false;
       this.draw();
     } catch (error: any) {
-      this.message = error.message + ' ' + error.error.message;
+      const message = error.message + ' ' + error.error.message;
+      this.message = message;
       this.isAlertOpen = true;
     } finally {
       this.loading = false;
@@ -65,18 +91,18 @@ export class ImageComponent extends ImageBasic {
   }
 
   // 绘制星盘和相位
-  private draw() {
-    if (this.horoscoData === null) return;
+  draw() {
+    if (this.transitData === null) return;
 
     this.canvas?.setWidth(0);
     this.canvas?.setHeight(0);
     if (this.isAspect) {
-      this.drawAspect(this.horoscoData.aspects, this.canvas!, {
+      drawAspect(this.transitData.aspects, this.canvas!, this.config, {
         width: this.apsectImage.width,
         heigth: this.apsectImage.heigth,
       });
     } else {
-      this.drawHorosco(this.horoscoData, this.canvas!, {
+      drawHorosco(this.transitData, this.canvas!, this.config, {
         width: this.HoroscoImage.width,
         heigth: this.HoroscoImage.heigth,
       });
@@ -121,12 +147,12 @@ export class ImageComponent extends ImageBasic {
     second: number;
   }) {
     let date = new Date(
-      this.horoData.year,
-      this.horoData.month - 1,
-      this.horoData.day,
-      this.horoData.hour,
-      this.horoData.minute,
-      this.horoData.second
+      this.processData.year,
+      this.processData.month - 1,
+      this.processData.day,
+      this.processData.hour,
+      this.processData.minute,
+      this.processData.second
     );
 
     date.setFullYear(date.getFullYear() + step.year);
@@ -136,12 +162,12 @@ export class ImageComponent extends ImageBasic {
     date.setMinutes(date.getMinutes() + step.minute);
     date.setSeconds(date.getSeconds() + step.second);
 
-    this.horoData.year = date.getFullYear();
-    this.horoData.month = date.getMonth() + 1;
-    this.horoData.day = date.getDate();
-    this.horoData.hour = date.getHours();
-    this.horoData.minute = date.getMinutes();
-    this.horoData.second = date.getSeconds();
+    this.processData.year = date.getFullYear();
+    this.processData.month = date.getMonth() + 1;
+    this.processData.day = date.getDate();
+    this.processData.hour = date.getHours();
+    this.processData.minute = date.getMinutes();
+    this.processData.second = date.getSeconds();
 
     await this.drawHoroscope();
   }

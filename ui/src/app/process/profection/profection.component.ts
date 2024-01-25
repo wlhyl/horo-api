@@ -23,7 +23,7 @@ export class ProfectionComponent implements OnInit {
   alertButtons = ['OK'];
   message=""
 
-  constructor(private api: ApiService, protected storage: HorostorageService) {}
+  constructor(private api: ApiService, private storage: HorostorageService) {}
 
   ngOnInit() {
     const profectionData: ProfectionData = {

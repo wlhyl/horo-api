@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>行运</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">行运</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-alert [isOpen]="isAlertOpen" header="Alert" subHeader="错误！" [message]="message" [buttons]="alertButtons"
+    (didDismiss)="isAlertOpen=false"></ion-alert>
+
+
+ 
+    <div class="ion-text-center">
+      <h2>{{ processData.year }}年{{ processData.month }}月{{ processData.day }}日 {{ processData.hour }}:{{
+        processData.minute }}:{{
+        processData.second }}</h2>
+    </div>
+
+    <div class="ion-text-center" *ngIf="loading">
+      <ion-label>获取星盘</ion-label>
+      <ion-spinner name="bubbles"></ion-spinner>
+    </div>
+    <div class="ion-text-center">
+      <canvas id="canvas" width="0" height="0"></canvas>
+    </div>
+    <div *ngIf="transitData" class="horo-aspect-toggle">
+      <ion-label class="ion-text-right">星盘</ion-label>
+      <ion-toggle [(ngModel)]="isAspect" (ionChange)="switchHoroAspect()"></ion-toggle>
+      <!-- <ion-toggle [(ngModel)]="isAspect" (ionChange)="reDraw($event)"></ion-toggle> -->
+      <ion-label>相位</ion-label>
+    </div>
+  </ion-content>
+
+  <ion-footer>
+    <horo-date-time-change (chagedStep)="changeStep($event)"></horo-date-time-change>
+  </ion-footer>

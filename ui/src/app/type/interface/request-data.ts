@@ -79,3 +79,38 @@ export interface ProfectionData {
   // 推运秒
   process_second: number;
 }
+
+// 行运请求数据
+export interface TransitData {
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+  second: number;
+  // 出生地时区，东区为正数，西区为负数
+  tz: number;
+  // 出生时的夏令时，有夏令时：true，无夏令时： false
+  st: boolean;
+
+  // 地理经度
+  geo_long: number;
+  geo_lat: number;
+
+  // 位系统，Alcabitus：阿卡比特
+  house: string;
+
+  // 推运年，最小值1900
+  process_year: number;
+  // 推运月
+  process_month: number;
+
+  // 推运日
+  process_day: number;
+  // 推运时
+  process_hour: number;
+  // 推运分
+  process_minute: number;
+  // 推运秒
+  process_second: number;
+}

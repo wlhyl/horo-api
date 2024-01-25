@@ -11,19 +11,19 @@ cors = ["dep:actix-cors"]
 [dependencies]
 horo = { path = "../horo", features = ["serde"] }
 
-actix-cors = { version = "0.6.4", optional = true }
-actix-web = "4.4.0"
-clap = { version = "4.4.7", features = ["derive"] }
-dotenv = "0.15.0"
+actix-cors = { version = "0.6.5", optional = true }
+actix-web = "4.4.1"
+clap = { version = "4.4.12", features = ["derive"] }
+dotenvy = "0.15.7"
 log = "0.4.20"
 log4rs = "1.2.0"
 
-serde = { version = "1.0.190", features = ["derive"] }
-serde_json = "1.0.107"
+serde = { version = "1.0.193", features = ["derive"] }
+serde_json = "1.0.108"
 
 # swagger
-utoipa = { version = "4.0.0", features = ["actix_extras"], optional = true }
-utoipa-swagger-ui = { version = "4.0.0", features = [
+utoipa = { version = "4.1.0", features = ["actix_extras"], optional = true }
+utoipa-swagger-ui = { version = "5.0.0", features = [
     "actix-web",
 ], optional = true }
 

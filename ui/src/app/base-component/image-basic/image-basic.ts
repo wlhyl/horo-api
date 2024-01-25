@@ -10,11 +10,12 @@ import {
   zodiacLong,
   newtonIteration,
 } from '../../utils/horo-math';
-import { Aspect, Horosco, Planet } from '../../type/interface/respone-data';
+import { Aspect, Horoscope, Planet } from '../../type/interface/respone-data';
 import { Horoconfig } from '../../services/config/horo-config.service';
 import { PlanetName } from 'src/app/type/enum/planet';
+import { Canvas } from 'src/app/type/alias/canvas';
 
-export type Canvas = fabric.StaticCanvas;
+
 
 @Component({
   selector: 'image-base',
@@ -52,7 +53,7 @@ export class ImageBasic {
     // 画网格，共有13颗星，共14行，共14条横线
     // 左侧坐标(width / 14, 0 + i*hegith / 14 )
     // 右侧坐标(width / 14 *(i+1), 0 + i*heigth / 14)
-    for (let i = 0; i < col; i++) {
+    for (let i = 1; i < col; i++) {
       let x0 = width / row;
       let y0 = (i * heigth) / col;
 
@@ -188,7 +189,7 @@ export class ImageBasic {
    * @param options 天宫图图的相关参数
    */
   protected drawHorosco(
-    horosco: Horosco,
+    horosco: Horoscope,
     canvas: Canvas,
     options: { width: number; heigth: number }
   ) {
@@ -475,7 +476,7 @@ export class ImageBasic {
 
   // 在左上角绘制说明文字
   private drawNotes(
-    horosco: Horosco,
+    horosco: Horoscope,
     canvas: Canvas,
     options: { width: number; heigth: number }
   ) {

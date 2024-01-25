@@ -52,7 +52,7 @@ export interface Aspect {
 /**
  * 本命星盘的返回数据
  */
-export interface Horosco {
+export interface Horoscope {
   date: HoroDateTime;
   geo: GeoPosition;
   house_name: string;
@@ -78,4 +78,40 @@ export interface Profection {
   day_house: number;
   // 每宫对应的日小限开始时间
   date_per_house: Array<HoroDateTime>;
+}
+
+/**
+ * 比较星盘的返回数据
+ * 可用于Transit
+ */
+export interface HoroscopeCompare {
+  date: HoroDateTime;
+  // 比较盘时间
+  date_compare: HoroDateTime;
+  // 绘制星盘的地理位置
+  geo: GeoPosition;
+  // 星盘的宫位
+  house_name: string;
+  // 12宫头黄经度数
+  houses_cups: Array<number>;
+
+  // 上升点
+  asc: Planet;
+  asc_compare: Planet;
+  // 中天
+  mc: Planet;
+  mc_compare: Planet;
+  // 下降点
+  dsc: Planet;
+  dsc_compare: Planet;
+
+  //     天底
+  ic: Planet;
+  ic_compare: Planet;
+  // 七颗行星
+  planets: Array<Planet>;
+  planets_compare: Array<Planet>;
+
+  // 行星相位，仅包含四轴、行星间的相位
+  aspects: Array<Aspect>;
 }

@@ -34,7 +34,7 @@ pub async fn profection(
         r.tz,
         false,
     )?;
-    let profection = Profection::new(native_date, process_date)?;
+    let pan = Profection::new(native_date, process_date)?;
 
-    Ok(HttpResponse::Created().json(profection))
+    Ok(HttpResponse::Created().json(pan))
 }

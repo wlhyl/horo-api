@@ -88,7 +88,7 @@ mod tests {
     // 计算黄赤倾角
     #[test]
     fn test_calc_eps_test() {
-        dotenv::dotenv().ok();
+        dotenvy::dotenv().ok();
         let ephe_path = env::var("ephe_path")
             .expect("没设置 ephe_path 环境变量，可在.env文件中设置或export ephe_path=...");
 

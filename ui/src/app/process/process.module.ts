@@ -10,6 +10,7 @@ import { HoroCommonModule } from '../horo-common/horo-common.module';
 
 import { ProcessPage } from './process.page';
 import { ProfectionComponent } from './profection/profection.component';
+import { TransitComponent } from './transit/transit.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { ProfectionComponent } from './profection/profection.component';
     ProcessPageRoutingModule,
     HoroCommonModule,
   ],
-  declarations: [ProcessPage, ProfectionComponent],
+  declarations: [ProcessPage, ProfectionComponent, TransitComponent],
 })
 export class ProcessPageModule {}

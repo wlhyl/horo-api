@@ -1,8 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HoroData, ProfectionData } from 'src/app/type/interface/request-data';
-import { Horosco, Profection } from 'src/app/type/interface/respone-data';
+import {
+  HoroData,
+  ProfectionData,
+  TransitData,
+} from 'src/app/type/interface/request-data';
+import {
+  Horoscope,
+  HoroscopeCompare,
+  Profection,
+} from 'src/app/type/interface/respone-data';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -28,8 +36,8 @@ export class ApiService {
    *
    * @returns 获取本命星盘
    */
-  public getNative(data: HoroData): Observable<Horosco> {
-    return this.http.post<Horosco>(
+  public getNative(data: HoroData): Observable<Horoscope> {
+    return this.http.post<Horoscope>(
       `${this.url}/horo/native`,
       data,
       this.http_options
@@ -43,6 +51,18 @@ export class ApiService {
   public profection(data: ProfectionData): Observable<Profection> {
     return this.http.post<Profection>(
       `${this.url}/horo/profection`,
+      data,
+      this.http_options
+    );
+  }
+
+  /**
+   *
+   * @returns 获取行运
+   */
+  public transit(data: TransitData): Observable<HoroscopeCompare> {
+    return this.http.post<HoroscopeCompare>(
+      `${this.url}/horo/transit`,
       data,
       this.http_options
     );
