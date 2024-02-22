@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HoroData, ProcessData } from '../../type/interface/request-data';
+import { HoroRequest, ProcessRequest } from '../../type/interface/request-data';
 import { ProcessName } from 'src/app/type/enum/process';
 
 @Injectable({
@@ -10,58 +10,68 @@ export class HorostorageService {
   /**
    * 本命
    */
-  public set horoData(date: HoroData) {
+  public set horoData(date: HoroRequest) {
     localStorage.setItem('horo_data', JSON.stringify(date));
   }
 
-  public get horoData(): HoroData {
+  public get horoData(): HoroRequest {
     let j = localStorage.getItem('horo_data');
     if (j) {
-      return JSON.parse(j) as HoroData;
+      return JSON.parse(j) as HoroRequest;
     }
 
     let t = this.nowDate();
 
     return {
-      year: t.year,
-      month: t.month,
-      day: t.day,
-      hour: t.hour,
-      minute: t.minute,
-      second: t.second,
-      tz: t.tz,
-      st: t.st,
+      date: {
+        year: t.year,
+        month: t.month,
+        day: t.day,
+        hour: t.hour,
+        minute: t.minute,
+        second: t.second,
+        tz: t.tz,
+        st: t.st,
+      },
       geo_name: '北京',
-      geo_long: 116 + 25 / 60.0,
-      geo_lat: 39 + 54 / 60.0,
+      geo: {
+        long: 116 + 25 / 60.0,
+        lat: 39 + 54 / 60.0,
+      },
       house: 'Alcabitus',
       sex: true,
       describe: '',
     };
   }
 
-  public set processData(date: ProcessData) {
+  public set processData(date: ProcessRequest) {
     localStorage.setItem('process_data', JSON.stringify(date));
   }
 
-  public get processData(): ProcessData {
+  public get processData(): ProcessRequest {
     let j = localStorage.getItem('process_data');
     if (j) {
-      return JSON.parse(j) as ProcessData;
+      return JSON.parse(j) as ProcessRequest;
     }
 
     let t = this.nowDate();
 
     return {
-      year: t.year,
-      month: t.month,
-      day: t.day,
-      hour: t.hour,
-      minute: t.minute,
-      second: t.second,
+      date: {
+        year: t.year,
+        month: t.month,
+        day: t.day,
+        hour: t.hour,
+        minute: t.minute,
+        second: t.second,
+        tz: t.tz,
+        st: t.st,
+      },
       geo_name: '北京',
-      geo_long: 116 + 25 / 60.0,
-      geo_lat: 39 + 54 / 60.0,
+      geo: {
+        long: 116 + 25 / 60.0,
+        lat: 39 + 54 / 60.0,
+      },
       process_name: ProcessName.Profection,
     };
   }

@@ -1,5 +1,5 @@
 # FROM rust:1.67.0 as build
-FROM rust:1.73.0-alpine as build
+FROM rust:1.76.0-alpine as build
 WORKDIR /app
 
 RUN sed -i s/dl-cdn.alpinelinux.org/mirror.tuna.tsinghua.edu.cn/g  /etc/apk/repositories
@@ -29,7 +29,7 @@ RUN strip -s /tmp/app/bin/horo_api
 RUN strip  --strip-debug /tmp/app/bin/horo_api
 RUN upx /tmp/app/bin/horo_api
 
-FROM alpine:3.18.4
+FROM alpine:3.19.1
 
 WORKDIR /app
 

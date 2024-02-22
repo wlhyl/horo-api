@@ -115,3 +115,39 @@ export interface HoroscopeCompare {
   // 行星相位，仅包含四轴、行星间的相位
   aspects: Array<Aspect>;
 }
+
+/**
+ * 返照盘返回数据
+ */
+export interface ReturnHoroscop {
+  // 原星盘的时间
+  native_date: HoroDateTime;
+  // 推运时间
+  process_date: HoroDateTime;
+  // 返照时间
+  return_date: HoroDateTime;
+  // 绘制星盘的地理位置
+  geo: GeoPosition;
+  // 星盘的宫位
+  house_name: string;
+  // 12宫头黄经度数
+  houses_cups: Array<number>;
+
+  // 上升点
+  asc: Planet;
+
+  // 中天
+  mc: Planet;
+
+  // 下降点
+  dsc: Planet;
+
+  // 天底
+  ic: Planet;
+
+  // 七颗行星
+  planets: Array<Planet>;
+
+  // 行星相位，仅包含四轴、行星间的相位
+  aspects: Array<Aspect>;
+}

@@ -11,6 +11,7 @@ import { HoroCommonModule } from '../horo-common/horo-common.module';
 import { ProcessPage } from './process.page';
 import { ProfectionComponent } from './profection/profection.component';
 import { TransitComponent } from './transit/transit.component';
+import { SolarReturnComponent } from './solar-return/solar-return.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,11 @@ import { TransitComponent } from './transit/transit.component';
     ProcessPageRoutingModule,
     HoroCommonModule,
   ],
-  declarations: [ProcessPage, ProfectionComponent, TransitComponent],
+  declarations: [
+    ProcessPage,
+    ProfectionComponent,
+    TransitComponent,
+    SolarReturnComponent,
+  ],
 })
 export class ProcessPageModule {}

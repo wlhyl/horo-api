@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { fabric } from 'fabric';
-import { ApiService } from 'src/app/services/api/api.service';
-import { HorostorageService } from 'src/app/services/horostorage/horostorage.service';
-import { TransitRequest } from 'src/app/type/interface/request-data';
-import { HoroscopeCompare } from 'src/app/type/interface/respone-data';
-import { lastValueFrom } from 'rxjs';
-import { Canvas } from 'src/app/type/alias/canvas';
-import { drawAspect, drawHorosco } from 'src/app/utils/image-compare';
-import { Horoconfig } from 'src/app/services/config/horo-config.service';
 import { Platform } from '@ionic/angular';
+import { ApiService } from 'src/app/services/api/api.service';
+import { Horoconfig } from 'src/app/services/config/horo-config.service';
+import { HorostorageService } from 'src/app/services/horostorage/horostorage.service';
+import { Canvas } from 'src/app/type/alias/canvas';
+import { ReturnHoroscop } from 'src/app/type/interface/respone-data';
+import { fabric } from 'fabric';
+import { ReturnRequest } from 'src/app/type/interface/request-data';
+import { lastValueFrom } from 'rxjs';
+import { drawAspect, drawReturnHorosco } from 'src/app/utils/image';
 
 @Component({
-  selector: 'app-transit',
-  templateUrl: './transit.component.html',
-  styleUrls: ['./transit.component.scss'],
+  selector: 'app-solar-return',
+  templateUrl: './solar-return.component.html',
+  styleUrls: ['./solar-return.component.scss'],
 })
-export class TransitComponent implements OnInit {
+export class SolarReturnComponent implements OnInit {
   horoData = this.storage.horoData;
   processData = this.storage.processData;
-  transitData: HoroscopeCompare | null = null;
+  solarReturnData: ReturnHoroscop | null = null;
+
   isAspect = false; // 默认绘制星盘
   // canvas缓存，手机浏览器this.draw()执行慢，因此切换horo、aspect时使用此缓存
   private horoJson: { version: string; objects: Object[] } | undefined =
@@ -53,7 +54,7 @@ export class TransitComponent implements OnInit {
 
   private async drawHoroscope() {
     this.loading = true;
-    const transitData: TransitRequest = {
+    const requestData: ReturnRequest = {
       native_date: this.horoData.date,
       geo: this.horoData.geo,
       house: this.horoData.house,
@@ -62,7 +63,9 @@ export class TransitComponent implements OnInit {
 
     try {
       this.loading = true;
-      this.transitData = await lastValueFrom(this.api.transit(transitData));
+      this.solarReturnData = await lastValueFrom(
+        this.api.solarReturn(requestData)
+      );
       this.isAlertOpen = false;
       this.draw();
     } catch (error: any) {
@@ -76,17 +79,17 @@ export class TransitComponent implements OnInit {
 
   // 绘制星盘和相位
   draw() {
-    if (this.transitData === null) return;
+    if (this.solarReturnData === null) return;
 
     this.canvas?.setWidth(0);
     this.canvas?.setHeight(0);
     if (this.isAspect) {
-      drawAspect(this.transitData.aspects, this.canvas!, this.config, {
+      drawAspect(this.solarReturnData.aspects, this.canvas!, this.config, {
         width: this.apsectImage.width,
         heigth: this.apsectImage.heigth,
       });
     } else {
-      drawHorosco(this.transitData, this.canvas!, this.config, {
+      drawReturnHorosco(this.solarReturnData, this.canvas!, this.config, {
         width: this.HoroscoImage.width,
         heigth: this.HoroscoImage.heigth,
       });

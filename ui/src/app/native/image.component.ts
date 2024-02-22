@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { fabric } from 'fabric';
-import { ImageBasic } from '../base-component/image-basic/image-basic';
 import { Horoscope } from '../type/interface/respone-data';
 import { Horoconfig } from '../services/config/horo-config.service';
 import { HorostorageService } from '../services/horostorage/horostorage.service';
@@ -8,13 +7,14 @@ import { ApiService } from '../services/api/api.service';
 import { lastValueFrom } from 'rxjs';
 import { Platform } from '@ionic/angular';
 import { Canvas } from '../type/alias/canvas';
+import { drawAspect, drawHorosco } from '../utils/image';
 
 @Component({
   selector: 'teanote-image',
   templateUrl: 'image.component.html',
   styleUrls: ['image.component.scss'],
 })
-export class ImageComponent extends ImageBasic {
+export class ImageComponent implements OnInit {
   public horoData = this.storage.horoData;
 
   isAlertOpen = false;
@@ -40,11 +40,9 @@ export class ImageComponent extends ImageBasic {
   constructor(
     private platform: Platform,
     private api: ApiService,
-    protected override config: Horoconfig,
-    protected storage: HorostorageService
-  ) {
-    super(config);
-  }
+    private config: Horoconfig,
+    private storage: HorostorageService
+  ) {}
   async ngOnInit() {
     this.canvas = new fabric.StaticCanvas('canvas');
     await this.drawHoroscope();
@@ -71,12 +69,12 @@ export class ImageComponent extends ImageBasic {
     this.canvas?.setWidth(0);
     this.canvas?.setHeight(0);
     if (this.isAspect) {
-      this.drawAspect(this.horoscoData.aspects, this.canvas!, {
+      drawAspect(this.horoscoData.aspects, this.canvas!, this.config, {
         width: this.apsectImage.width,
         heigth: this.apsectImage.heigth,
       });
     } else {
-      this.drawHorosco(this.horoscoData, this.canvas!, {
+      drawHorosco(this.horoscoData, this.canvas!, this.config, {
         width: this.HoroscoImage.width,
         heigth: this.HoroscoImage.heigth,
       });
@@ -121,12 +119,12 @@ export class ImageComponent extends ImageBasic {
     second: number;
   }) {
     let date = new Date(
-      this.horoData.year,
-      this.horoData.month - 1,
-      this.horoData.day,
-      this.horoData.hour,
-      this.horoData.minute,
-      this.horoData.second
+      this.horoData.date.year,
+      this.horoData.date.month - 1,
+      this.horoData.date.day,
+      this.horoData.date.hour,
+      this.horoData.date.minute,
+      this.horoData.date.second
     );
 
     date.setFullYear(date.getFullYear() + step.year);
@@ -136,12 +134,12 @@ export class ImageComponent extends ImageBasic {
     date.setMinutes(date.getMinutes() + step.minute);
     date.setSeconds(date.getSeconds() + step.second);
 
-    this.horoData.year = date.getFullYear();
-    this.horoData.month = date.getMonth() + 1;
-    this.horoData.day = date.getDate();
-    this.horoData.hour = date.getHours();
-    this.horoData.minute = date.getMinutes();
-    this.horoData.second = date.getSeconds();
+    this.horoData.date.year = date.getFullYear();
+    this.horoData.date.month = date.getMonth() + 1;
+    this.horoData.date.day = date.getDate();
+    this.horoData.date.hour = date.getHours();
+    this.horoData.date.minute = date.getMinutes();
+    this.horoData.date.second = date.getSeconds();
 
     await this.drawHoroscope();
   }

@@ -319,7 +319,7 @@ impl HoroscopeCompare {
         asm_and_planets.push(&horo.dsc);
         asm_and_planets.push(&horo.ic);
 
-        let mut asm_and_planets_compare: Vec<_> = horo.planets.iter().collect();
+        let mut asm_and_planets_compare: Vec<_> = horo_compare.planets.iter().collect();
         asm_and_planets_compare.push(&horo_compare.asc);
         asm_and_planets_compare.push(&horo_compare.mc);
         asm_and_planets_compare.push(&horo_compare.dsc);

@@ -2,14 +2,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  HoroData,
-  ProfectionData,
-  TransitData,
+  HoroRequest,
+  ProfectionRequest,
+  ReturnRequest,
+  TransitRequest,
 } from 'src/app/type/interface/request-data';
 import {
   Horoscope,
   HoroscopeCompare,
   Profection,
+  ReturnHoroscop,
 } from 'src/app/type/interface/respone-data';
 import { environment } from 'src/environments/environment';
 
@@ -29,14 +31,14 @@ export class ApiService {
    * @returns 获取宫位系统
    */
   public getHouses(): Observable<Array<string>> {
-    return this.http.get<Array<string>>(`${this.url}/horo/houses`);
+    return this.http.get<Array<string>>(`${this.url}/houses`);
   }
 
   /**
    *
    * @returns 获取本命星盘
    */
-  public getNative(data: HoroData): Observable<Horoscope> {
+  public getNative(data: HoroRequest): Observable<Horoscope> {
     return this.http.post<Horoscope>(
       `${this.url}/horo/native`,
       data,
@@ -48,9 +50,9 @@ export class ApiService {
    *
    * @returns 获取小限
    */
-  public profection(data: ProfectionData): Observable<Profection> {
+  public profection(data: ProfectionRequest): Observable<Profection> {
     return this.http.post<Profection>(
-      `${this.url}/horo/profection`,
+      `${this.url}/process/profection`,
       data,
       this.http_options
     );
@@ -60,9 +62,21 @@ export class ApiService {
    *
    * @returns 获取行运
    */
-  public transit(data: TransitData): Observable<HoroscopeCompare> {
+  public transit(data: TransitRequest): Observable<HoroscopeCompare> {
     return this.http.post<HoroscopeCompare>(
-      `${this.url}/horo/transit`,
+      `${this.url}/process/transit`,
+      data,
+      this.http_options
+    );
+  }
+
+  /**
+   *
+   * @returns 获取太阳返照盘
+   */
+  public solarReturn(data: ReturnRequest): Observable<ReturnHoroscop> {
+    return this.http.post<ReturnHoroscop>(
+      `${this.url}/process/return/solar`,
       data,
       this.http_options
     );

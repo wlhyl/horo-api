@@ -1,23 +1,24 @@
 use actix_web::{post, web, HttpResponse, Responder};
-use horo::{horo_date_time, GeoPosition, HoroscopeCompare, PlanetConfig};
+use horo::{horo_date_time, solar_return, GeoPosition, PlanetConfig};
 
-use crate::{error::Error, request::TransitRequst, state::AppState};
+use crate::{error::Error, request::ReturnRequest, state::AppState};
 
-/// 行运
+/// 太阳返照
 #[cfg_attr(feature = "swagger", 
 utoipa::path(
     tag="推运",
     context_path="/api/process",
-    request_body=TransitRenReust,
+    request_body=ReturnRequest,
     responses(
-        (status = 201, description = "返回行运", body = HoroscopeCompare),
+        (status = 201, description = "返回太阳返照盘", body = ReturnHoroscop),
+        (status = 400, description = "返回太阳返照盘400错误", body = String),
     ),
 )
 )]
-#[post("/transit")]
-pub async fn transit(
-    r: actix_web_validator::Json<TransitRequst>,
+#[post("/return/solar")]
+pub async fn solar_return_horo(
     app_state: web::Data<AppState>,
+    r: actix_web_validator::Json<ReturnRequest>,
 ) -> Result<impl Responder, Error> {
     let r = r.into_inner();
 
@@ -45,7 +46,7 @@ pub async fn transit(
 
     let geo = GeoPosition::new(r.geo.long, r.geo.lat)?;
 
-    let pan = HoroscopeCompare::new(
+    let pan = solar_return(
         native_date,
         process_date,
         geo,

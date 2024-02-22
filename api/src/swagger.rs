@@ -1,11 +1,14 @@
 use crate::handlers::{
     horo::__path_horo_native, house::__path_houses, profection::__path_profection,
-    transit::__path_transit,
+    return_horoscop::__path_solar_return_horo, transit::__path_transit,
 };
-use crate::request::{HoroNativeRenReust, ProfectionRequest, TransitRenReust};
+use crate::request::{
+    DateRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest, ReturnRequest,
+    TransitRequst,
+};
 use horo::{
     Aspect, GeoPosition, HoroDateTime, Horoscope, HoroscopeCompare, HouseName, Planet, PlanetName,
-    PlanetSpeedState, Profection,
+    PlanetSpeedState, Profection, ReturnHoroscop,
 };
 use utoipa::OpenApi;
 
@@ -20,11 +23,15 @@ use utoipa::OpenApi;
         profection,
         // 行运
         transit,
+        // 日返
+        solar_return_horo
     ),
     components(schemas(
+        DateRequest,
+        GeoRequest,
         HoroNativeRenReust,
         ProfectionRequest,
-        TransitRenReust,
+        TransitRequst,
         Horoscope,HoroscopeCompare,
         HouseName,
         Planet,
@@ -34,6 +41,8 @@ use utoipa::OpenApi;
         GeoPosition,
         PlanetSpeedState,
         Profection,
+        ReturnRequest,
+        ReturnHoroscop,
     ))
 )]
 pub struct ApiDoc;

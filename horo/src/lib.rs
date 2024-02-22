@@ -7,6 +7,7 @@ pub use horoscope::{Horoscope, HoroscopeCompare};
 pub use house::HouseName;
 pub use planet::*;
 pub use profection::Profection;
+pub use return_horoscop::{solar_return, ReturnHoroscop};
 
 mod aspect;
 mod config;
@@ -17,4 +18,5 @@ mod horoscope;
 mod house;
 mod planet;
 mod profection;
+mod return_horoscop;
 mod utils;

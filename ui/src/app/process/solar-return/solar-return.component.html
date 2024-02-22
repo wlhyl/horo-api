@@ -1,13 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>行运</ion-title>
+    <ion-title>日返</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">行运</ion-title>
+      <ion-title size="large">日返</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -17,9 +17,15 @@
 
  
     <div class="ion-text-center">
-      <h2>{{ processData.date.year }}年{{ processData.date.month }}月{{ processData.date.day }}日 {{ processData.date.hour }}:{{
+      <h2>推运时间：{{ processData.date.year }}年{{ processData.date.month }}月{{ processData.date.day }}日 {{ processData.date.hour }}:{{
         processData.date.minute }}:{{
         processData.date.second }}</h2>
+    </div>
+
+    <div class="ion-text-center">
+      <h2>返照时间：{{ solarReturnData?.return_date?.year }}年{{ solarReturnData?.return_date?.month }}月{{ solarReturnData?.return_date?.day }}日 {{ solarReturnData?.return_date?.hour }}:{{
+        solarReturnData?.return_date?.minute }}:{{
+          solarReturnData?.return_date?.second }}</h2>
     </div>
 
     <div class="ion-text-center" *ngIf="loading">
@@ -29,10 +35,9 @@
     <div class="ion-text-center">
       <canvas id="canvas" width="0" height="0"></canvas>
     </div>
-    <div *ngIf="transitData" class="horo-aspect-toggle">
+    <div *ngIf="solarReturnData" class="horo-aspect-toggle">
       <ion-label class="ion-text-right">星盘</ion-label>
       <ion-toggle [(ngModel)]="isAspect" (ionChange)="switchHoroAspect()"></ion-toggle>
-      <!-- <ion-toggle [(ngModel)]="isAspect" (ionChange)="reDraw($event)"></ion-toggle> -->
       <ion-label>相位</ion-label>
     </div>
   </ion-content>

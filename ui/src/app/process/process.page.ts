@@ -51,6 +51,7 @@ export class ProcessPage implements OnInit {
         this.router.navigate(['./transit'], { relativeTo: this.route });
         break;
       case ProcessName.SolarReturn:
+        this.router.navigate(['./solar_return'], { relativeTo: this.route });
         break;
       case ProcessName.LunarReturn:
         break;

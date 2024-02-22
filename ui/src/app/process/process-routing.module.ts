@@ -5,6 +5,8 @@ import { ProcessPage } from './process.page';
 
 import { ProfectionComponent } from './profection/profection.component';
 import { TransitComponent } from './transit/transit.component';
+import { SolarReturnComponent } from './solar-return/solar-return.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -18,6 +20,7 @@ const routes: Routes = [
     path: 'transit',
     component: TransitComponent,
   },
+  { path: 'solar_return', component: SolarReturnComponent },
 ];
 
 @NgModule({

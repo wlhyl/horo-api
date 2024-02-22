@@ -12,8 +12,8 @@ swagger=["dep:utoipa"]
 
 [dependencies]
 rust-swe = { git = "https://github.com/wlhyl/rust-swe.git" }
-serde = { version = "1.0.193", features = ["derive"], optional = true}
-utoipa = {version="4.1.0", optional = true}
+serde = { version = "1.0.197", features = ["derive"], optional = true}
+utoipa = {version="4.2.0", optional = true}
 
 [dev-dependencies]
 dotenvy="0.15.7"

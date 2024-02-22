@@ -50,7 +50,7 @@ async fn main() -> std::io::Result<()> {
         let app = App::new()
             .app_data(shared_data.clone())
             .configure(health_routes)
-            .service(web::scope("/api/horo").configure(horo_routes));
+            .service(web::scope("/api").configure(horo_routes));
         #[cfg(feature = "swagger")]
         let app = app.service(
             SwaggerUi::new("/swagger-ui/{_:.*}").url("/api-docs/openapi.json", openapi.clone()),

@@ -1,9 +1,6 @@
 import { ProcessName } from '../enum/process';
 
-/**
- * 本命星盘请求数据
- */
-export interface HoroData {
+export interface DateRequest {
   year: number;
   month: number;
   day: number;
@@ -12,9 +9,21 @@ export interface HoroData {
   second: number;
   tz: number;
   st: boolean;
+}
+
+export interface GeoRequest {
+  long: number;
+  lat: number;
+}
+
+/**
+ * 本命星盘请求数据
+ */
+export interface HoroRequest {
+  // 出生时间
+  date: DateRequest;
   geo_name: string;
-  geo_long: number;
-  geo_lat: number;
+  geo: GeoRequest;
   house: string;
   describe: string;
   sex: boolean;
@@ -35,82 +44,38 @@ export interface HoroData {
 /**
  * 推运星盘请求数据
  */
-export interface ProcessData {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-  second: number;
-  // tz: number;
-  // st: boolean;
+export interface ProcessRequest {
+  date: DateRequest;
   geo_name: string;
-  geo_long: number;
-  geo_lat: number;
+  geo: GeoRequest;
   // house: string;
   // describe: string;
   // sex: boolean;
   process_name: ProcessName;
 }
 
-export interface ProfectionData {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-  second: number;
-  // 出生地时区，东区为正数，西区为负数
-  tz: number;
-  // 出生时的夏令时，有夏令时：true，无夏令时： false
-  st: boolean;
-
-  // 推运年，最小值1900
-  process_year: number;
-  // 推运月
-  process_month: number;
-
-  // 推运日
-  process_day: number;
-  // 推运时
-  process_hour: number;
-  // 推运分
-  process_minute: number;
-  // 推运秒
-  process_second: number;
+export interface ProfectionRequest {
+  native_date: DateRequest;
+  process_date: DateRequest;
 }
 
 // 行运请求数据
-export interface TransitData {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-  second: number;
-  // 出生地时区，东区为正数，西区为负数
-  tz: number;
-  // 出生时的夏令时，有夏令时：true，无夏令时： false
-  st: boolean;
-
-  // 地理经度
-  geo_long: number;
-  geo_lat: number;
-
+export interface TransitRequest {
+  native_date: DateRequest;
+  geo: GeoRequest;
   // 位系统，Alcabitus：阿卡比特
   house: string;
+  process_date: DateRequest;
+}
 
-  // 推运年，最小值1900
-  process_year: number;
-  // 推运月
-  process_month: number;
-
-  // 推运日
-  process_day: number;
-  // 推运时
-  process_hour: number;
-  // 推运分
-  process_minute: number;
-  // 推运秒
-  process_second: number;
+// 返照盘请求数据
+export interface ReturnRequest {
+  /// 出生时间
+  native_date: DateRequest;
+  /// 推运时间
+  process_date: DateRequest;
+  /// 居住地大地经纬度
+  geo: GeoRequest;
+  /// 宫位系统，Alcabitus：阿卡比特
+  house: string;
 }

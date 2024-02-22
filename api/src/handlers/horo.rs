@@ -33,9 +33,16 @@ pub async fn horo_native(
     let r = r.into_inner();
 
     let t = horo_date_time(
-        r.year, r.month, r.day, r.hour, r.minute, r.second, r.tz, r.st,
+        r.date.year,
+        r.date.month,
+        r.date.day,
+        r.date.hour,
+        r.date.minute,
+        r.date.second,
+        r.date.tz,
+        r.date.st,
     )?;
-    let geo = GeoPosition::new(r.geo_long, r.geo_lat)?;
+    let geo = GeoPosition::new(r.geo.long, r.geo.lat)?;
 
     let pan = Horoscope::new(
         t,

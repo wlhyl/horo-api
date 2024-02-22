@@ -20,15 +20,15 @@ pub struct Profection {
 }
 
 impl Profection {
-    pub fn new(native_date: HoroDateTime, profection_date: HoroDateTime) -> Result<Self, Error> {
-        if profection_date.jd_utc < native_date.jd_utc {
+    pub fn new(native_date: HoroDateTime, process_date: HoroDateTime) -> Result<Self, Error> {
+        if process_date.jd_utc < native_date.jd_utc {
             let msg = "Profections date muste be greate or equal birthday.".to_string();
             return Err(Error::InvalidProfectionDateTime(msg));
         }
 
         // 小限年的生日
         let profection_birthday = horo_date_time(
-            profection_date.year,
+            process_date.year,
             native_date.month,
             native_date.day,
             native_date.hour,
@@ -39,10 +39,10 @@ impl Profection {
         )?;
 
         //年小限所在年数
-        let profection_year = if profection_date.jd_utc < profection_birthday.jd_utc {
-            profection_date.year - 1
+        let profection_year = if process_date.jd_utc < profection_birthday.jd_utc {
+            process_date.year - 1
         } else {
-            profection_date.year
+            process_date.year
         };
 
         let n = (profection_year - native_date.year) % 12;
@@ -58,8 +58,8 @@ impl Profection {
         // 计算月小限
         // 月份的生日
         let profection_birthday_month = horo_date_time(
-            profection_date.year,
-            profection_date.month,
+            process_date.year,
+            process_date.month,
             native_date.day,
             native_date.hour,
             native_date.minute,
@@ -69,15 +69,15 @@ impl Profection {
         )?;
 
         // 小限所在月分
-        let profection_month = if profection_date.jd_utc < profection_birthday_month.jd_utc {
-            let month = profection_date.month - 1;
+        let profection_month = if process_date.jd_utc < profection_birthday_month.jd_utc {
+            let month = process_date.month - 1;
             if month == 0 {
                 12
             } else {
                 month
             }
         } else {
-            profection_date.month
+            process_date.month
         };
 
         // n==0，必是profection_month==native_date
@@ -91,7 +91,7 @@ impl Profection {
         // 天小限
         // 小限所在月与出生日相同的时间
         let profection_birthday_day = horo_date_time(
-            profection_date.year,
+            process_date.year,
             profection_month,
             native_date.day,
             native_date.hour,
@@ -104,9 +104,9 @@ impl Profection {
         // 下一个小限所在月与出生日相同的时间
         let profection_birthday_next_day = horo_date_time(
             if profection_month == 12 {
-                profection_date.year + 1
+                process_date.year + 1
             } else {
-                profection_date.year
+                process_date.year
             },
             if profection_month == 12 {
                 1
@@ -124,7 +124,7 @@ impl Profection {
         let profection_month_days =
             profection_birthday_next_day.jd_utc - profection_birthday_day.jd_utc;
         // 小限天数
-        let profection_days = profection_date.jd_utc - profection_birthday_day.jd_utc;
+        let profection_days = process_date.jd_utc - profection_birthday_day.jd_utc;
 
         let n = 12.0 * profection_days / profection_month_days;
         let n = n as u8; // 0.24为月小限所在宫位，因此向下取整

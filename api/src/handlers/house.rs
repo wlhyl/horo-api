@@ -6,8 +6,8 @@ use crate::responser::Responser;
 /// 宫位系统
 #[cfg_attr(feature = "swagger", 
 utoipa::path(
-    tag="本命星盘",
-    context_path="/api/horo",
+    tag="宫位系统",
+    context_path="/api",
     responses(
         (status = 200, description = "OK", body = Vec<HouseName>),
     ),
