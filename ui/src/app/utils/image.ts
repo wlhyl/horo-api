@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+import { Platform } from '@ionic/angular';
 import { fabric } from 'fabric';
 
 import {
@@ -580,4 +579,19 @@ export function drawReturnHorosco(
     config,
     { cx: cx, cy: cy, r: r1 }
   );
+}
+
+// 绘制完成后根据屏幕大小缩放
+export function zoomImage(canvas: Canvas, platform: Platform) {
+  platform.ready().then(() => {
+    let canvasWidth = canvas.getWidth();
+    if (!canvasWidth) return;
+    let width = platform.width();
+    let zoom = (width - 10) / canvasWidth;
+    if (zoom < 1) {
+      canvas.setWidth(width);
+      canvas.setHeight(width);
+      canvas.setZoom(zoom);
+    }
+  });
 }

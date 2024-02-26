@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { LunarReturnComponent } from './lunar-return.component';
+import { ReturnComponent } from './return.component';
 
-describe('LunarReturnComponent', () => {
-  let component: LunarReturnComponent;
-  let fixture: ComponentFixture<LunarReturnComponent>;
+describe('ReturnComponent', () => {
+  let component: ReturnComponent;
+  let fixture: ComponentFixture<ReturnComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LunarReturnComponent ],
+      declarations: [ ReturnComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LunarReturnComponent);
+    fixture = TestBed.createComponent(ReturnComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

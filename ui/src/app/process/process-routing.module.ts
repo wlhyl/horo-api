@@ -3,10 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ProcessPage } from './process.page';
 
+import { Path } from './path';
+
 import { ProfectionComponent } from './profection/profection.component';
 import { TransitComponent } from './transit/transit.component';
-import { SolarReturnComponent } from './solar-return/solar-return.component';
-import { LunarReturnComponent } from './lunar-return/lunar-return.component';
+import { ReturnComponent } from './return/return.component';
 
 const routes: Routes = [
   {
@@ -14,15 +15,14 @@ const routes: Routes = [
     component: ProcessPage,
   },
   {
-    path: 'profection',
+    path: Path.Profection,
     component: ProfectionComponent,
   },
   {
-    path: 'transit',
+    path: Path.Transit,
     component: TransitComponent,
   },
-  { path: 'solar_return', component: SolarReturnComponent },
-  { path: 'lunar_return', component: LunarReturnComponent },
+  { path: Path.Return, component: ReturnComponent },
 ];
 
 @NgModule({

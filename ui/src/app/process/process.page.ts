@@ -3,6 +3,7 @@ import { HorostorageService } from '../services/horostorage/horostorage.service'
 import { ApiService } from '../services/api/api.service';
 import { ProcessName } from '../type/enum/process';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Path } from './path';
 
 @Component({
   selector: 'app-process',
@@ -49,16 +50,16 @@ export class ProcessPage implements OnInit {
     this.storage.processData = this.processData;
     switch (this.processData.process_name) {
       case ProcessName.Profection:
-        this.router.navigate(['./profection'], { relativeTo: this.route });
+        this.router.navigate([Path.Profection], { relativeTo: this.route });
         break;
       case ProcessName.Transit:
-        this.router.navigate(['./transit'], { relativeTo: this.route });
+        this.router.navigate([Path.Transit], { relativeTo: this.route });
         break;
       case ProcessName.SolarReturn:
-        this.router.navigate(['./solar_return'], { relativeTo: this.route });
+        this.router.navigate([Path.SolarReturn], { relativeTo: this.route });
         break;
       case ProcessName.LunarReturn:
-        this.router.navigate(['./lunar_return'], { relativeTo: this.route });
+        this.router.navigate([Path.LunarReturn], { relativeTo: this.route });
         break;
     }
   }

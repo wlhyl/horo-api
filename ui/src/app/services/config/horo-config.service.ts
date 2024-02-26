@@ -159,6 +159,10 @@ export class Horoconfig {
     return this.astrologyFont;
   }
 
+  // 初始宽、高，绘制完成后会根据屏幕大小缩放
+  public apsectImage = { width: 700, heigth: 700 };
+  public HoroscoImage = { width: 700, heigth: 700 }; // , fontSize: 20, col: 14, row: 14}
+
   //   public readonly ruler = [
   //     Planet.SE_MARS,
   //     Planet.SE_VENUS,

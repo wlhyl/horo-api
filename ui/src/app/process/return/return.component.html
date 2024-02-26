@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <ng-container *ngIf="path===returnHoroscopName.Solar">日返</ng-container>
+      <ng-container *ngIf="path===returnHoroscopName.Lunar">月返</ng-container>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">
+        <ng-container *ngIf="path===returnHoroscopName.Solar">日返</ng-container>
+        <ng-container *ngIf="path===returnHoroscopName.Lunar">月返</ng-container>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-alert [isOpen]="isAlertOpen" header="Alert" subHeader="错误！" [message]="message" [buttons]="alertButtons"
+    (didDismiss)="isAlertOpen=false"></ion-alert>
+
+
+
+  <div class="ion-text-center">
+    <h2>推运时间：{{ processData.date.year }}年{{ processData.date.month }}月{{ processData.date.day }}日 {{
+      processData.date.hour }}:{{
+      processData.date.minute }}:{{
+      processData.date.second }}</h2>
+  </div>
+
+  <div class="ion-text-center">
+    <h2>返照时间：{{ solarReturnData?.return_date?.year }}年{{ solarReturnData?.return_date?.month }}月{{
+      solarReturnData?.return_date?.day }}日 {{ solarReturnData?.return_date?.hour }}:{{
+      solarReturnData?.return_date?.minute }}:{{
+      solarReturnData?.return_date?.second }}</h2>
+  </div>
+
+  <div class="ion-text-center" *ngIf="loading">
+    <ion-label>获取星盘</ion-label>
+    <ion-spinner name="bubbles"></ion-spinner>
+  </div>
+  <div class="ion-text-center">
+    <canvas id="canvas" width="0" height="0"></canvas>
+  </div>
+  <div *ngIf="solarReturnData" class="horo-aspect-toggle">
+    <ion-label class="ion-text-right">星盘</ion-label>
+    <ion-toggle [(ngModel)]="isAspect" (ionChange)="switchHoroAspect()"></ion-toggle>
+    <ion-label>相位</ion-label>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <horo-date-time-change (chagedStep)="changeStep($event)"></horo-date-time-change>
+</ion-footer>

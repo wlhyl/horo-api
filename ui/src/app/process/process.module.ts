@@ -11,8 +11,7 @@ import { HoroCommonModule } from '../horo-common/horo-common.module';
 import { ProcessPage } from './process.page';
 import { ProfectionComponent } from './profection/profection.component';
 import { TransitComponent } from './transit/transit.component';
-import { SolarReturnComponent } from './solar-return/solar-return.component';
-import { LunarReturnComponent } from './lunar-return/lunar-return.component';
+import { ReturnComponent } from './return/return.component';
 
 @NgModule({
   imports: [
@@ -26,8 +25,7 @@ import { LunarReturnComponent } from './lunar-return/lunar-return.component';
     ProcessPage,
     ProfectionComponent,
     TransitComponent,
-    SolarReturnComponent,
-    LunarReturnComponent,
+    ReturnComponent,
   ],
 })
 export class ProcessPageModule {}
