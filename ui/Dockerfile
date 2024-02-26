@@ -8,7 +8,11 @@ RUN npm install --registry https://registry.npmmirror.com --canvas_binary_host_m
 
 RUN ionic build --prod
 
+RUN gzip /app/www/*js && gzip /app/www/*css #  && gzip /app/www/*html
+
 FROM nginx:1.25.4-alpine
+
+# RUN rm -rf  /usr/share/nginx/html/*
 
 COPY --from=build-stage /app/www/ /usr/share/nginx/html
 

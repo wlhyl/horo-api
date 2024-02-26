@@ -73,6 +73,7 @@ export class HorostorageService {
         lat: 39 + 54 / 60.0,
       },
       process_name: ProcessName.Profection,
+      isSolarReturn: false,
     };
   }
 

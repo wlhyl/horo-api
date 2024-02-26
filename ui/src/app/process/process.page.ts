@@ -40,6 +40,10 @@ export class ProcessPage implements OnInit {
     });
   }
 
+  get processNameEnum(): typeof ProcessName {
+    return ProcessName;
+  }
+
   getProcess() {
     this.storage.horoData = this.horoData;
     this.storage.processData = this.processData;
@@ -54,6 +58,7 @@ export class ProcessPage implements OnInit {
         this.router.navigate(['./solar_return'], { relativeTo: this.route });
         break;
       case ProcessName.LunarReturn:
+        this.router.navigate(['./lunar_return'], { relativeTo: this.route });
         break;
     }
   }

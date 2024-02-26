@@ -6,16 +6,16 @@ import { HorostorageService } from 'src/app/services/horostorage/horostorage.ser
 import { Canvas } from 'src/app/type/alias/canvas';
 import { ReturnHoroscop } from 'src/app/type/interface/respone-data';
 import { fabric } from 'fabric';
-import { ReturnRequest } from 'src/app/type/interface/request-data';
 import { lastValueFrom } from 'rxjs';
+import { ReturnRequest } from 'src/app/type/interface/request-data';
 import { drawAspect, drawReturnHorosco } from 'src/app/utils/image';
 
 @Component({
-  selector: 'app-solar-return',
-  templateUrl: './solar-return.component.html',
-  styleUrls: ['./solar-return.component.scss'],
+  selector: 'app-lunar-return',
+  templateUrl: './lunar-return.component.html',
+  styleUrls: ['./lunar-return.component.scss'],
 })
-export class SolarReturnComponent implements OnInit {
+export class LunarReturnComponent implements OnInit {
   horoData = this.storage.horoData;
   processData = this.storage.processData;
   solarReturnData: ReturnHoroscop | null = null;
@@ -54,8 +54,46 @@ export class SolarReturnComponent implements OnInit {
 
   private async drawHoroscope() {
     this.loading = true;
+
+    let native_date = this.horoData.date;
+
+    // 使用日返月亮位置
+    if (this.processData.isSolarReturn) {
+      // 计算日返
+      const requestData: ReturnRequest = {
+        native_date: this.horoData.date,
+        geo: this.horoData.geo,
+        house: this.horoData.house,
+        process_date: this.processData.date,
+      };
+
+      try {
+        const solarReturnData = await lastValueFrom(
+          this.api.solarReturn(requestData)
+        );
+
+        native_date = {
+          year: solarReturnData.return_date.year,
+          month: solarReturnData.return_date.month,
+          day: solarReturnData.return_date.day,
+          hour: solarReturnData.return_date.hour,
+          minute: solarReturnData.return_date.minute,
+          second: solarReturnData.return_date.second,
+          tz: solarReturnData.return_date.tz,
+          st: false,
+        };
+      } catch (error: any) {
+        const message = error.message + ' ' + error.error.message;
+        this.message = message;
+        this.isAlertOpen = true;
+        return;
+      } finally {
+        this.loading = false;
+      }
+    }
+
     const requestData: ReturnRequest = {
-      native_date: this.horoData.date,
+      native_date,
       geo: this.horoData.geo,
       house: this.horoData.house,
       process_date: this.processData.date,
@@ -63,7 +101,7 @@ export class SolarReturnComponent implements OnInit {
 
     try {
       this.solarReturnData = await lastValueFrom(
-        this.api.solarReturn(requestData)
+        this.api.lunarReturn(requestData)
       );
       this.isAlertOpen = false;
       this.draw();

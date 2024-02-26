@@ -81,4 +81,16 @@ export class ApiService {
       this.http_options
     );
   }
+
+  /**
+   *
+   * @returns 获取月亮返照盘
+   */
+  public lunarReturn(data: ReturnRequest): Observable<ReturnHoroscop> {
+    return this.http.post<ReturnHoroscop>(
+      `${this.url}/process/return/lunar`,
+      data,
+      this.http_options
+    );
+  }
 }

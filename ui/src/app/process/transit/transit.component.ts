@@ -61,7 +61,6 @@ export class TransitComponent implements OnInit {
     };
 
     try {
-      this.loading = true;
       this.transitData = await lastValueFrom(this.api.transit(transitData));
       this.isAlertOpen = false;
       this.draw();

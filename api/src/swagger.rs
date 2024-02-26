@@ -1,10 +1,12 @@
 use crate::handlers::{
-    horo::__path_horo_native, house::__path_houses, profection::__path_profection,
-    return_horoscop::__path_solar_return_horo, transit::__path_transit,
+    horo::__path_horo_native,
+    house::__path_houses,
+    profection::__path_profection,
+    return_horoscop::{__path_lunar_return_horo, __path_solar_return_horo},
+    transit::__path_transit,
 };
 use crate::request::{
-    DateRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest, ReturnRequest,
-    TransitRequst,
+    DateRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest, ReturnRequest, TransitRequst,
 };
 use horo::{
     Aspect, GeoPosition, HoroDateTime, Horoscope, HoroscopeCompare, HouseName, Planet, PlanetName,
@@ -24,7 +26,9 @@ use utoipa::OpenApi;
         // 行运
         transit,
         // 日返
-        solar_return_horo
+        solar_return_horo,
+        // 月返
+        lunar_return_horo
     ),
     components(schemas(
         DateRequest,

@@ -42,7 +42,8 @@
       </ion-col>
       <ion-col size="7">
         <horo-date-time [(year)]="horoData.date.year" [(month)]="horoData.date.month" [(day)]="horoData.date.day"
-          [(hour)]="horoData.date.hour" [(minute)]="horoData.date.minute" [(second)]="horoData.date.second"></horo-date-time>
+          [(hour)]="horoData.date.hour" [(minute)]="horoData.date.minute"
+          [(second)]="horoData.date.second"></horo-date-time>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -106,7 +107,8 @@
     </ion-col>
     <ion-col size="7">
       <horo-date-time [(year)]="processData.date.year" [(month)]="processData.date.month" [(day)]="processData.date.day"
-        [(hour)]="processData.date.hour" [(minute)]="processData.date.minute" [(second)]="processData.date.second"></horo-date-time>
+        [(hour)]="processData.date.hour" [(minute)]="processData.date.minute"
+        [(second)]="processData.date.second"></horo-date-time>
     </ion-col>
   </ion-row>
 
@@ -139,6 +141,15 @@
 
       <horo-geo [(geoLocalName)]="processData.geo_name" [(geoLong)]="processData.geo.long"
         [(geoLat)]="processData.geo.lat"></horo-geo>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="processData.process_name===processNameEnum.LunarReturn">
+    <ion-col size="5" class="left_col">
+      <ion-label>日返月亮：</ion-label>
+    </ion-col>
+    <ion-col size="7">
+      <ion-checkbox [(ngModel)]="processData.isSolarReturn"></ion-checkbox>
     </ion-col>
   </ion-row>
 

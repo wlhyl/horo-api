@@ -52,6 +52,7 @@ export interface ProcessRequest {
   // describe: string;
   // sex: boolean;
   process_name: ProcessName;
+  isSolarReturn: boolean;
 }
 
 export interface ProfectionRequest {

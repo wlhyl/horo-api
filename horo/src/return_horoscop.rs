@@ -65,7 +65,7 @@ pub fn solar_return(
 
     // 计算推运时刻黄道经度
     let xx = swe_calc_ut(process_date.jd_utc, &Body::SeSun, &[])
-        .map_err(|e| Error::Function(format!("计算本命星盘太阳黄道经度错误:{e}")))?;
+        .map_err(|e| Error::Function(format!("计算推运时刻太阳黄道经度错误:{e}")))?;
     let process_sun_long = xx[0];
 
     // 计算迭代初值
@@ -97,6 +97,69 @@ pub fn solar_return(
         native_date,
         process_date,
         return_date: solar_return_date,
+        geo,
+        house_name,
+        houses_cups: horo.houses_cups,
+        asc: horo.asc,
+        mc: horo.mc,
+        dsc: horo.dsc,
+        ic: horo.ic,
+        planets: horo.planets,
+        aspects: horo.aspects,
+    })
+}
+
+
+/// 计算月亮返照盘
+pub fn lunar_return(
+    native_date: HoroDateTime,
+    process_date: HoroDateTime,
+    geo: GeoPosition,
+    house_name: HouseName,
+    planets_config: &[PlanetConfig],
+    ephe_path: &str,
+) -> Result<ReturnHoroscop, Error> {
+    // 计算本命星盘月亮黄道经度
+    swe_set_ephe_path(ephe_path);
+    let xx = swe_calc_ut(native_date.jd_utc, &Body::SeMoon, &[])
+        .map_err(|e| Error::Function(format!("计算本命星盘月亮黄道经度错误:{e}")))?;
+    swe_close();
+    let moon_long = xx[0];
+
+    // 计算推运时刻黄道经度
+    let xx = swe_calc_ut(process_date.jd_utc, &Body::SeMoon, &[])
+        .map_err(|e| Error::Function(format!("计算推运时刻月亮黄道经度错误:{e}")))?;
+    let process_moon_long = xx[0];
+
+    // 计算迭代初值
+    let jd0 = process_date.jd_utc - swe_degnorm(process_moon_long - moon_long)/13.0;
+
+    // 计算返照时间
+    let jd = newton_iteration(jd0, |jd| {
+        let t0 = HoroDateTime::from_jd_zone(jd, process_date.tz)?;
+        swe_set_ephe_path(ephe_path);
+        let xx = swe_calc_ut(t0.jd_utc, &Body::SeMoon, &[]).map_err(|e| {
+            Error::Function(format!("函数sun_on_asc()，牛顿迭代计算月亮位置错误:{e}"))
+        })?;
+
+        swe_close();
+
+        Ok(mod180(xx[0] - moon_long))
+    })?;
+
+    let lunar_return_date = HoroDateTime::from_jd_zone(jd, process_date.tz)?;
+    // 计算返照星盘
+    let horo = Horoscope::new(
+        lunar_return_date.clone(),
+        geo.clone(),
+        house_name.clone(),
+        planets_config,
+        ephe_path,
+    )?;
+    Ok(ReturnHoroscop {
+        native_date,
+        process_date,
+        return_date: lunar_return_date,
         geo,
         house_name,
         houses_cups: horo.houses_cups,

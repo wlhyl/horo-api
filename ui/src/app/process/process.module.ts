@@ -12,6 +12,7 @@ import { ProcessPage } from './process.page';
 import { ProfectionComponent } from './profection/profection.component';
 import { TransitComponent } from './transit/transit.component';
 import { SolarReturnComponent } from './solar-return/solar-return.component';
+import { LunarReturnComponent } from './lunar-return/lunar-return.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { SolarReturnComponent } from './solar-return/solar-return.component';
     ProfectionComponent,
     TransitComponent,
     SolarReturnComponent,
+    LunarReturnComponent,
   ],
 })
 export class ProcessPageModule {}
