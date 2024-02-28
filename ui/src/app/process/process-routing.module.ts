@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ProcessPage } from './process.page';
 
-import { Path } from './path';
+// import { Path } from './path';
+import { ProcessName } from '../type/enum/process';
 
 import { ProfectionComponent } from './profection/profection.component';
-import { TransitComponent } from './transit/transit.component';
+// import { TransitComponent } from './transit/transit.component';
 import { ReturnComponent } from './return/return.component';
+import { CompareComponent } from './compare/compare.component';
 
 const routes: Routes = [
   {
@@ -15,14 +17,48 @@ const routes: Routes = [
     component: ProcessPage,
   },
   {
-    path: Path.Profection,
+    path: ProcessName.path(ProcessName.Profection),
     component: ProfectionComponent,
   },
   {
-    path: Path.Transit,
-    component: TransitComponent,
+    path: ProcessName.path(ProcessName.Transit),
+    component: CompareComponent,
+    data: { process_name: ProcessName.Transit },
   },
-  { path: Path.Return, component: ReturnComponent },
+  {
+    path: ProcessName.path(ProcessName.SolarcomparNative),
+    component: CompareComponent,
+    data: { process_name: ProcessName.SolarcomparNative },
+  },
+  {
+    path: ProcessName.path(ProcessName.NativecomparSolar),
+    component: CompareComponent,
+    data: { process_name: ProcessName.NativecomparSolar },
+  },
+  {
+    path: ProcessName.path(ProcessName.LunarcomparNative),
+    component: CompareComponent,
+    data: { process_name: ProcessName.LunarcomparNative },
+  },
+  {
+    path: ProcessName.path(ProcessName.NativecomparLunar),
+    component: CompareComponent,
+    data: { process_name: ProcessName.NativecomparLunar },
+  },
+
+  {
+    path: ProcessName.path(ProcessName.SolarReturn),
+    component: ReturnComponent,
+    data: { process_name: ProcessName.SolarReturn },
+  },
+
+  {
+    path: ProcessName.path(ProcessName.LunarReturn),
+    component: ReturnComponent,
+    data: { process_name: ProcessName.LunarReturn },
+  },
+
+  // { path: Path.Return, component: ReturnComponent },
 ];
 
 @NgModule({

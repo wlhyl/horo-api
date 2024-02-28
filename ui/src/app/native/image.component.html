@@ -3,28 +3,27 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>
-            本命星盘
-        </ion-title>
+        <ion-title> {{title}} </ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
     <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">本命星盘</ion-title>
+            <ion-title size="large">{{title}}</ion-title>
         </ion-toolbar>
-      </ion-header>
+    </ion-header>
 
     <ion-alert [isOpen]="isAlertOpen" header="Alert" subHeader="错误！" [message]="message" [buttons]="alertButtons"
-    (didDismiss)="isAlertOpen=false"></ion-alert>
+        (didDismiss)="isAlertOpen=false"></ion-alert>
 
 
     <div class="ion-text-center">
-        <h2>{{ horoData.date.year }}年{{ horoData.date.month }}月{{ horoData.date.day }}日 {{ horoData.date.hour }}:{{ horoData.date.minute }}:{{
+        <h2>{{ horoData.date.year }}年{{ horoData.date.month }}月{{ horoData.date.day }}日 {{ horoData.date.hour }}:{{
+            horoData.date.minute }}:{{
             horoData.date.second }}</h2>
     </div>
-   
+
     <div class="ion-text-center" *ngIf="loading">
         <ion-label>获取星盘</ion-label>
         <ion-spinner name="bubbles"></ion-spinner>

@@ -61,7 +61,7 @@ export interface ProfectionRequest {
 }
 
 // 行运请求数据
-export interface TransitRequest {
+export interface CompareRequest {
   native_date: DateRequest;
   geo: GeoRequest;
   // 位系统，Alcabitus：阿卡比特

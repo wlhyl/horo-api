@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReturnPath } from '../path';
+// import { ReturnPath } from '../path';
 import { ApiService } from 'src/app/services/api/api.service';
 import { HorostorageService } from 'src/app/services/horostorage/horostorage.service';
 import { Horoconfig } from 'src/app/services/config/horo-config.service';
@@ -11,6 +11,8 @@ import { ReturnRequest } from 'src/app/type/interface/request-data';
 import { lastValueFrom } from 'rxjs';
 import { drawAspect, drawReturnHorosco, zoomImage } from 'src/app/utils/image';
 import { Platform } from '@ionic/angular';
+import { Title } from '@angular/platform-browser';
+import { ProcessName } from 'src/app/type/enum/process';
 
 @Component({
   selector: 'app-return',
@@ -18,7 +20,7 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['./return.component.scss'],
 })
 export class ReturnComponent implements OnInit {
-  path = ReturnPath.Solar;
+  process_name = ProcessName.SolarReturn;
 
   isAlertOpen = false;
   alertButtons = ['OK'];
@@ -39,8 +41,8 @@ export class ReturnComponent implements OnInit {
 
   private canvas?: Canvas;
 
-  get returnHoroscopName(): typeof ReturnPath {
-    return ReturnPath;
+  get title(): string {
+    return ProcessName.name(this.process_name);
   }
 
   constructor(
@@ -48,32 +50,41 @@ export class ReturnComponent implements OnInit {
     private route: ActivatedRoute,
     private api: ApiService,
     private storage: HorostorageService,
-    private config: Horoconfig
+    private config: Horoconfig,
+    private titleService: Title
   ) {}
 
   async ngOnInit() {
-    const path = this.route.snapshot.paramMap.get('path');
-    if (path === null) {
+    const process_name = this.route.snapshot.data['process_name'];
+    if (process_name === null) {
       this.message = '选择一种返照盘';
       this.isAlertOpen = true;
       return;
     }
 
-    if (path === 'solar') this.path = ReturnPath.Solar;
-    else if (path === 'lunar') this.path = ReturnPath.Lunar;
-    else {
-      this.message = `无此种返照盘：${path}`;
-      this.isAlertOpen = true;
-      return;
+    switch (process_name) {
+      case ProcessName.SolarReturn:
+      case ProcessName.LunarReturn:
+        this.process_name = process_name;
+        break;
+      default:
+        this.message = `无此种返照盘：${process_name}`;
+        this.isAlertOpen = true;
+        return;
     }
+
+    // 设置了this.path再设置title
+    this.titleService.setTitle(this.title);
 
     this.canvas = new fabric.StaticCanvas('canvas');
 
-    await this.drawHoroscope(this.path);
+    await this.drawHoroscope(this.process_name);
   }
 
-  private async getReturnData(path: ReturnPath): Promise<ReturnHoroscop> {
-    return path == ReturnPath.Solar
+  private async getReturnData(
+    process_name: ProcessName
+  ): Promise<ReturnHoroscop> {
+    return process_name == ProcessName.SolarReturn
       ? await this.getSolarReturnData()
       : await this.getLunarReturnData();
   }
@@ -119,11 +130,11 @@ export class ReturnComponent implements OnInit {
     return await lastValueFrom(this.api.lunarReturn(requestData));
   }
 
-  private async drawHoroscope(path: ReturnPath) {
+  private async drawHoroscope(process_name: ProcessName) {
     this.loading = true;
 
     try {
-      this.solarReturnData = await this.getReturnData(path);
+      this.solarReturnData = await this.getReturnData(process_name);
       this.isAlertOpen = false;
       this.draw();
     } catch (error: any) {
@@ -199,6 +210,6 @@ export class ReturnComponent implements OnInit {
     this.processData.date.minute = date.getMinutes();
     this.processData.date.second = date.getSeconds();
 
-    await this.drawHoroscope(this.path);
+    await this.drawHoroscope(this.process_name);
   }
 }

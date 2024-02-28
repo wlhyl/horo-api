@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TransitComponent } from './transit.component';
+import { CompareComponent } from './compare.component';
 
-describe('TransitComponent', () => {
-  let component: TransitComponent;
-  let fixture: ComponentFixture<TransitComponent>;
+describe('CompareComponent', () => {
+  let component: CompareComponent;
+  let fixture: ComponentFixture<CompareComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TransitComponent ],
+      declarations: [ CompareComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TransitComponent);
+    fixture = TestBed.createComponent(CompareComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

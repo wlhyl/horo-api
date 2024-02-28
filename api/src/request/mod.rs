@@ -115,19 +115,19 @@ pub struct ProfectionRequest {
 
 #[derive(Deserialize, Validate)]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
-pub struct TransitRequst {
-    /// 出生时间
+pub struct CompareRequst {
+    /// 原盘时间
     #[validate]
     pub native_date: DateRequest,
 
-    /// 出生地大地经纬度
+    /// 大地经纬度
     #[validate]
     pub geo: GeoRequest,
 
     /// 宫位系统，Alcabitus：阿卡比特
     pub house: HouseName,
 
-    /// 推运时间
+    /// 比较盘时间
     #[validate]
     pub process_date: DateRequest,
 }

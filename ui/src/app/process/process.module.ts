@@ -10,8 +10,8 @@ import { HoroCommonModule } from '../horo-common/horo-common.module';
 
 import { ProcessPage } from './process.page';
 import { ProfectionComponent } from './profection/profection.component';
-import { TransitComponent } from './transit/transit.component';
 import { ReturnComponent } from './return/return.component';
+import { CompareComponent } from './compare/compare.component';
 
 @NgModule({
   imports: [
@@ -24,8 +24,8 @@ import { ReturnComponent } from './return/return.component';
   declarations: [
     ProcessPage,
     ProfectionComponent,
-    TransitComponent,
     ReturnComponent,
+    CompareComponent,
   ],
 })
 export class ProcessPageModule {}

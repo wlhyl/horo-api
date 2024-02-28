@@ -163,6 +163,9 @@ export class Horoconfig {
   public apsectImage = { width: 700, heigth: 700 };
   public HoroscoImage = { width: 700, heigth: 700 }; // , fontSize: 20, col: 14, row: 14}
 
+  // 支持的宫位系统，从server获取
+  public houses: Array<string> = [];
+
   //   public readonly ruler = [
   //     Planet.SE_MARS,
   //     Planet.SE_VENUS,

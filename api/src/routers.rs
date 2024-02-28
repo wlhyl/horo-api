@@ -6,7 +6,7 @@ use crate::handlers::{
     house::houses,
     profection::profection,
     return_horoscop::{lunar_return_horo, solar_return_horo},
-    transit::transit,
+    compare_horoscop::compare,
 };
 
 pub fn health_routes(cfg: &mut web::ServiceConfig) {
@@ -19,7 +19,7 @@ pub fn horo_routes(cfg: &mut web::ServiceConfig) {
         .service(
             web::scope("/process")
                 .service(profection)
-                .service(transit)
+                .service(compare)
                 .service(solar_return_horo)
                 .service(lunar_return_horo),
         );

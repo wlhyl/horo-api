@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { Horoconfig } from './services/config/horo-config.service';
+import { ApiService } from './services/api/api.service';
 import { appInit } from './services/init/app-init';
 
 @NgModule({
@@ -29,8 +30,9 @@ import { appInit } from './services/init/app-init';
 
     {
       provide: APP_INITIALIZER,
-      useFactory: (config: Horoconfig) => () => appInit(config),
-      deps: [Horoconfig],
+      useFactory: (config: Horoconfig, api: ApiService) => () =>
+        appInit(config, api),
+      deps: [Horoconfig, ApiService],
       multi: true,
     },
   ],

@@ -8,6 +8,7 @@ import { lastValueFrom } from 'rxjs';
 import { Platform } from '@ionic/angular';
 import { Canvas } from '../type/alias/canvas';
 import { drawAspect, drawHorosco } from '../utils/image';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'teanote-image',
@@ -33,17 +34,18 @@ export class ImageComponent implements OnInit {
 
   private canvas?: Canvas;
 
-  // 初始宽、高，绘制完成后会根据屏幕大小缩放
-  private apsectImage = { width: 700, heigth: 700 };
-  private HoroscoImage = { width: 700, heigth: 700 }; // , fontSize: 20, col: 14, row: 14}
+  title = '本命星盘';
 
   constructor(
     private platform: Platform,
     private api: ApiService,
     private config: Horoconfig,
-    private storage: HorostorageService
+    private storage: HorostorageService,
+    private titleService: Title
   ) {}
   async ngOnInit() {
+    this.titleService.setTitle(this.title);
+
     this.canvas = new fabric.StaticCanvas('canvas');
     await this.drawHoroscope();
   }
@@ -70,13 +72,13 @@ export class ImageComponent implements OnInit {
     this.canvas?.setHeight(0);
     if (this.isAspect) {
       drawAspect(this.horoscoData.aspects, this.canvas!, this.config, {
-        width: this.apsectImage.width,
-        heigth: this.apsectImage.heigth,
+        width: this.config.apsectImage.width,
+        heigth: this.config.apsectImage.heigth,
       });
     } else {
       drawHorosco(this.horoscoData, this.canvas!, this.config, {
-        width: this.HoroscoImage.width,
-        heigth: this.HoroscoImage.heigth,
+        width: this.config.HoroscoImage.width,
+        heigth: this.config.HoroscoImage.heigth,
       });
     }
     this.zoomImage(this.canvas!);

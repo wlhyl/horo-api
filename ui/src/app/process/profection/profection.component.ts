@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ApiService } from 'src/app/services/api/api.service';
 import { HorostorageService } from 'src/app/services/horostorage/horostorage.service';
 import { ProfectionRequest } from 'src/app/type/interface/request-data';
@@ -23,9 +24,17 @@ export class ProfectionComponent implements OnInit {
   alertButtons = ['OK'];
   message = '';
 
-  constructor(private api: ApiService, private storage: HorostorageService) {}
+  title = '小限';
+
+  constructor(
+    private api: ApiService,
+    private storage: HorostorageService,
+    private titleService: Title
+  ) {}
 
   ngOnInit() {
+    this.titleService.setTitle(this.title);
+
     const profectionData: ProfectionRequest = {
       native_date: this.horoData.date,
       process_date: this.processData.date,

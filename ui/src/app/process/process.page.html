@@ -1,13 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>推运</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">推运</ion-title>
+      <ion-title size="large">{{title}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -144,7 +147,8 @@
     </ion-col>
   </ion-row>
 
-  <ion-row *ngIf="processData.process_name===processNameEnum.LunarReturn">
+  <ion-row
+    *ngIf="processData.process_name===processNameEnum.LunarReturn || processData.process_name===processNameEnum.LunarcomparNative || processData.process_name===processNameEnum.NativecomparLunar">
     <ion-col size="5" class="left_col">
       <ion-label>日返月亮：</ion-label>
     </ion-col>

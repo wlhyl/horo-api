@@ -1,13 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>行运</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">行运</ion-title>
+      <ion-title size="large">{{title}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -17,9 +20,16 @@
 
  
     <div class="ion-text-center">
-      <h2>{{ processData.date.year }}年{{ processData.date.month }}月{{ processData.date.day }}日 {{ processData.date.hour }}:{{
+      <h2>推运时间：{{ processData.date.year }}年{{ processData.date.month }}月{{ processData.date.day }}日 {{ processData.date.hour }}:{{
         processData.date.minute }}:{{
         processData.date.second }}</h2>
+    </div>
+
+    <div class="ion-text-center" *ngIf="returnData">
+      <h2>返照时间：{{ returnData.return_date.year }}年{{ returnData.return_date.month }}月{{
+        returnData.return_date.day }}日 {{ returnData.return_date.hour }}:{{
+        returnData.return_date.minute }}:{{
+        returnData.return_date.second }}</h2>
     </div>
 
     <div class="ion-text-center" *ngIf="loading">
@@ -29,7 +39,7 @@
     <div class="ion-text-center">
       <canvas id="canvas" width="0" height="0"></canvas>
     </div>
-    <div *ngIf="transitData" class="horo-aspect-toggle">
+    <div *ngIf="compareData" class="horo-aspect-toggle">
       <ion-label class="ion-text-right">星盘</ion-label>
       <ion-toggle [(ngModel)]="isAspect" (ionChange)="switchHoroAspect()"></ion-toggle>
       <!-- <ion-toggle [(ngModel)]="isAspect" (ionChange)="reDraw($event)"></ion-toggle> -->

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HorostorageService } from '../services/horostorage/horostorage.service';
-import { ApiService } from '../services/api/api.service';
+import { Horoconfig } from '../services/config/horo-config.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-native',
@@ -9,20 +10,21 @@ import { ApiService } from '../services/api/api.service';
   styleUrls: ['./native.page.scss'],
 })
 export class NativePage implements OnInit {
-  houses: Array<string> = [];
+  readonly houses: Array<string> = this.config.houses;
   horoData = this.storage.horoData;
 
+  title = '本命星盘';
+
   constructor(
-    private api: ApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private storage: HorostorageService
+    private storage: HorostorageService,
+    private config: Horoconfig,
+    private titleService: Title
   ) {}
 
   ngOnInit() {
-    this.api.getHouses().subscribe({
-      next: (response) => (this.houses = response),
-    });
+    this.titleService.setTitle(this.title);
   }
 
   getHoro() {

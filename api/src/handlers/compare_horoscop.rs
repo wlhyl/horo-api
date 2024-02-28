@@ -1,22 +1,22 @@
 use actix_web::{post, web, HttpResponse, Responder};
 use horo::{horo_date_time, GeoPosition, HoroscopeCompare, PlanetConfig};
 
-use crate::{error::Error, request::TransitRequst, state::AppState};
+use crate::{error::Error, request::CompareRequst, state::AppState};
 
 /// 行运
 #[cfg_attr(feature = "swagger", 
 utoipa::path(
     tag="推运",
     context_path="/api/process",
-    request_body=TransitRenReust,
+    request_body=CompareRequst,
     responses(
-        (status = 201, description = "返回行运", body = HoroscopeCompare),
+        (status = 201, description = "返回比较盘", body = HoroscopeCompare),
     ),
 )
 )]
-#[post("/transit")]
-pub async fn transit(
-    r: actix_web_validator::Json<TransitRequst>,
+#[post("/compare")]
+pub async fn compare(
+    r: actix_web_validator::Json<CompareRequst>,
     app_state: web::Data<AppState>,
 ) -> Result<impl Responder, Error> {
     let r = r.into_inner();

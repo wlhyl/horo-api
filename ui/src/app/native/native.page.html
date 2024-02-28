@@ -1,13 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>本命星盘</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">本命星盘</ion-title>
+      <ion-title size="large">{{title}}</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-grid>
@@ -41,7 +44,8 @@
       </ion-col>
       <ion-col size="7">
         <horo-date-time [(year)]="horoData.date.year" [(month)]="horoData.date.month" [(day)]="horoData.date.day"
-          [(hour)]="horoData.date.hour" [(minute)]="horoData.date.minute" [(second)]="horoData.date.second"></horo-date-time>
+          [(hour)]="horoData.date.hour" [(minute)]="horoData.date.minute"
+          [(second)]="horoData.date.second"></horo-date-time>
       </ion-col>
     </ion-row>
   </ion-grid>

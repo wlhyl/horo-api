@@ -3,10 +3,10 @@ use crate::handlers::{
     house::__path_houses,
     profection::__path_profection,
     return_horoscop::{__path_lunar_return_horo, __path_solar_return_horo},
-    transit::__path_transit,
+    compare_horoscop::__path_compare,
 };
 use crate::request::{
-    DateRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest, ReturnRequest, TransitRequst,
+    DateRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest, ReturnRequest, CompareRequst,
 };
 use horo::{
     Aspect, GeoPosition, HoroDateTime, Horoscope, HoroscopeCompare, HouseName, Planet, PlanetName,
@@ -23,8 +23,8 @@ use utoipa::OpenApi;
         houses,
         // 小限
         profection,
-        // 行运
-        transit,
+        // 比较盘
+        compare,
         // 日返
         solar_return_horo,
         // 月返
@@ -35,7 +35,7 @@ use utoipa::OpenApi;
         GeoRequest,
         HoroNativeRenReust,
         ProfectionRequest,
-        TransitRequst,
+        CompareRequst,
         Horoscope,HoroscopeCompare,
         HouseName,
         Planet,

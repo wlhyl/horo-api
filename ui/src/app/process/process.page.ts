@@ -3,7 +3,8 @@ import { HorostorageService } from '../services/horostorage/horostorage.service'
 import { ApiService } from '../services/api/api.service';
 import { ProcessName } from '../type/enum/process';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Path } from './path';
+import { Horoconfig } from '../services/config/horo-config.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-process',
@@ -11,34 +12,26 @@ import { Path } from './path';
   styleUrls: ['./process.page.scss'],
 })
 export class ProcessPage implements OnInit {
-  houses: Array<string> = [];
+  readonly houses: Array<string> = this.config.houses;
   horoData = this.storage.horoData;
   processData = this.storage.processData;
+  title = '推运';
 
   get processName(): string {
-    switch (this.processData.process_name) {
-      case ProcessName.Profection:
-        return '小限';
-      case ProcessName.Transit:
-        return '行运';
-      case ProcessName.SolarReturn:
-        return '日返';
-      case ProcessName.LunarReturn:
-        return '月返';
-    }
+    return ProcessName.name(this.processData.process_name);
   }
 
   constructor(
     private api: ApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private storage: HorostorageService
+    private storage: HorostorageService,
+    private config: Horoconfig,
+    private titleService: Title
   ) {}
 
   ngOnInit() {
-    this.api.getHouses().subscribe({
-      next: (response) => (this.houses = response),
-    });
+    this.titleService.setTitle(this.title);
   }
 
   get processNameEnum(): typeof ProcessName {
@@ -48,43 +41,32 @@ export class ProcessPage implements OnInit {
   getProcess() {
     this.storage.horoData = this.horoData;
     this.storage.processData = this.processData;
-    switch (this.processData.process_name) {
-      case ProcessName.Profection:
-        this.router.navigate([Path.Profection], { relativeTo: this.route });
-        break;
-      case ProcessName.Transit:
-        this.router.navigate([Path.Transit], { relativeTo: this.route });
-        break;
-      case ProcessName.SolarReturn:
-        this.router.navigate([Path.SolarReturn], { relativeTo: this.route });
-        break;
-      case ProcessName.LunarReturn:
-        this.router.navigate([Path.LunarReturn], { relativeTo: this.route });
-        break;
-    }
+    const path = ProcessName.path(this.processData.process_name);
+    this.router.navigate([path], {
+      relativeTo: this.route,
+    });
   }
+
+  private options = [
+    ProcessName.Profection,
+    ProcessName.Transit,
+    ProcessName.SolarReturn,
+    ProcessName.LunarReturn,
+    ProcessName.SolarcomparNative,
+    ProcessName.NativecomparSolar,
+    ProcessName.LunarcomparNative,
+    ProcessName.NativecomparLunar,
+  ].map((process_name) => {
+    return {
+      text: ProcessName.name(process_name),
+      value: process_name,
+    };
+  });
 
   pickerColumns = [
     {
       name: 'process',
-      options: [
-        {
-          text: '小限',
-          value: ProcessName.Profection,
-        },
-        {
-          text: '行运',
-          value: ProcessName.Transit,
-        },
-        {
-          text: '日返',
-          value: ProcessName.SolarReturn,
-        },
-        {
-          text: '月返',
-          value: ProcessName.LunarReturn,
-        },
-      ],
+      options: this.options,
     },
   ];
 

@@ -5,7 +5,7 @@ import {
   HoroRequest,
   ProfectionRequest,
   ReturnRequest,
-  TransitRequest,
+  CompareRequest,
 } from 'src/app/type/interface/request-data';
 import {
   Horoscope,
@@ -60,11 +60,11 @@ export class ApiService {
 
   /**
    *
-   * @returns 获取行运
+   * @returns 获取比较盘
    */
-  public transit(data: TransitRequest): Observable<HoroscopeCompare> {
+  public compare(data: CompareRequest): Observable<HoroscopeCompare> {
     return this.http.post<HoroscopeCompare>(
-      `${this.url}/process/transit`,
+      `${this.url}/process/compare`,
       data,
       this.http_options
     );
