@@ -151,3 +151,19 @@ export interface ReturnHoroscop {
   // 行星相位，仅包含四轴、行星间的相位
   aspects: Array<Aspect>;
 }
+
+/**
+ * 法达主周期
+ */
+export interface FirdariaPeriod {
+  period: PlanetName;
+  sub_period: Array<FirdariaSubPeriod>;
+}
+
+/**
+ * 法达子周期
+ */
+export interface FirdariaSubPeriod {
+  period: PlanetName;
+  start_date: HoroDateTime;
+}

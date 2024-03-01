@@ -14,7 +14,7 @@ use utoipa::ToSchema;
 /// 公元1582年10月15日00:00:00为格里高利历，儒略日=2299160.5
 /// 之前为儒略历
 /// 闰秒日期时间，处理为下一个整点
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Copy)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
 pub struct HoroDateTime {

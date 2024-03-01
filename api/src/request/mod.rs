@@ -151,3 +151,16 @@ pub struct ReturnRequest {
     /// 宫位系统，Alcabitus：阿卡比特
     pub house: HouseName,
 }
+
+/// 法达
+#[derive(Deserialize, Validate)]
+#[cfg_attr(feature = "swagger", derive(ToSchema))]
+pub struct FirdariaRequest {
+    /// 出生时间
+    #[validate]
+    pub native_date: DateRequest,
+
+    /// 出生地大地经纬度
+    #[validate]
+    pub geo: GeoRequest,
+}

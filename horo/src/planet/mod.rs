@@ -23,7 +23,7 @@ pub enum PlanetSpeedState {
     慢,
 }
 
-#[derive(PartialEq, Eq, Clone, Debug)]
+#[derive(PartialEq, Eq, Clone, Debug, Copy)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
 pub enum PlanetName {
@@ -41,6 +41,51 @@ pub enum PlanetName {
     // MeanNode,
     NorthNode,
     SouthNode,
+}
+
+impl PlanetName {
+    /// 行星的法达年数
+    pub fn firdaria_year_number(&self) -> Option<u8> {
+        match self {
+            PlanetName::Sun => Some(10),
+            PlanetName::Moon => Some(9),
+            PlanetName::Mercury => Some(13),
+            PlanetName::Venus => Some(8),
+            PlanetName::Mars => Some(7),
+            PlanetName::Jupiter => Some(12),
+            PlanetName::Saturn => Some(11),
+            PlanetName::NorthNode => Some(3),
+            PlanetName::SouthNode => Some(2),
+            _ => None,
+        }
+    }
+
+    // 是法达的子周期
+    pub fn is_firdaria_sub_period(&self) -> bool {
+        match self {
+            PlanetName::Sun
+            | PlanetName::Venus
+            | PlanetName::Mercury
+            | PlanetName::Moon
+            | PlanetName::Saturn
+            | PlanetName::Jupiter
+            | PlanetName::Mars => true,
+            _ => false,
+        }
+    }
+
+    pub fn next_sub_period(&self) -> Option<Self> {
+        match self {
+            PlanetName::Sun => Some(PlanetName::Venus),
+            PlanetName::Venus => Some(PlanetName::Mercury),
+            PlanetName::Mercury => Some(PlanetName::Moon),
+            PlanetName::Moon => Some(PlanetName::Saturn),
+            PlanetName::Saturn => Some(PlanetName::Jupiter),
+            PlanetName::Jupiter => Some(PlanetName::Mars),
+            PlanetName::Mars => Some(PlanetName::Sun),
+            _ => None,
+        }
+    }
 }
 #[derive(Clone, Debug)]
 #[cfg_attr(feature = "serde", derive(Serialize))]

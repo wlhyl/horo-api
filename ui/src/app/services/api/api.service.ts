@@ -6,8 +6,10 @@ import {
   ProfectionRequest,
   ReturnRequest,
   CompareRequest,
+  FirdariaRequest,
 } from 'src/app/type/interface/request-data';
 import {
+  FirdariaPeriod,
   Horoscope,
   HoroscopeCompare,
   Profection,
@@ -53,6 +55,18 @@ export class ApiService {
   public profection(data: ProfectionRequest): Observable<Profection> {
     return this.http.post<Profection>(
       `${this.url}/process/profection`,
+      data,
+      this.http_options
+    );
+  }
+
+  /**
+   *
+   * @returns 获取法达
+   */
+  public firdaria(data: FirdariaRequest): Observable<Array<FirdariaPeriod>> {
+    return this.http.post<Array<FirdariaPeriod>>(
+      `${this.url}/process/firdaria`,
       data,
       this.http_options
     );

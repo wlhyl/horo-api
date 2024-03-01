@@ -4,4 +4,5 @@ pub mod house;
 pub mod profection;
 pub mod compare_horoscop;
 pub mod return_horoscop;
+pub mod firdaria;
 

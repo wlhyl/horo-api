@@ -80,3 +80,14 @@ export interface ReturnRequest {
   /// 宫位系统，Alcabitus：阿卡比特
   house: string;
 }
+
+/**
+ * 法达
+ */
+export interface FirdariaRequest {
+  // 出生时间
+  native_date: DateRequest;
+
+  // 出生地大地经纬度
+  geo: GeoRequest;
+}

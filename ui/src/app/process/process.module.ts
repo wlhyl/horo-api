@@ -12,6 +12,7 @@ import { ProcessPage } from './process.page';
 import { ProfectionComponent } from './profection/profection.component';
 import { ReturnComponent } from './return/return.component';
 import { CompareComponent } from './compare/compare.component';
+import { FirdariaComponent } from './firdaria/firdaria.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { CompareComponent } from './compare/compare.component';
     ProfectionComponent,
     ReturnComponent,
     CompareComponent,
+    FirdariaComponent,
   ],
 })
 export class ProcessPageModule {}

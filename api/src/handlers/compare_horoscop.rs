@@ -3,7 +3,7 @@ use horo::{horo_date_time, GeoPosition, HoroscopeCompare, PlanetConfig};
 
 use crate::{error::Error, request::CompareRequst, state::AppState};
 
-/// 行运
+/// 比较盘
 #[cfg_attr(feature = "swagger", 
 utoipa::path(
     tag="推运",

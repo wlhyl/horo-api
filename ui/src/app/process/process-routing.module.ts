@@ -3,13 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ProcessPage } from './process.page';
 
-// import { Path } from './path';
 import { ProcessName } from '../type/enum/process';
 
 import { ProfectionComponent } from './profection/profection.component';
-// import { TransitComponent } from './transit/transit.component';
 import { ReturnComponent } from './return/return.component';
 import { CompareComponent } from './compare/compare.component';
+import { FirdariaComponent } from './firdaria/firdaria.component';
 
 const routes: Routes = [
   {
@@ -19,6 +18,10 @@ const routes: Routes = [
   {
     path: ProcessName.path(ProcessName.Profection),
     component: ProfectionComponent,
+  },
+  {
+    path: ProcessName.path(ProcessName.Firdaria),
+    component: FirdariaComponent,
   },
   {
     path: ProcessName.path(ProcessName.Transit),

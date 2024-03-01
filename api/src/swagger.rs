@@ -1,16 +1,17 @@
-use crate::handlers::{
+use crate::{handlers::{
+    compare_horoscop::__path_compare,
+    firdaria::__path_firdaria,
     horo::__path_horo_native,
     house::__path_houses,
     profection::__path_profection,
     return_horoscop::{__path_lunar_return_horo, __path_solar_return_horo},
-    compare_horoscop::__path_compare,
-};
+}, request::FirdariaRequest};
 use crate::request::{
-    DateRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest, ReturnRequest, CompareRequst,
+    CompareRequst, DateRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest, ReturnRequest,
 };
 use horo::{
     Aspect, GeoPosition, HoroDateTime, Horoscope, HoroscopeCompare, HouseName, Planet, PlanetName,
-    PlanetSpeedState, Profection, ReturnHoroscop,
+    PlanetSpeedState, Profection, ReturnHoroscop,FirdariaPeriod,FirdariaSubPeriod
 };
 use utoipa::OpenApi;
 
@@ -28,7 +29,9 @@ use utoipa::OpenApi;
         // 日返
         solar_return_horo,
         // 月返
-        lunar_return_horo
+        lunar_return_horo,
+        // 法达
+        firdaria,
     ),
     components(schemas(
         DateRequest,
@@ -36,6 +39,7 @@ use utoipa::OpenApi;
         HoroNativeRenReust,
         ProfectionRequest,
         CompareRequst,
+        FirdariaRequest,
         Horoscope,HoroscopeCompare,
         HouseName,
         Planet,
@@ -47,6 +51,9 @@ use utoipa::OpenApi;
         Profection,
         ReturnRequest,
         ReturnHoroscop,
+        // 法达
+        FirdariaPeriod,
+        FirdariaSubPeriod
     ))
 )]
 pub struct ApiDoc;

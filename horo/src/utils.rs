@@ -89,8 +89,8 @@ mod tests {
     #[test]
     fn test_calc_eps_test() {
         dotenvy::dotenv().ok();
-        let ephe_path = env::var("ephe_path")
-            .expect("没设置 ephe_path 环境变量，可在.env文件中设置或export ephe_path=...");
+        let ephe_path = env::var("EPHE_PATH")
+            .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
 
         let t = HoroDateTime::new(2021, 9, 13, 19, 30, 0, 8.0);
         assert!(t.is_ok());

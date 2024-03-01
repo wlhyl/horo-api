@@ -1,6 +1,7 @@
 export enum ProcessName {
   Profection = 'Profection',
   Transit = 'Transit',
+  Firdaria = 'firdaria',
   SolarReturn = 'SolarReturn',
   LunarReturn = 'LunarReturn',
   SolarcomparNative = 'SolarcomparNative',
@@ -16,6 +17,8 @@ export namespace ProcessName {
         return '小限';
       case ProcessName.Transit:
         return '行运';
+      case ProcessName.Firdaria:
+        return '法达';
       case ProcessName.SolarReturn:
         return '日返';
       case ProcessName.LunarReturn:
@@ -37,6 +40,8 @@ export namespace ProcessName {
         return 'profection';
       case ProcessName.Transit:
         return 'transit';
+      case ProcessName.Firdaria:
+        return 'firdaria';
       case ProcessName.SolarReturn:
         return 'return/solar';
       case ProcessName.LunarReturn:

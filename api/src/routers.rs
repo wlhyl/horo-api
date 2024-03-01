@@ -1,12 +1,13 @@
 use actix_web::web;
 
 use crate::handlers::{
+    compare_horoscop::compare,
+    firdaria::firdaria,
     healthz::{liveness_handler, readiness_handler},
     horo::horo_native,
     house::houses,
     profection::profection,
     return_horoscop::{lunar_return_horo, solar_return_horo},
-    compare_horoscop::compare,
 };
 
 pub fn health_routes(cfg: &mut web::ServiceConfig) {
@@ -19,6 +20,7 @@ pub fn horo_routes(cfg: &mut web::ServiceConfig) {
         .service(
             web::scope("/process")
                 .service(profection)
+                .service(firdaria)
                 .service(compare)
                 .service(solar_return_horo)
                 .service(lunar_return_horo),

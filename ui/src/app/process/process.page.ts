@@ -48,6 +48,7 @@ export class ProcessPage implements OnInit {
   }
 
   private options = [
+    ProcessName.Firdaria,
     ProcessName.Profection,
     ProcessName.Transit,
     ProcessName.SolarReturn,

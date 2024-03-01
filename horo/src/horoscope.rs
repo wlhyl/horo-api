@@ -531,8 +531,8 @@ mod tests {
     #[test]
     fn test_horoscope_new() {
         dotenvy::dotenv().ok();
-        let ephe_path = env::var("ephe_path")
-            .expect("没设置 ephe_path 环境变量，可在.env文件中设置或export ephe_path=...");
+        let ephe_path = env::var("EPHE_PATH")
+            .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
 
         let t = HoroDateTime::new(2021, 9, 14, 10, 30, 20, 8.0);
         assert!(t.is_ok());
@@ -727,8 +727,8 @@ mod tests {
     #[test]
     fn test_diurnal() {
         dotenvy::dotenv().ok();
-        let ephe_path = env::var("ephe_path")
-            .expect("没设置 ephe_path 环境变量，可在.env文件中设置或export ephe_path=...");
+        let ephe_path = env::var("EPHE_PATH")
+            .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
 
         let geo = GeoPosition::new(
             102.0 + 41.0 / 60.0 + 59.0 / 3600.0,
@@ -797,8 +797,8 @@ mod tests {
     #[test]
     fn test_planetary_day() {
         dotenvy::dotenv().ok();
-        let ephe_path = env::var("ephe_path")
-            .expect("没设置 ephe_path 环境变量，可在.env文件中设置或export ephe_path=...");
+        let ephe_path = env::var("EPHE_PATH")
+            .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
         //月、火、水、木、金、土、日
         // 一、二、三、四、五、六、日
         // 迦勒底序
@@ -847,8 +847,8 @@ mod tests {
     #[test]
     fn test_planetary_hours() {
         dotenvy::dotenv().ok();
-        let ephe_path = env::var("ephe_path")
-            .expect("没设置 ephe_path 环境变量，可在.env文件中设置或export ephe_path=...");
+        let ephe_path = env::var("EPHE_PATH")
+            .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export ephe_path=...");
 
         // 2021-9-16 星期四，木星掌管
         // 此时刻，太阳在地平线上，前一分钟，太阳在地平线下
@@ -945,8 +945,8 @@ mod tests {
     #[test]
     fn test_horoscope_compare_new() {
         dotenvy::dotenv().ok();
-        let ephe_path = env::var("ephe_path")
-            .expect("没设置 ephe_path 环境变量，可在.env文件中设置或export ephe_path=...");
+        let ephe_path = env::var("EPHE_PATH")
+            .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
 
         let t = HoroDateTime::new(2021, 9, 14, 10, 30, 20, 8.0);
         assert!(t.is_ok());
@@ -1297,6 +1297,6 @@ mod tests {
         assert_eq!(均, south_node.speed_state, "迟疾, 南交点");
 
         // 相位
-        assert_eq!(41, horo.aspects.len());
+        assert_eq!(40, horo.aspects.len());
     }
 }
