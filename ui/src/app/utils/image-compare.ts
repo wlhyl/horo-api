@@ -219,7 +219,7 @@ export function drawHorosco(
   );
 
   // 本盘行星半径
-  const r2 = (r1 * 1.8) / 3;
+  const r2 = (r1 * 1.6) / 3;
   canvas.add(
     new fabric.Circle({
       left: cx - r2,
@@ -445,7 +445,7 @@ function drawPlanetsCompare(
     if (planetString.length > 1) fontSize = 15;
     let planetText = new fabric.Text(planetString, {
       fontSize: fontSize,
-      fontFamily: config.planetFontFamily(planets[i].name)//,stroke:"red"
+      fontFamily: config.planetFontFamily(planets[i].name), //,stroke:"red"
     });
     planetText.left = x - planetText.width! / 2;
     planetText.top = y - planetText.height! / 2;
@@ -493,6 +493,19 @@ function drawPlanetsCompare(
     planetLongMText.left = x - planetLongMText.width! / 2;
     planetLongMText.top = y - planetLongMText.height! / 2;
     canvas.add(planetLongMText);
+
+    // 逆
+    if (planets[i].speed < 0) {
+      x = cx + ((r * 5.5) / 9.0) * cos(p[i]);
+      y = cy - ((r * 5.5) / 9.0) * sin(p[i]);
+      let planetRetrogradeText = new fabric.Text('>', {
+        fontSize: fontSize,
+        fontFamily: config.astrologyFont,
+      });
+      planetRetrogradeText.left = x - planetRetrogradeText.width! / 2;
+      planetRetrogradeText.top = y - planetRetrogradeText.height! / 2;
+      canvas.add(planetRetrogradeText);
+    }
   }
 }
 
@@ -628,5 +641,18 @@ function drawPlanetsNative(
     planetLongMText.left = x - planetLongMText.width! / 2;
     planetLongMText.top = y - planetLongMText.height! / 2;
     canvas.add(planetLongMText);
+
+    // 逆
+    if (planets[i].speed < 0) {
+      x = cx + ((r * 3.5) / 9.0) * cos(p[i]);
+      y = cy - ((r * 3.5) / 9.0) * sin(p[i]);
+      let planetRetrogradeText = new fabric.Text('>', {
+        fontSize: fontSize,
+        fontFamily: config.astrologyFont,
+      });
+      planetRetrogradeText.left = x - planetRetrogradeText.width! / 2;
+      planetRetrogradeText.top = y - planetRetrogradeText.height! / 2;
+      canvas.add(planetRetrogradeText);
+    }
   }
 }

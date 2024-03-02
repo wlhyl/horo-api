@@ -17,10 +17,6 @@ import {
 } from '../type/interface/respone-data';
 import { Canvas } from '../type/alias/canvas';
 import { Horoconfig } from '../services/config/horo-config.service';
-// import { Aspect, Horoscope, Planet } from '../../type/interface/respone-data';
-// import { Horoconfig } from '../../services/config/horo-config.service';
-// import { PlanetName } from 'src/app/type/enum/planet';
-// import { Canvas } from 'src/app/type/alias/canvas';
 
 /**
  *
@@ -475,6 +471,19 @@ function drawPlanets(
     planetLongMText.left = x - planetLongMText.width! / 2;
     planetLongMText.top = y - planetLongMText.height! / 2;
     canvas.add(planetLongMText);
+
+    // 逆
+    if (planets[i].speed < 0) {
+      x = cx + ((r * 5.5) / 9.0) * cos(p[i]);
+      y = cy - ((r * 5.5) / 9.0) * sin(p[i]);
+      let planetRetrogradeText = new fabric.Text('>', {
+        fontSize: fontSize,
+        fontFamily: config.astrologyFont,
+      });
+      planetRetrogradeText.left = x - planetRetrogradeText.width! / 2;
+      planetRetrogradeText.top = y - planetRetrogradeText.height! / 2;
+      canvas.add(planetRetrogradeText);
+    }
   }
 }
 
