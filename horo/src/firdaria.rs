@@ -1,4 +1,5 @@
-use crate::{Error, GeoPosition, HoroDateTime, Horoscope, HouseName, PlanetConfig, PlanetName};
+use crate::{Error, GeoPosition, Horoscope, HouseName, PlanetConfig, PlanetName};
+use horo_date_time::HoroDateTime;
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -152,14 +153,14 @@ mod test {
     use std::env;
 
     const SUB_PERIOD_SERIES: [PlanetName; 7] = [
-          PlanetName::Sun,
-          PlanetName::Venus,
-          PlanetName::Mercury,
-          PlanetName::Moon,
-          PlanetName::Saturn,
-          PlanetName::Jupiter,          
-          PlanetName::Mars
-        ];
+        PlanetName::Sun,
+        PlanetName::Venus,
+        PlanetName::Mercury,
+        PlanetName::Moon,
+        PlanetName::Saturn,
+        PlanetName::Jupiter,
+        PlanetName::Mars,
+    ];
 
     #[test]
     fn test_firdaria_diurnal() {
@@ -209,69 +210,87 @@ mod test {
         assert_eq!(firdaria[0].sub_period[0].start_date.year, 2024);
         assert_eq!(firdaria[1].sub_period[0].start_date.year, 2024 + 10);
         assert_eq!(firdaria[2].sub_period[0].start_date.year, 2024 + 10 + 8);
-        assert_eq!(firdaria[3].sub_period[0].start_date.year, 2024 + 10 + 8 + 13);
-        assert_eq!(firdaria[4].sub_period[0].start_date.year, 2024 + 10 + 8 + 13 + 9);
-        assert_eq!(firdaria[5].sub_period[0].start_date.year, 2024 + 10 + 8 + 13 + 9 + 11);
-        assert_eq!(firdaria[6].sub_period[0].start_date.year, 2024 + 10 + 8 + 13 + 9 + 11 + 12);
-        assert_eq!(firdaria[7].sub_period[0].start_date.year, 2024 + 10 + 8 + 13 + 9 + 11 + 12 + 7);
-        assert_eq!(firdaria[8].sub_period[0].start_date.year, 2024 + 10 + 8 + 13 + 9 + 11 + 12 + 7 + 3);
+        assert_eq!(
+            firdaria[3].sub_period[0].start_date.year,
+            2024 + 10 + 8 + 13
+        );
+        assert_eq!(
+            firdaria[4].sub_period[0].start_date.year,
+            2024 + 10 + 8 + 13 + 9
+        );
+        assert_eq!(
+            firdaria[5].sub_period[0].start_date.year,
+            2024 + 10 + 8 + 13 + 9 + 11
+        );
+        assert_eq!(
+            firdaria[6].sub_period[0].start_date.year,
+            2024 + 10 + 8 + 13 + 9 + 11 + 12
+        );
+        assert_eq!(
+            firdaria[7].sub_period[0].start_date.year,
+            2024 + 10 + 8 + 13 + 9 + 11 + 12 + 7
+        );
+        assert_eq!(
+            firdaria[8].sub_period[0].start_date.year,
+            2024 + 10 + 8 + 13 + 9 + 11 + 12 + 7 + 3
+        );
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[1].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[2].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[3].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[4].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[5].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[6].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[7].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[8].sub_period[0].start_date.month,3);
+        assert_eq!(firdaria[0].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[1].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[2].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[3].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[4].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[5].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[6].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[7].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[8].sub_period[0].start_date.month, 3);
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[1].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[2].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[3].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[4].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[5].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[6].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[7].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[8].sub_period[0].start_date.day,1);
+        assert_eq!(firdaria[0].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[1].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[2].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[3].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[4].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[5].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[6].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[7].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[8].sub_period[0].start_date.day, 1);
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.hour,12);
-        assert_eq!(firdaria[1].sub_period[0].start_date.hour,12);
-        assert_eq!(firdaria[2].sub_period[0].start_date.hour,12);
-        assert_eq!(firdaria[3].sub_period[0].start_date.hour,12);
-        assert_eq!(firdaria[4].sub_period[0].start_date.hour,12);
-        assert_eq!(firdaria[5].sub_period[0].start_date.hour,12);
-        assert_eq!(firdaria[6].sub_period[0].start_date.hour,12);
-        assert_eq!(firdaria[7].sub_period[0].start_date.hour,12);
-        assert_eq!(firdaria[8].sub_period[0].start_date.hour,12);
+        assert_eq!(firdaria[0].sub_period[0].start_date.hour, 12);
+        assert_eq!(firdaria[1].sub_period[0].start_date.hour, 12);
+        assert_eq!(firdaria[2].sub_period[0].start_date.hour, 12);
+        assert_eq!(firdaria[3].sub_period[0].start_date.hour, 12);
+        assert_eq!(firdaria[4].sub_period[0].start_date.hour, 12);
+        assert_eq!(firdaria[5].sub_period[0].start_date.hour, 12);
+        assert_eq!(firdaria[6].sub_period[0].start_date.hour, 12);
+        assert_eq!(firdaria[7].sub_period[0].start_date.hour, 12);
+        assert_eq!(firdaria[8].sub_period[0].start_date.hour, 12);
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[1].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[2].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[3].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[4].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[5].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[6].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[7].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[8].sub_period[0].start_date.minute,0);
+        assert_eq!(firdaria[0].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[1].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[2].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[3].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[4].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[5].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[6].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[7].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[8].sub_period[0].start_date.minute, 0);
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[1].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[2].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[3].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[4].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[5].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[6].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[7].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[8].sub_period[0].start_date.second,0);
+        assert_eq!(firdaria[0].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[1].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[2].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[3].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[4].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[5].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[6].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[7].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[8].sub_period[0].start_date.second, 0);
 
         // 测试子周期，前已经测试通过主限开始时间，
         // 因此，后续的测试可以直接使用主限的开始时间，不必额外计算主限的开始时间
-        for f in firdaria{
-            if f.sub_period.len()==1{
+        for f in firdaria {
+            if f.sub_period.len() == 1 {
                 assert_eq!(f.period, f.sub_period[0].period);
-            }else{
+            } else {
                 let year_num = f.period.firdaria_year_number();
                 assert!(year_num.is_some());
                 let year_num = year_num.unwrap();
@@ -279,34 +298,43 @@ mod test {
                 let start_date = f.sub_period[0].start_date;
 
                 let end_date = HoroDateTime::new(
-                start_date.year+ i32::from(year_num),
-                start_date.month,
-                start_date.day,
-                start_date.hour,
-                start_date.minute,
-                start_date.second,
-                start_date.tz);
+                    start_date.year + i32::from(year_num),
+                    start_date.month,
+                    start_date.day,
+                    start_date.hour,
+                    start_date.minute,
+                    start_date.second,
+                    start_date.tz,
+                );
                 assert!(end_date.is_ok());
-                let end_date=end_date.unwrap();
+                let end_date = end_date.unwrap();
 
-                let days = (end_date.jd_utc - start_date.jd_utc)/7.0;
+                let days = (end_date.jd_utc - start_date.jd_utc) / 7.0;
 
                 // 测试开始时间和行星
-                for n in 0u8..7{
-                    let date = start_date.plus_days(days * f64::from( n));
+                for n in 0u8..7 {
+                    let date = start_date.plus_days(days * f64::from(n));
                     assert!(date.is_ok());
-                    let date=date.unwrap();
+                    let date = date.unwrap();
 
-                   let k = SUB_PERIOD_SERIES.iter().position(|&p| p==f.period);
-                   assert!(k.is_some());
-                   let k=k.unwrap();
+                    let k = SUB_PERIOD_SERIES.iter().position(|&p| p == f.period);
+                    assert!(k.is_some());
+                    let k = k.unwrap();
 
-                   let n: usize = n.into();
+                    let n: usize = n.into();
 
-                    assert_eq!(f.sub_period[n].period, SUB_PERIOD_SERIES[(k+  n)%7], "第{n}个子周期");
+                    assert_eq!(
+                        f.sub_period[n].period,
+                        SUB_PERIOD_SERIES[(k + n) % 7],
+                        "第{n}个子周期"
+                    );
 
                     // 会因浮点数，有1秒的误差
-                    assert!((f.sub_period[n].start_date.jd_utc-date.jd_utc).abs()*24.0<1.0/3600.0, "第{n}个子周期");
+                    assert!(
+                        (f.sub_period[n].start_date.jd_utc - date.jd_utc).abs() * 24.0
+                            < 1.0 / 3600.0,
+                        "第{n}个子周期"
+                    );
                 }
             }
         }
@@ -360,70 +388,87 @@ mod test {
         assert_eq!(firdaria[0].sub_period[0].start_date.year, 2024);
         assert_eq!(firdaria[1].sub_period[0].start_date.year, 2024 + 9);
         assert_eq!(firdaria[2].sub_period[0].start_date.year, 2024 + 9 + 11);
-        assert_eq!(firdaria[3].sub_period[0].start_date.year, 2024 + 9 + 11 + 12);
-        assert_eq!(firdaria[4].sub_period[0].start_date.year, 2024 + 9 + 11 + 12 + 7);
-        assert_eq!(firdaria[5].sub_period[0].start_date.year, 2024 + 9 + 11 + 12 + 7 + 3);
-        assert_eq!(firdaria[6].sub_period[0].start_date.year, 2024 + 9 + 11 + 12 + 7 + 3 + 2);
-        assert_eq!(firdaria[7].sub_period[0].start_date.year, 2024 + 9 + 11 + 12 + 7 + 3 + 2 + 10);
-        assert_eq!(firdaria[8].sub_period[0].start_date.year, 2024 + 9 + 11 + 12 + 7 + 3 + 2 + 10 + 8);
+        assert_eq!(
+            firdaria[3].sub_period[0].start_date.year,
+            2024 + 9 + 11 + 12
+        );
+        assert_eq!(
+            firdaria[4].sub_period[0].start_date.year,
+            2024 + 9 + 11 + 12 + 7
+        );
+        assert_eq!(
+            firdaria[5].sub_period[0].start_date.year,
+            2024 + 9 + 11 + 12 + 7 + 3
+        );
+        assert_eq!(
+            firdaria[6].sub_period[0].start_date.year,
+            2024 + 9 + 11 + 12 + 7 + 3 + 2
+        );
+        assert_eq!(
+            firdaria[7].sub_period[0].start_date.year,
+            2024 + 9 + 11 + 12 + 7 + 3 + 2 + 10
+        );
+        assert_eq!(
+            firdaria[8].sub_period[0].start_date.year,
+            2024 + 9 + 11 + 12 + 7 + 3 + 2 + 10 + 8
+        );
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[1].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[2].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[3].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[4].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[5].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[6].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[7].sub_period[0].start_date.month,3);
-        assert_eq!(firdaria[8].sub_period[0].start_date.month,3);
+        assert_eq!(firdaria[0].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[1].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[2].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[3].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[4].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[5].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[6].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[7].sub_period[0].start_date.month, 3);
+        assert_eq!(firdaria[8].sub_period[0].start_date.month, 3);
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[1].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[2].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[3].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[4].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[5].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[6].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[7].sub_period[0].start_date.day,1);
-        assert_eq!(firdaria[8].sub_period[0].start_date.day,1);
-    
-        assert_eq!(firdaria[0].sub_period[0].start_date.hour,0);
-        assert_eq!(firdaria[1].sub_period[0].start_date.hour,0);
-        assert_eq!(firdaria[2].sub_period[0].start_date.hour,0);
-        assert_eq!(firdaria[3].sub_period[0].start_date.hour,0);
-        assert_eq!(firdaria[4].sub_period[0].start_date.hour,0);
-        assert_eq!(firdaria[5].sub_period[0].start_date.hour,0);
-        assert_eq!(firdaria[6].sub_period[0].start_date.hour,0);
-        assert_eq!(firdaria[7].sub_period[0].start_date.hour,0);
-        assert_eq!(firdaria[8].sub_period[0].start_date.hour,0);
+        assert_eq!(firdaria[0].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[1].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[2].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[3].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[4].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[5].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[6].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[7].sub_period[0].start_date.day, 1);
+        assert_eq!(firdaria[8].sub_period[0].start_date.day, 1);
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[1].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[2].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[3].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[4].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[5].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[6].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[7].sub_period[0].start_date.minute,0);
-        assert_eq!(firdaria[8].sub_period[0].start_date.minute,0);
+        assert_eq!(firdaria[0].sub_period[0].start_date.hour, 0);
+        assert_eq!(firdaria[1].sub_period[0].start_date.hour, 0);
+        assert_eq!(firdaria[2].sub_period[0].start_date.hour, 0);
+        assert_eq!(firdaria[3].sub_period[0].start_date.hour, 0);
+        assert_eq!(firdaria[4].sub_period[0].start_date.hour, 0);
+        assert_eq!(firdaria[5].sub_period[0].start_date.hour, 0);
+        assert_eq!(firdaria[6].sub_period[0].start_date.hour, 0);
+        assert_eq!(firdaria[7].sub_period[0].start_date.hour, 0);
+        assert_eq!(firdaria[8].sub_period[0].start_date.hour, 0);
 
-        assert_eq!(firdaria[0].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[1].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[2].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[3].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[4].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[5].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[6].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[7].sub_period[0].start_date.second,0);
-        assert_eq!(firdaria[8].sub_period[0].start_date.second,0);
+        assert_eq!(firdaria[0].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[1].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[2].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[3].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[4].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[5].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[6].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[7].sub_period[0].start_date.minute, 0);
+        assert_eq!(firdaria[8].sub_period[0].start_date.minute, 0);
 
+        assert_eq!(firdaria[0].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[1].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[2].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[3].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[4].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[5].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[6].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[7].sub_period[0].start_date.second, 0);
+        assert_eq!(firdaria[8].sub_period[0].start_date.second, 0);
 
         // 测试子周期，前已经测试通过主限开始时间，
         // 因此，后续的测试可以直接使用主限的开始时间，不必额外计算主限的开始时间
-        for f in firdaria{
-            if f.sub_period.len()==1{
+        for f in firdaria {
+            if f.sub_period.len() == 1 {
                 assert_eq!(f.period, f.sub_period[0].period);
-            }else{
+            } else {
                 let year_num = f.period.firdaria_year_number();
                 assert!(year_num.is_some());
                 let year_num = year_num.unwrap();
@@ -431,31 +476,36 @@ mod test {
                 let start_date = f.sub_period[0].start_date;
 
                 let end_date = HoroDateTime::new(
-                start_date.year+ i32::from(year_num),
-                start_date.month,
-                start_date.day,
-                start_date.hour,
-                start_date.minute,
-                start_date.second,
-                start_date.tz);
+                    start_date.year + i32::from(year_num),
+                    start_date.month,
+                    start_date.day,
+                    start_date.hour,
+                    start_date.minute,
+                    start_date.second,
+                    start_date.tz,
+                );
                 assert!(end_date.is_ok());
-                let end_date=end_date.unwrap();
+                let end_date = end_date.unwrap();
 
-                let days = (end_date.jd_utc - start_date.jd_utc)/7.0;
+                let days = (end_date.jd_utc - start_date.jd_utc) / 7.0;
 
                 // 测试开始时间和行星
-                for n in 0u8..7{
-                    let date = start_date.plus_days(days * f64::from( n));
+                for n in 0u8..7 {
+                    let date = start_date.plus_days(days * f64::from(n));
                     assert!(date.is_ok());
-                    let date=date.unwrap();
+                    let date = date.unwrap();
 
-                   let k = SUB_PERIOD_SERIES.iter().position(|&p| p==f.period);
-                   assert!(k.is_some());
-                   let k=k.unwrap();
+                    let k = SUB_PERIOD_SERIES.iter().position(|&p| p == f.period);
+                    assert!(k.is_some());
+                    let k = k.unwrap();
 
-                   let n: usize = n.into();
+                    let n: usize = n.into();
 
-                    assert_eq!(f.sub_period[n].period, SUB_PERIOD_SERIES[(k+  n)%7], "第{n}个子周期");
+                    assert_eq!(
+                        f.sub_period[n].period,
+                        SUB_PERIOD_SERIES[(k + n) % 7],
+                        "第{n}个子周期"
+                    );
 
                     // assert_eq!(f.sub_period[n].start_date.year, date.year, "第{n}个子周期");
                     // assert_eq!(f.sub_period[n].start_date.month, date.month, "第{n}个子周期");
@@ -465,11 +515,13 @@ mod test {
                     // assert_eq!(f.sub_period[n].start_date.second, date.second, "第{n}个子周期");
                     // 不直接比较year, month,day,hour,minute,second，因为plus_days()是从jd_utc反算回日期，时间
                     // 会因浮点数，有1秒的误差
-                    assert!((f.sub_period[n].start_date.jd_utc-date.jd_utc).abs()*24.0<1.0/3600.0, "第{n}个子周期");
+                    assert!(
+                        (f.sub_period[n].start_date.jd_utc - date.jd_utc).abs() * 24.0
+                            < 1.0 / 3600.0,
+                        "第{n}个子周期"
+                    );
                 }
             }
         }
-        
     }
-    
 }

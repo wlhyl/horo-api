@@ -2,8 +2,10 @@ use swe::{swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path, Body};
 
 use crate::{
     utils::{mod180, newton_iteration},
-    Aspect, Error, GeoPosition, HoroDateTime, Horoscope, HouseName, Planet, PlanetConfig,
+    Aspect, Error, GeoPosition, Horoscope, HouseName, Planet, PlanetConfig,
 };
+
+use horo_date_time::HoroDateTime;
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -45,7 +47,6 @@ pub struct ReturnHoroscop {
     /// 行星相位，仅包含四轴、行星间的相位
     pub aspects: Vec<Aspect>,
 }
-
 
 /// 计算太阳返照盘
 pub fn solar_return(
@@ -109,7 +110,6 @@ pub fn solar_return(
     })
 }
 
-
 /// 计算月亮返照盘
 pub fn lunar_return(
     native_date: HoroDateTime,
@@ -132,7 +132,7 @@ pub fn lunar_return(
     let process_moon_long = xx[0];
 
     // 计算迭代初值
-    let jd0 = process_date.jd_utc - swe_degnorm(process_moon_long - moon_long)/13.0;
+    let jd0 = process_date.jd_utc - swe_degnorm(process_moon_long - moon_long) / 13.0;
 
     // 计算返照时间
     let jd = newton_iteration(jd0, |jd| {

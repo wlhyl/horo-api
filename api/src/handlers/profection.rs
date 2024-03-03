@@ -1,7 +1,7 @@
-use actix_web::{post, HttpResponse, Responder};
-use horo::{horo_date_time, Profection};
-
 use crate::{error::Error, request::ProfectionRequest};
+use actix_web::{post, HttpResponse, Responder};
+use horo::Profection;
+use horo_date_time::horo_date_time;
 
 /// 小限
 #[cfg_attr(feature = "swagger", 
@@ -21,7 +21,14 @@ pub async fn profection(
     let r = r.into_inner();
 
     let native_date = horo_date_time(
-        r.native_date.year, r.native_date.month, r.native_date.day, r.native_date.hour, r.native_date.minute, r.native_date.second, r.native_date.tz, r.native_date.st,
+        r.native_date.year,
+        r.native_date.month,
+        r.native_date.day,
+        r.native_date.hour,
+        r.native_date.minute,
+        r.native_date.second,
+        r.native_date.tz,
+        r.native_date.st,
     )?;
 
     let process_date = horo_date_time(

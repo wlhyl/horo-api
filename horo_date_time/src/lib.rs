@@ -1,8 +1,10 @@
+mod error;
+
 use swe::{
     swe_date_conversion, swe_julday, swe_revjul, swe_utc_time_zone, swe_utc_to_jd, Calendar,
 };
 
-use crate::error::{DateTimeError, Error};
+pub use crate::error::Error;
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -52,14 +54,12 @@ pub struct HoroDateTime {
 impl HoroDateTime {
     pub fn from_jd_zone(jd: f64, time_zone: f64) -> Result<Self, Error> {
         if jd < 0.0 {
-            return Err(DateTimeError::InvalidDateTime(format!("jd={}超出支持范围", jd)).into());
+            return Err(Error::InvalidDateTime(format!("jd={}超出支持范围", jd)).into());
         }
         if time_zone < -12.0 || time_zone > 12.0 {
-            return Err(DateTimeError::InvalidZone(format!(
-                "{}, There is no such time zone.",
-                time_zone
-            ))
-            .into());
+            return Err(
+                Error::InvalidZone(format!("{}, There is no such time zone.", time_zone)).into(),
+            );
         }
 
         let t_utc = swe_revjul(
@@ -139,16 +139,16 @@ impl HoroDateTime {
     ) -> Result<Self, Error> {
         if time_zone < -12.0 || time_zone > 12.0 {
             let msg = format!("{},There is no such time zone.", time_zone);
-            return Err(DateTimeError::InvalidZone(msg).into());
+            return Err(Error::InvalidZone(msg).into());
         }
         if year == 1582 && month == 10 && day > 4 && day < 15 {
             let msg = format!("{year}-{month}-{day} ${hour}:{minute}:{second} 没有此日期");
-            return Err(DateTimeError::InvalidDateTime(msg).into());
+            return Err(Error::InvalidDateTime(msg).into());
         }
 
         if hour > 23 || minute > 59 || second > 60 {
             let msg = format!("{year}-{month}-{day} {hour}:{minute}:{second} 没有此日期");
-            return Err(DateTimeError::InvalidDateTime(msg).into());
+            return Err(Error::InvalidDateTime(msg).into());
         }
 
         if second == 60 && (!is_leap_seconds(year, month, day, hour, minute, second)) {
@@ -156,7 +156,7 @@ impl HoroDateTime {
                 "{}-{}-{} {}:{}:{} 没有此日期",
                 year, month, day, hour, minute, second
             );
-            return Err(DateTimeError::InvalidDateTime(msg).into());
+            return Err(Error::InvalidDateTime(msg).into());
         }
 
         // 计算儒略日，并判断时间是否合法
@@ -195,7 +195,7 @@ impl HoroDateTime {
         {
             let msg = format!("{year}-{month}-{day} {hour}:{minute}:{second} 没有此日期");
 
-            return Err(DateTimeError::InvalidDateTime(msg).into());
+            return Err(Error::InvalidDateTime(msg).into());
         }
         let t_utc = swe_utc_time_zone(
             if year < 0 { year + 1 } else { year },

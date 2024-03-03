@@ -1,4 +1,5 @@
-use crate::{horo_date_time, Error, HoroDateTime};
+use crate::Error;
+use horo_date_time::{horo_date_time, HoroDateTime};
 
 #[cfg(feature = "serde")]
 use serde::Serialize;

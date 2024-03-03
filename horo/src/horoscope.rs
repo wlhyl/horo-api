@@ -1,11 +1,13 @@
 use crate::{
     utils::{calc_eps, mod180, newton_iteration},
-    Aspect, Error, GeoPosition, HoroDateTime, HouseName, Planet, PlanetConfig, PlanetName,
+    Aspect, Error, GeoPosition, HouseName, Planet, PlanetConfig, PlanetName,
 };
 use swe::{
     swe_calc_ut, swe_close, swe_cotrans, swe_degnorm, swe_houses, swe_set_ephe_path, Body, Flag,
     HouseSystem,
 };
+
+use horo_date_time::HoroDateTime;
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -471,7 +473,8 @@ fn sun_on_asc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<Ho
         Ok(mod180(swe_degnorm(ascmc[0] - xx[0])))
     })?;
 
-    HoroDateTime::from_jd_zone(jd, t.tz)
+    let date = HoroDateTime::from_jd_zone(jd, t.tz)?;
+    Ok(date)
 }
 
 /// 计算太阳在西方地平线上的时刻
@@ -511,7 +514,8 @@ fn sun_on_dsc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<Ho
         Ok(mod180(swe_degnorm(swe_degnorm(ascmc[0] + 180.0) - xx[0])))
     })?;
 
-    HoroDateTime::from_jd_zone(jd, t.tz)
+    let date = HoroDateTime::from_jd_zone(jd, t.tz)?;
+    Ok(date)
 }
 
 #[cfg(test)]

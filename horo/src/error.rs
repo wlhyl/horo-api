@@ -1,46 +1,33 @@
 use std::fmt::Display;
 
 #[derive(Debug)]
-pub enum DateTimeError {
+pub enum Error {
     InvalidDateTime(String),
     InvalidZone(String),
-}
-
-impl Display for DateTimeError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s = match self {
-            DateTimeError::InvalidDateTime(s) => s,
-            DateTimeError::InvalidZone(s) => s,
-        };
-        write!(f, "{}", s)
-    }
-}
-
-#[derive(Debug)]
-pub enum Error {
-    DateTime(DateTimeError),
     Function(String),
     InvalidGeoPosition(String),
     // 无效的小限时间
     InvalidProfectionDateTime(String),
 }
 
-impl From<DateTimeError> for Error {
-    fn from(value: DateTimeError) -> Self {
-        Self::DateTime(value)
+impl From<horo_date_time::Error> for Error {
+    fn from(value: horo_date_time::Error) -> Self {
+        match value {
+            horo_date_time::Error::InvalidDateTime(s) => Self::InvalidDateTime(s),
+            horo_date_time::Error::InvalidZone(s) => Self::InvalidZone(s),
+            horo_date_time::Error::Function(s) => Self::Function(s),
+        }
     }
 }
 
 impl Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let s = match self {
-            Error::DateTime(e) => match e {
-                DateTimeError::InvalidDateTime(s) => s,
-                DateTimeError::InvalidZone(s) => s,
-            },
             Error::Function(s) => s,
             Error::InvalidGeoPosition(s) => s,
             Error::InvalidProfectionDateTime(s) => s,
+            Error::InvalidDateTime(s) => s,
+            Error::InvalidZone(s) => s,
         };
         write!(f, "{}", s)
     }

@@ -1,7 +1,6 @@
 use std::{collections::HashMap, fmt};
 
 use actix_web::{http::StatusCode, HttpResponse, ResponseError};
-use horo::Error as HoroError;
 
 #[derive(Debug)]
 pub enum Error {
@@ -33,13 +32,21 @@ impl ResponseError for Error {
     }
 }
 
-impl From<HoroError> for Error {
-    fn from(value: HoroError) -> Self {
+impl From<horo::Error> for Error {
+    fn from(value: horo::Error) -> Self {
         match value {
-            HoroError::DateTime(e) => Error::BadRequest(e.to_string()),
-            HoroError::Function(s) => Error::InternalServerError(s),
-            HoroError::InvalidGeoPosition(s) => Error::BadRequest(s),
-            HoroError::InvalidProfectionDateTime(s) => Error::BadRequest(s),
+            horo::Error::Function(s) => Error::InternalServerError(s),
+            horo::Error::InvalidGeoPosition(s) => Error::BadRequest(s),
+            horo::Error::InvalidProfectionDateTime(s) => Error::BadRequest(s),
+            horo::Error::InvalidDateTime(s) => Error::BadRequest(s),
+            horo::Error::InvalidZone(s) => Error::BadRequest(s),
         }
+    }
+}
+
+impl From<horo_date_time::Error> for Error {
+    fn from(value: horo_date_time::Error) -> Self {
+        let error: horo::Error = value.into();
+        error.into()
     }
 }
