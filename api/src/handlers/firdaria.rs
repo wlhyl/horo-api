@@ -1,6 +1,7 @@
 use crate::{error::Error, request::FirdariaRequest, state::AppState};
 use actix_web::{post, web, HttpResponse, Responder};
-use horo::{firdaria_process, GeoPosition, PlanetConfig};
+use geo_position::GeoPosition;
+use horo::{firdaria_process, PlanetConfig};
 use horo_date_time::horo_date_time;
 
 /// 法达

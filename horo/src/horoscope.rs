@@ -1,7 +1,8 @@
 use crate::{
     utils::{calc_eps, mod180, newton_iteration},
-    Aspect, Error, GeoPosition, HouseName, Planet, PlanetConfig, PlanetName,
+    Aspect, Error, HouseName, Planet, PlanetConfig, PlanetName,
 };
+use geo_position::GeoPosition;
 use swe::{
     swe_calc_ut, swe_close, swe_cotrans, swe_degnorm, swe_houses, swe_set_ephe_path, Body, Flag,
     HouseSystem,

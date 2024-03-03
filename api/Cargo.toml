@@ -10,12 +10,14 @@ swagger = [
     "dep:utoipa-swagger-ui",
     "horo/swagger",
     "horo_date_time/swagger",
+    "geo_position/swagger",
 ]
 cors = ["dep:actix-cors"]
 
 [dependencies]
 horo = { path = "../horo", features = ["serde"] }
 horo_date_time = { path = "../horo_date_time", features = ["serde"] }
+geo_position = { path = "../geo_position", features = ["serde"] }
 
 actix-cors = { version = "0.7.0", optional = true }
 actix-web = "4.5.1"

@@ -1,6 +1,7 @@
 use crate::{error::Error, request::HoroNativeRenReust, responser::Responser, state::AppState};
 use actix_web::{post, web};
-use horo::{GeoPosition, Horoscope, PlanetConfig};
+use geo_position::GeoPosition;
+use horo::{Horoscope, PlanetConfig};
 use horo_date_time::horo_date_time;
 
 /// 本命星盘

@@ -1,5 +1,6 @@
-use crate::{Error, GeoPosition, Horoscope, HouseName, PlanetConfig, PlanetName};
+use crate::{Error,  Horoscope, HouseName, PlanetConfig, PlanetName};
 use horo_date_time::HoroDateTime;
+use geo_position::GeoPosition;
 
 #[cfg(feature = "serde")]
 use serde::Serialize;

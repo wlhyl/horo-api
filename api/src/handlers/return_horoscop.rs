@@ -1,6 +1,7 @@
 use crate::{error::Error, request::ReturnRequest, state::AppState};
 use actix_web::{post, web, HttpResponse, Responder};
-use horo::{lunar_return, solar_return, GeoPosition, PlanetConfig};
+use geo_position::GeoPosition;
+use horo::{lunar_return, solar_return, PlanetConfig};
 use horo_date_time::horo_date_time;
 
 /// 太阳返照

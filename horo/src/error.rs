@@ -5,7 +5,6 @@ pub enum Error {
     InvalidDateTime(String),
     InvalidZone(String),
     Function(String),
-    InvalidGeoPosition(String),
     // 无效的小限时间
     InvalidProfectionDateTime(String),
 }
@@ -24,7 +23,6 @@ impl Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let s = match self {
             Error::Function(s) => s,
-            Error::InvalidGeoPosition(s) => s,
             Error::InvalidProfectionDateTime(s) => s,
             Error::InvalidDateTime(s) => s,
             Error::InvalidZone(s) => s,

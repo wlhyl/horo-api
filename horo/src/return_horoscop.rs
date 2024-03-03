@@ -2,8 +2,9 @@ use swe::{swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path, Body};
 
 use crate::{
     utils::{mod180, newton_iteration},
-    Aspect, Error, GeoPosition, Horoscope, HouseName, Planet, PlanetConfig,
+    Aspect, Error, Horoscope, HouseName, Planet, PlanetConfig,
 };
+use geo_position::GeoPosition;
 
 use horo_date_time::HoroDateTime;
 

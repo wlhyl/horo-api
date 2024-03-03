@@ -1,5 +1,6 @@
-use crate::error::Error;
+pub use crate::error::Error;
 
+mod error;
 #[cfg(feature = "serde")]
 use serde::Serialize;
 
@@ -34,7 +35,7 @@ impl GeoPosition {
 
 #[cfg(test)]
 mod test {
-    use crate::geo_position::GeoPosition;
+    use crate::GeoPosition;
 
     // 测试正确的地理经纬度
     #[test]

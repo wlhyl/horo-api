@@ -36,7 +36,6 @@ impl From<horo::Error> for Error {
     fn from(value: horo::Error) -> Self {
         match value {
             horo::Error::Function(s) => Error::InternalServerError(s),
-            horo::Error::InvalidGeoPosition(s) => Error::BadRequest(s),
             horo::Error::InvalidProfectionDateTime(s) => Error::BadRequest(s),
             horo::Error::InvalidDateTime(s) => Error::BadRequest(s),
             horo::Error::InvalidZone(s) => Error::BadRequest(s),
@@ -48,5 +47,13 @@ impl From<horo_date_time::Error> for Error {
     fn from(value: horo_date_time::Error) -> Self {
         let error: horo::Error = value.into();
         error.into()
+    }
+}
+
+impl From<geo_position::Error> for Error {
+    fn from(value: geo_position::Error) -> Self {
+        match value {
+            geo_position::Error::InvalidGeoPosition(s) => Error::BadRequest(s),
+        }
     }
 }

@@ -12,13 +12,12 @@ use crate::{
     },
     request::FirdariaRequest,
 };
+use geo_position::GeoPosition;
 use horo::{
-    Aspect, FirdariaPeriod, FirdariaSubPeriod, GeoPosition, Horoscope, HoroscopeCompare, HouseName,
-    Planet, PlanetName, PlanetSpeedState, Profection, ReturnHoroscop,
+    Aspect, FirdariaPeriod, FirdariaSubPeriod, Horoscope, HoroscopeCompare, HouseName, Planet,
+    PlanetName, PlanetSpeedState, Profection, ReturnHoroscop,
 };
-
 use horo_date_time::HoroDateTime;
-
 use utoipa::OpenApi;
 
 // swagger
