@@ -7,6 +7,7 @@ import {
   ReturnRequest,
   CompareRequest,
   FirdariaRequest,
+  QiZhengRequst,
 } from 'src/app/type/interface/request-data';
 import {
   FirdariaPeriod,
@@ -15,6 +16,7 @@ import {
   Profection,
   ReturnHoroscop,
 } from 'src/app/type/interface/respone-data';
+import { Horoscope as QiZhengHoroscope } from 'src/app/type/interface/response-qizheng';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -103,6 +105,18 @@ export class ApiService {
   public lunarReturn(data: ReturnRequest): Observable<ReturnHoroscop> {
     return this.http.post<ReturnHoroscop>(
       `${this.url}/process/return/lunar`,
+      data,
+      this.http_options
+    );
+  }
+
+  /**
+   *
+   * @returns 获取七政
+   */
+  public qizheng(data: QiZhengRequst): Observable<QiZhengHoroscope> {
+    return this.http.post<QiZhengHoroscope>(
+      `${this.url}/qizheng/horo`,
       data,
       this.http_options
     );

@@ -160,8 +160,8 @@ export class Horoconfig {
   }
 
   // 初始宽、高，绘制完成后会根据屏幕大小缩放
-  public apsectImage = { width: 700, heigth: 700 };
-  public HoroscoImage = { width: 700, heigth: 700 }; // , fontSize: 20, col: 14, row: 14}
+  readonly apsectImage = { width: 700, heigth: 700 };
+  readonly HoroscoImage = { width: 700, heigth: 700 }; // , fontSize: 20, col: 14, row: 14}
 
   // 支持的宫位系统，从server获取
   public houses: Array<string> = [];

@@ -19,6 +19,14 @@ const routes: Routes = [
     path: 'process',
     loadChildren: () => import('./process/process.module').then( m => m.ProcessPageModule)
   },
+  {
+    path: 'qizheng',
+    loadChildren: () => import('./qizheng/qizheng.module').then( m => m.QizhengPageModule)
+  },
+  {
+    path: 'clean',
+    loadChildren: () => import('./clean/clean.module').then( m => m.CleanPageModule)
+  },
 ];
 
 @NgModule({

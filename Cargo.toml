@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 
-members = ["horo", "api", "horo_date_time", "geo_position"]
+members = ["horo", "api", "horo_date_time", "geo_position", "qizheng"]
 
 
 [profile.release]

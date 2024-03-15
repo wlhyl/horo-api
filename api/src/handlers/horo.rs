@@ -1,5 +1,5 @@
-use crate::{error::Error, request::HoroNativeRenReust, responser::Responser, state::AppState};
-use actix_web::{post, web};
+use crate::{error::Error, request::HoroNativeRenReust, state::AppState};
+use actix_web::{post, web, HttpResponse, Responder};
 use geo_position::GeoPosition;
 use horo::{Horoscope, PlanetConfig};
 use horo_date_time::horo_date_time;
@@ -11,7 +11,7 @@ utoipa::path(
     context_path="/api/horo",
     request_body=HoroNativeRenReust,
     responses(
-        (status = 200, description = "OK", body = Horoscope),
+        (status = 201, description = "返回本命星盘", body = Horoscope),
     ),
 )
 )]
@@ -30,7 +30,7 @@ utoipa::path(
 pub async fn horo_native(
     app_state: web::Data<AppState>,
     r: actix_web_validator::Json<HoroNativeRenReust>,
-) -> Result<Responser<Horoscope>, Error> {
+) -> Result<impl Responder, Error> {
     let r = r.into_inner();
 
     let t = horo_date_time(
@@ -53,5 +53,5 @@ pub async fn horo_native(
         &app_state.ephe_path,
     )?;
 
-    Ok(Responser::Ok(pan))
+    Ok(HttpResponse::Created().json(pan))
 }

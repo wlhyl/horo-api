@@ -57,3 +57,14 @@ impl From<geo_position::Error> for Error {
         }
     }
 }
+
+impl From<qizheng::Error> for Error {
+    fn from(value: qizheng::Error) -> Self {
+        match value {
+            qizheng::Error::Function(s) => Error::InternalServerError(s),
+            qizheng::Error::InvalidProcessDateTime(s) => Error::BadRequest(s),
+            qizheng::Error::InvalidDateTime(s) => Error::BadRequest(s),
+            qizheng::Error::InvalidZone(s) => Error::BadRequest(s),
+        }
+    }
+}

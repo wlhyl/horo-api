@@ -1,10 +1,10 @@
-import { Horoconfig } from '../services/config/horo-config.service';
-import { Canvas } from '../type/alias/canvas';
+import { Horoconfig } from '../../services/config/horo-config.service';
+import { Canvas } from '../../type/alias/canvas';
 import {
   Aspect,
   HoroscopeCompare,
   Planet,
-} from '../type/interface/respone-data';
+} from '../../type/interface/respone-data';
 import { fabric } from 'fabric';
 import {
   cos,
@@ -13,7 +13,7 @@ import {
   newtonIteration,
   sin,
   zodiacLong,
-} from './horo-math';
+} from '../horo-math';
 /**
  *
  * @param aspects 相位

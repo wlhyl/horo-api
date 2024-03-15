@@ -29,28 +29,13 @@ export interface HoroRequest {
   sex: boolean;
 }
 
-// /**
-//  * 推运星盘请求数据
-//  */
-// export interface ProfectionData {
-//   year: number;
-//   month: number;
-//   day: number;
-//   hour: number;
-//   minute: number;
-//   second: number;
-// }
-
 /**
- * 推运星盘请求数据
+ * 推运星盘请求数据，用于推运页面数据输入
  */
 export interface ProcessRequest {
   date: DateRequest;
   geo_name: string;
   geo: GeoRequest;
-  // house: string;
-  // describe: string;
-  // sex: boolean;
   process_name: ProcessName;
   isSolarReturn: boolean;
 }
@@ -90,4 +75,18 @@ export interface FirdariaRequest {
 
   // 出生地大地经纬度
   geo: GeoRequest;
+}
+
+/**
+ * 七政
+ */
+export interface QiZhengRequst {
+  // 出生时间
+  native_date: DateRequest;
+
+  // 大地经纬度
+  geo: GeoRequest;
+
+  // 推运时间
+  process_date: DateRequest;
 }

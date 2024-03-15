@@ -85,12 +85,12 @@ mod tests {
         let min = 1.0;
         let max = 2.0;
 
-        let aspect = PlanetConfig::new(name.clone(), orb, min, max);
+        let planet_config = PlanetConfig::new(name, orb, min, max);
 
-        assert_eq!(aspect.name, name);
-        assert_eq!(aspect.orb, orb);
-        assert_eq!(aspect.min, min);
-        assert_eq!(aspect.max, max);
+        assert_eq!(planet_config.name, name);
+        assert_eq!(planet_config.orb, orb);
+        assert_eq!(planet_config.min, min);
+        assert_eq!(planet_config.max, max);
     }
 
     #[parameterized(config = {
@@ -110,11 +110,11 @@ mod tests {
     }
     )]
     fn test_default_config(config: (PlanetName, u8, f64, f64)) {
-        let p = PlanetConfig::default_config(&config.0);
-        assert_eq!(p.name, config.0);
-        assert_eq!(p.orb, config.1);
-        assert_eq!(p.min, config.2);
-        assert_eq!(p.max, config.3);
+        let planet_config = PlanetConfig::default_config(&config.0);
+        assert_eq!(planet_config.name, config.0);
+        assert_eq!(planet_config.orb, config.1);
+        assert_eq!(planet_config.min, config.2);
+        assert_eq!(planet_config.max, config.3);
     }
 
     #[parameterized(config = {

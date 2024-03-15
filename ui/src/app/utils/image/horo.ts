@@ -8,15 +8,15 @@ import {
   degreeToDMS,
   zodiacLong,
   newtonIteration,
-} from './horo-math';
+} from '../horo-math';
 import {
   Aspect,
   Horoscope,
   Planet,
   ReturnHoroscop,
-} from '../type/interface/respone-data';
-import { Canvas } from '../type/alias/canvas';
-import { Horoconfig } from '../services/config/horo-config.service';
+} from '../../type/interface/respone-data';
+import { Canvas } from '../../type/alias/canvas';
+import { Horoconfig } from '../../services/config/horo-config.service';
 
 /**
  *

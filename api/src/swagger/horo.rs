@@ -1,16 +1,14 @@
-use crate::request::{
-    CompareRequst, DateRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest, ReturnRequest,
+use crate::handlers::{
+    compare_horoscop::__path_compare,
+    firdaria::__path_firdaria,
+    horo::__path_horo_native,
+    house::__path_houses,
+    profection::__path_profection,
+    return_horoscop::{__path_lunar_return_horo, __path_solar_return_horo},
 };
-use crate::{
-    handlers::{
-        compare_horoscop::__path_compare,
-        firdaria::__path_firdaria,
-        horo::__path_horo_native,
-        house::__path_houses,
-        profection::__path_profection,
-        return_horoscop::{__path_lunar_return_horo, __path_solar_return_horo},
-    },
-    request::FirdariaRequest,
+use crate::request::{
+    CompareRequst, DateRequest, FirdariaRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest,
+    ReturnRequest,
 };
 use geo_position::GeoPosition;
 use horo::{
@@ -61,4 +59,4 @@ use utoipa::OpenApi;
         FirdariaSubPeriod
     ))
 )]
-pub struct ApiDoc;
+pub struct HoroApiDoc;

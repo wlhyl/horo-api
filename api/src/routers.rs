@@ -7,6 +7,7 @@ use crate::handlers::{
     horo::horo_native,
     house::houses,
     profection::profection,
+    qizheng::qizheng_horo,
     return_horoscop::{lunar_return_horo, solar_return_horo},
 };
 
@@ -24,5 +25,6 @@ pub fn horo_routes(cfg: &mut web::ServiceConfig) {
                 .service(compare)
                 .service(solar_return_horo)
                 .service(lunar_return_horo),
-        );
+        )
+        .service(web::scope("/qizheng").service(qizheng_horo));
 }

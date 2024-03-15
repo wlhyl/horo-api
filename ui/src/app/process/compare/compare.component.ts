@@ -15,8 +15,8 @@ import { Platform } from '@ionic/angular';
 import { fabric } from 'fabric';
 import { CompareRequest } from 'src/app/type/interface/request-data';
 import { lastValueFrom } from 'rxjs';
-import { drawAspect, drawHorosco } from 'src/app/utils/image-compare';
-import { zoomImage } from 'src/app/utils/image';
+import { drawAspect, drawHorosco } from 'src/app/utils/image/compare';
+import { zoomImage } from 'src/app/utils/image/horo';
 
 @Component({
   selector: 'app-compare',

@@ -7,7 +7,7 @@ import { ApiService } from '../services/api/api.service';
 import { lastValueFrom } from 'rxjs';
 import { Platform } from '@ionic/angular';
 import { Canvas } from '../type/alias/canvas';
-import { drawAspect, drawHorosco } from '../utils/image';
+import { drawAspect, drawHorosco } from '../utils/image/horo';
 import { Title } from '@angular/platform-browser';
 
 @Component({

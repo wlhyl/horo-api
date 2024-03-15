@@ -16,10 +16,9 @@ geo_position = { path = "../geo_position" }
 
 rust-swe = { git = "https://github.com/wlhyl/rust-swe.git" }
 
-serde = { version = "1.0.197", features = ["derive"], optional = true }
-utoipa = { version = "4.2.0", optional = true }
+serde = { version = "*", features = ["derive"], optional = true }
+utoipa = { version = "*", optional = true }
 
 [dev-dependencies]
 dotenvy = "0.15.7"
-# dotenv = "0.15.0"
-parameterized = "1.1.0"
+parameterized = "2.0.0"

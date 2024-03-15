@@ -1,0 +1,34 @@
+[package]
+name = "qizheng"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+serde = [
+    "dep:serde",
+    "horo_date_time/serde",
+    "geo_position/serde",
+    "lunar_calendar/serde",
+]
+swagger = [
+    "dep:utoipa",
+    "horo_date_time/swagger",
+    "geo_position/swagger",
+    "lunar_calendar/swagger",
+]
+
+[dependencies]
+horo_date_time = { path = "../horo_date_time" }
+geo_position = { path = "../geo_position" }
+
+rust-swe = { git = "https://github.com/wlhyl/rust-swe.git" }
+lunar_calendar = { git = "https://github.com/wlhyl/lunar-calendar.git", branch = "rust" }
+
+serde = { version = "*", features = ["derive"], optional = true }
+utoipa = { version = "*", optional = true }
+
+[dev-dependencies]
+# dotenvy="0.15.7"
+parameterized = "2.0.0"

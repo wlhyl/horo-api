@@ -26,7 +26,7 @@ pub struct DateRequest {
     #[validate(range(min = 0, max = 59, message = "0<=秒<=59"))]
     pub second: u8,
     /// 出生地时区，东区为正数，西区为负数
-    #[validate(range(min = -12, max = 12, message = "-12<=时区<=12"))]
+    #[validate(range(min = -12.0, max = 12.0, message = "-12<=时区<=12"))]
     pub tz: f64,
     /// 出生时的夏令时，有夏令时：true，无夏令时： false
     pub st: bool,
@@ -36,10 +36,10 @@ pub struct DateRequest {
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
 pub struct GeoRequest {
     /// 地理经度
-    #[validate(range(min = -180, max = 180, message = "-180<=地理经度<=180"))]
+    #[validate(range(min = -180.0, max = 180.0, message = "-180<=地理经度<=180"))]
     pub long: f64,
     /// 地理纬度
-    #[validate(range(min = -90, max = 90, message = "-90<=地理经度<=90"))]
+    #[validate(range(min = -90.0, max = 90.0, message = "-90<=地理经度<=90"))]
     pub lat: f64,
 }
 
@@ -163,4 +163,21 @@ pub struct FirdariaRequest {
     /// 出生地大地经纬度
     #[validate]
     pub geo: GeoRequest,
+}
+
+/// 七政
+#[derive(Deserialize, Validate)]
+#[cfg_attr(feature = "swagger", derive(ToSchema))]
+pub struct QiZhengRequst {
+    /// 出生时间
+    #[validate]
+    pub native_date: DateRequest,
+
+    /// 大地经纬度
+    #[validate]
+    pub geo: GeoRequest,
+
+    /// 推运时间
+    #[validate]
+    pub process_date: DateRequest,
 }
