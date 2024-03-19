@@ -1,4 +1,4 @@
-use swe::{swe_close, swe_fixstar2_ut, swe_set_ephe_path, Flag};
+use swe::{swe_close, swe_degnorm, swe_fixstar2_ut, swe_set_ephe_path, Flag};
 
 use crate::{config::DistanceStarConfig, error::Error};
 
@@ -77,4 +77,251 @@ pub(crate) fn calc_distance_star_long(
     }
     swe_close();
     Ok(distance_star_long)
+}
+
+// 计算入宿度
+pub(crate) fn calc_xiu_degree(
+    star_long: f64,
+    distance_star_long: &[DistanceStarLong],
+) -> Result<(LunarMansionsName, f64), Error> {
+    distance_star_long
+        .iter()
+        .enumerate()
+        .find_map(|(index, distance_star)| {
+            let next_distance_star = &distance_star_long[(index + 1) % distance_star_long.len()];
+
+            let distance = swe_degnorm(next_distance_star.long - distance_star.long);
+            let planet_distance = swe_degnorm(star_long - distance_star.long);
+            if planet_distance < distance {
+                Some((distance_star.lunar_mansions, planet_distance))
+            } else {
+                None
+            }
+        })
+        .ok_or(Error::Function(
+            "找不到行星的入宿度，请检查源代码".to_string(),
+        ))
+}
+
+#[cfg(test)]
+mod tests {
+    use swe::swe_degnorm;
+
+    use crate::{lunar_mansions::calc_xiu_degree, DistanceStarLong, LunarMansionsName::*};
+
+    #[test]
+    fn test_calc_xiu_degree() {
+        let distance_star_long: [DistanceStarLong; 28] = [
+            DistanceStarLong {
+                lunar_mansions: 角,
+                long: swe_degnorm(180.0 + 12.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 亢,
+                long: swe_degnorm(180.0 + 24.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 氐,
+                long: swe_degnorm(180.0 + 36.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 房,
+                long: swe_degnorm(180.0 + 48.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 心,
+                long: swe_degnorm(180.0 + 60.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 尾,
+                long: swe_degnorm(180.0 + 72.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 箕,
+                long: swe_degnorm(180.0 + 84.0 + 1.0),
+            },
+            //
+            DistanceStarLong {
+                lunar_mansions: 斗,
+                long: swe_degnorm(180.0 + 96.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 牛,
+                long: swe_degnorm(180.0 + 108.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 女,
+                long: swe_degnorm(180.0 + 120.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 虚,
+                long: swe_degnorm(180.0 + 132.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 危,
+                long: swe_degnorm(180.0 + 144.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 室,
+                long: swe_degnorm(180.0 + 156.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 壁,
+                long: swe_degnorm(180.0 + 168.0 + 1.0),
+            },
+            //
+            DistanceStarLong {
+                lunar_mansions: 奎,
+                long: swe_degnorm(180.0 + 180.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 娄,
+                long: swe_degnorm(180.0 + 192.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 胃,
+                long: swe_degnorm(180.0 + 204.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 昴,
+                long: swe_degnorm(180.0 + 216.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 毕,
+                long: swe_degnorm(180.0 + 228.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 觜,
+                long: swe_degnorm(180.0 + 240.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 参,
+                long: swe_degnorm(180.0 + 252.0 + 1.0),
+            },
+            //
+            DistanceStarLong {
+                lunar_mansions: 井,
+                long: swe_degnorm(180.0 + 264.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 鬼,
+                long: swe_degnorm(180.0 + 276.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 柳,
+                long: swe_degnorm(180.0 + 288.0 + 1.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 星,
+                long: swe_degnorm(180.0 + 300.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 张,
+                long: swe_degnorm(180.0 + 312.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 翼,
+                long: swe_degnorm(180.0 + 324.0),
+            },
+            DistanceStarLong {
+                lunar_mansions: 轸,
+                long: swe_degnorm(180.0 + 336.0),
+            },
+        ];
+
+        let distance_star_long_sum: f64 = distance_star_long
+            .iter()
+            .enumerate()
+            .map(|(index, star)| {
+                let next_star = &distance_star_long[(index + 1) % 28];
+                swe_degnorm(next_star.long - star.long)
+            })
+            .sum();
+
+        assert_eq!(distance_star_long_sum, 360.0);
+
+        // 辰:180, 轸: 24.0
+        let xiu_and_degree = calc_xiu_degree(180.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 轸);
+        assert_eq!(xiu_degree, 24.0);
+
+        // 卯:210, 亢: 5.0
+        let xiu_and_degree = calc_xiu_degree(210.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 亢);
+        assert_eq!(xiu_degree, 5.0);
+
+        // 寅:240, 房: 11.0
+        let xiu_and_degree = calc_xiu_degree(240.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 房);
+        assert_eq!(xiu_degree, 11.0);
+
+        // 丑:270, 箕: 5.0
+        let xiu_and_degree = calc_xiu_degree(270.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 箕);
+        assert_eq!(xiu_degree, 5.0);
+
+        // 子:300, 牛: 11.0
+        let xiu_and_degree = calc_xiu_degree(300.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 牛);
+        assert_eq!(xiu_degree, 11.0);
+
+        // 亥:330, 危: 5.0
+        let xiu_and_degree = calc_xiu_degree(330.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 危);
+        assert_eq!(xiu_degree, 5.0);
+
+        // 戌:0, 壁: 11.0
+        let xiu_and_degree = calc_xiu_degree(0.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 壁);
+        assert_eq!(xiu_degree, 11.0);
+
+        // 酉:30, 胃: 5.0
+        let xiu_and_degree = calc_xiu_degree(30.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 胃);
+        assert_eq!(xiu_degree, 5.0);
+
+        // 申:60, 毕: 11.0
+        let xiu_and_degree = calc_xiu_degree(60.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 毕);
+        assert_eq!(xiu_degree, 11.0);
+
+        // 未:90, 井: 5.0
+        let xiu_and_degree = calc_xiu_degree(90.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 井);
+        assert_eq!(xiu_degree, 5.0);
+
+        // 午:120, 星: 0.0
+        let xiu_and_degree = calc_xiu_degree(120.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 星);
+        assert_eq!(xiu_degree, 0.0);
+
+        // 巳:150, 翼: 6.0
+        let xiu_and_degree = calc_xiu_degree(150.0, &distance_star_long);
+        assert!(xiu_and_degree.is_ok());
+        let (xiu, xiu_degree) = xiu_and_degree.unwrap();
+        assert_eq!(xiu, 翼);
+        assert_eq!(xiu_degree, 6.0);
+    }
 }
