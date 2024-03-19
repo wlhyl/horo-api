@@ -38,8 +38,7 @@ spec:
             [
               "/bin/sh",
               "-c",
-              "for i in {{ .Values.swe.files }};do wget -O /swe/$i {{ .Values.swe.uri }}/$i;done",
-              "&& wget -O /swe/sefstars.txt {{ .Values.swe.sefstars }}"
+              "for i in {{ .Values.swe.files }};do wget -O /swe/$i {{ .Values.swe.uri }}/$i;done && wget -O /swe/sefstars.txt {{ .Values.swe.sefstars }}"
               ]
           volumeMounts:
             - name: swe
