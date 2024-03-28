@@ -14,7 +14,7 @@ RUN mkdir /tmp/swe && cd /tmp/swe &&\
 
 COPY ./ /app/
 
-RUN echo [source.crates-io] > cargo.config
+RUN echo '[source.crates-io]' > cargo.config
 RUN echo 'replace-with = "ustc"' >> cargo.config
 RUN echo [source.ustc] >> cargo.config
 RUN echo 'registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"' >> cargo.config
