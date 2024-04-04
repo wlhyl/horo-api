@@ -48,6 +48,14 @@ export class HoroComponent implements OnInit {
 
     this.canvas = new fabric.Canvas('canvas');
 
+    // this.canvas.on('object:scaling', function(e) {
+    //   var object = e.target,
+    //       scaleX = object?.scaleX,
+    //       scaleY = object?.scaleY;
+
+    //   console.log('Object scaling. Object:', object?.get('type'), 'New scaleX:', scaleX, 'New scaleY:', scaleY);
+    // });
+
     this.drawHoroscope();
   }
 

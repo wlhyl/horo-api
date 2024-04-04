@@ -35,114 +35,6 @@ export function drawHorosco(
   // 外圆半径
   const r = options.width / 2;
 
-  // 画农历
-  const nativeLunarCalendarText = `${
-    horosco.native_lunar_calendar.lunar_year_gan_zhi[0]
-  } ${horosco.native_lunar_calendar.lunar_month_gan_zhi[0]} ${
-    horosco.native_lunar_calendar.lunar_day_gan_zhi[0]
-  } ${horosco.native_lunar_calendar.time_gan_zhi[0]}
-${horosco.native_lunar_calendar.lunar_year_gan_zhi[1]} ${
-    horosco.native_lunar_calendar.lunar_month_gan_zhi[1]
-  } ${horosco.native_lunar_calendar.lunar_day_gan_zhi[1]} ${
-    horosco.native_lunar_calendar.time_gan_zhi[1]
-  }
-${horosco.native_lunar_calendar.solar_term_first.name}：${
-    horosco.native_lunar_calendar.solar_term_first.year
-  }-${horosco.native_lunar_calendar.solar_term_first.month
-    .toString()
-    .padStart(2, '0')}-${horosco.native_lunar_calendar.solar_term_first.day
-    .toString()
-    .padStart(2, '0')} ${horosco.native_lunar_calendar.solar_term_first.hour
-    .toString()
-    .padStart(2, '0')}:${horosco.native_lunar_calendar.solar_term_first.minute
-    .toString()
-    .padStart(2, '0')}:${horosco.native_lunar_calendar.solar_term_first.second
-    .toString()
-    .padStart(2, '0')}
-${horosco.native_lunar_calendar.solar_term_second.name}：${
-    horosco.native_lunar_calendar.solar_term_second.year
-  }-${horosco.native_lunar_calendar.solar_term_second.month
-    .toString()
-    .padStart(2, '0')}-${horosco.native_lunar_calendar.solar_term_second.day
-    .toString()
-    .padStart(2, '0')} ${horosco.native_lunar_calendar.solar_term_second.hour
-    .toString()
-    .padStart(2, '0')}:${horosco.native_lunar_calendar.solar_term_second.minute
-    .toString()
-    .padStart(2, '0')}:${horosco.native_lunar_calendar.solar_term_second.second
-    .toString()
-    .padStart(2, '0')}
-农历；${horosco.native_lunar_calendar.lunar_year}年${
-    horosco.native_lunar_calendar.lunar_month
-  }${horosco.native_lunar_calendar.lunar_day}
-    `;
-  const nativeLunarCalendarTextCanvas = new fabric.Text(
-    nativeLunarCalendarText,
-    {
-      fontSize: config.fontSize,
-      // fontFamily: config.textFont,
-      selectable: false,
-    }
-  );
-
-  nativeLunarCalendarTextCanvas.left = 0;
-  nativeLunarCalendarTextCanvas.top = 0;
-  canvas.add(nativeLunarCalendarTextCanvas);
-
-  const processLunarCalendarText = `${
-    horosco.process_lunar_calendar.lunar_year_gan_zhi[0]
-  } ${horosco.process_lunar_calendar.lunar_month_gan_zhi[0]} ${
-    horosco.process_lunar_calendar.lunar_day_gan_zhi[0]
-  } ${horosco.process_lunar_calendar.time_gan_zhi[0]}
-${horosco.process_lunar_calendar.lunar_year_gan_zhi[1]} ${
-    horosco.process_lunar_calendar.lunar_month_gan_zhi[1]
-  } ${horosco.process_lunar_calendar.lunar_day_gan_zhi[1]} ${
-    horosco.process_lunar_calendar.time_gan_zhi[1]
-  }
-${horosco.process_lunar_calendar.solar_term_first.name}：${
-    horosco.process_lunar_calendar.solar_term_first.year
-  }-${horosco.process_lunar_calendar.solar_term_first.month
-    .toString()
-    .padStart(2, '0')}-${horosco.process_lunar_calendar.solar_term_first.day
-    .toString()
-    .padStart(2, '0')} ${horosco.process_lunar_calendar.solar_term_first.hour
-    .toString()
-    .padStart(2, '0')}:${horosco.process_lunar_calendar.solar_term_first.minute
-    .toString()
-    .padStart(2, '0')}:${horosco.process_lunar_calendar.solar_term_first.second
-    .toString()
-    .padStart(2, '0')}
-${horosco.process_lunar_calendar.solar_term_second.name}：${
-    horosco.process_lunar_calendar.solar_term_second.year
-  }-${horosco.process_lunar_calendar.solar_term_second.month
-    .toString()
-    .padStart(2, '0')}-${horosco.process_lunar_calendar.solar_term_second.day
-    .toString()
-    .padStart(2, '0')} ${horosco.process_lunar_calendar.solar_term_second.hour
-    .toString()
-    .padStart(2, '0')}:${horosco.process_lunar_calendar.solar_term_second.minute
-    .toString()
-    .padStart(2, '0')}:${horosco.process_lunar_calendar.solar_term_second.second
-    .toString()
-    .padStart(2, '0')}
-农历；${horosco.process_lunar_calendar.lunar_year}年${
-    horosco.process_lunar_calendar.lunar_month
-  }${horosco.process_lunar_calendar.lunar_day}
-    `;
-  const processLunarCalendarTextCanvas = new fabric.Text(
-    processLunarCalendarText,
-    {
-      fontSize: config.fontSize,
-      // fontFamily: config.textFont,
-      selectable: false,
-    }
-  );
-
-  processLunarCalendarTextCanvas.left =
-    canvas.width! - processLunarCalendarTextCanvas.width!;
-  processLunarCalendarTextCanvas.top = 0;
-  canvas.add(processLunarCalendarTextCanvas);
-
   // 画圆
   for (let i = 1; i < 7; i++) {
     const r1 = (r / 9) * i;
@@ -153,7 +45,7 @@ ${horosco.process_lunar_calendar.solar_term_second.name}：${
         radius: r1,
         fill: '',
         stroke: 'black', //不填充
-        selectable: false,
+        selectable: true,
       })
     );
   }
@@ -167,7 +59,7 @@ ${horosco.process_lunar_calendar.solar_term_second.name}：${
       radius: dongWeiR,
       fill: '',
       stroke: 'black', //不填充
-      selectable: false,
+      selectable: true,
     })
   );
 
@@ -235,6 +127,140 @@ ${horosco.process_lunar_calendar.solar_term_second.name}：${
     r0: dongWeiR,
     r1: (r * 6.0) / 9.0,
   });
+
+  const group = new fabric.Group(canvas.getObjects(), {
+    selectable: true,
+    subTargetCheck: true,
+
+    // perPixelTargetFind: true,
+  });
+
+  // https://blog.csdn.net/beauty_600/article/details/129621372
+  group.setControlsVisibility({
+    ml: false, // 左中
+    mt: false,
+    mr: false,
+    mb: false,
+    mtr: false, // 旋转
+    // bl;: false, 左下
+    // bl:false // 右下
+    // tl: false // 左上
+    // tr: false // 右上
+  });
+
+  // group.hasRotatingPoint=false
+
+  // canvas.getObjects().forEach(o=>canvas.remove(o))
+  canvas.clear();
+  canvas.add(group);
+
+  // 画农历
+  const nativeLunarCalendarText = `${
+    horosco.native_lunar_calendar.lunar_year_gan_zhi[0]
+  } ${horosco.native_lunar_calendar.lunar_month_gan_zhi[0]} ${
+    horosco.native_lunar_calendar.lunar_day_gan_zhi[0]
+  } ${horosco.native_lunar_calendar.time_gan_zhi[0]}
+${horosco.native_lunar_calendar.lunar_year_gan_zhi[1]} ${
+    horosco.native_lunar_calendar.lunar_month_gan_zhi[1]
+  } ${horosco.native_lunar_calendar.lunar_day_gan_zhi[1]} ${
+    horosco.native_lunar_calendar.time_gan_zhi[1]
+  }
+${horosco.native_lunar_calendar.solar_term_first.name}：${
+    horosco.native_lunar_calendar.solar_term_first.year
+  }-${horosco.native_lunar_calendar.solar_term_first.month
+    .toString()
+    .padStart(2, '0')}-${horosco.native_lunar_calendar.solar_term_first.day
+    .toString()
+    .padStart(2, '0')} ${horosco.native_lunar_calendar.solar_term_first.hour
+    .toString()
+    .padStart(2, '0')}:${horosco.native_lunar_calendar.solar_term_first.minute
+    .toString()
+    .padStart(2, '0')}:${horosco.native_lunar_calendar.solar_term_first.second
+    .toString()
+    .padStart(2, '0')}
+${horosco.native_lunar_calendar.solar_term_second.name}：${
+    horosco.native_lunar_calendar.solar_term_second.year
+  }-${horosco.native_lunar_calendar.solar_term_second.month
+    .toString()
+    .padStart(2, '0')}-${horosco.native_lunar_calendar.solar_term_second.day
+    .toString()
+    .padStart(2, '0')} ${horosco.native_lunar_calendar.solar_term_second.hour
+    .toString()
+    .padStart(2, '0')}:${horosco.native_lunar_calendar.solar_term_second.minute
+    .toString()
+    .padStart(2, '0')}:${horosco.native_lunar_calendar.solar_term_second.second
+    .toString()
+    .padStart(2, '0')}
+农历；${horosco.native_lunar_calendar.lunar_year}年${
+    horosco.native_lunar_calendar.lunar_month
+  }${horosco.native_lunar_calendar.lunar_day}
+    `;
+  const nativeLunarCalendarTextCanvas = new fabric.Text(
+    nativeLunarCalendarText,
+    {
+      fontSize: (config.fontSize * 2) / 3,
+      // fontFamily: config.textFont,
+      selectable: false,
+    }
+  );
+
+  nativeLunarCalendarTextCanvas.left = 0;
+  nativeLunarCalendarTextCanvas.top = 0;
+  canvas.add(nativeLunarCalendarTextCanvas);
+
+  const processLunarCalendarText = `${
+    horosco.process_lunar_calendar.lunar_year_gan_zhi[0]
+  } ${horosco.process_lunar_calendar.lunar_month_gan_zhi[0]} ${
+    horosco.process_lunar_calendar.lunar_day_gan_zhi[0]
+  } ${horosco.process_lunar_calendar.time_gan_zhi[0]}
+${horosco.process_lunar_calendar.lunar_year_gan_zhi[1]} ${
+    horosco.process_lunar_calendar.lunar_month_gan_zhi[1]
+  } ${horosco.process_lunar_calendar.lunar_day_gan_zhi[1]} ${
+    horosco.process_lunar_calendar.time_gan_zhi[1]
+  }
+${horosco.process_lunar_calendar.solar_term_first.name}：${
+    horosco.process_lunar_calendar.solar_term_first.year
+  }-${horosco.process_lunar_calendar.solar_term_first.month
+    .toString()
+    .padStart(2, '0')}-${horosco.process_lunar_calendar.solar_term_first.day
+    .toString()
+    .padStart(2, '0')} ${horosco.process_lunar_calendar.solar_term_first.hour
+    .toString()
+    .padStart(2, '0')}:${horosco.process_lunar_calendar.solar_term_first.minute
+    .toString()
+    .padStart(2, '0')}:${horosco.process_lunar_calendar.solar_term_first.second
+    .toString()
+    .padStart(2, '0')}
+${horosco.process_lunar_calendar.solar_term_second.name}：${
+    horosco.process_lunar_calendar.solar_term_second.year
+  }-${horosco.process_lunar_calendar.solar_term_second.month
+    .toString()
+    .padStart(2, '0')}-${horosco.process_lunar_calendar.solar_term_second.day
+    .toString()
+    .padStart(2, '0')} ${horosco.process_lunar_calendar.solar_term_second.hour
+    .toString()
+    .padStart(2, '0')}:${horosco.process_lunar_calendar.solar_term_second.minute
+    .toString()
+    .padStart(2, '0')}:${horosco.process_lunar_calendar.solar_term_second.second
+    .toString()
+    .padStart(2, '0')}
+农历；${horosco.process_lunar_calendar.lunar_year}年${
+    horosco.process_lunar_calendar.lunar_month
+  }${horosco.process_lunar_calendar.lunar_day}
+    `;
+  const processLunarCalendarTextCanvas = new fabric.Text(
+    processLunarCalendarText,
+    {
+      fontSize: (config.fontSize * 2) / 3,
+      // fontFamily: config.textFont,
+      selectable: false,
+    }
+  );
+
+  processLunarCalendarTextCanvas.left =
+    canvas.width! - processLunarCalendarTextCanvas.width!;
+  processLunarCalendarTextCanvas.top = 0;
+  canvas.add(processLunarCalendarTextCanvas);
 }
 
 /**
@@ -260,7 +286,7 @@ function drawASCHouse(
   const r = options.r;
 
   const group = new fabric.Group(undefined, {
-    selectable: false,
+    selectable: true,
     subTargetCheck: true,
     // perPixelTargetFind: true,
   });
@@ -293,7 +319,7 @@ function drawASCHouse(
     {
       fontSize: config.fontSize,
       // fontFamily: config.textFont,
-      selectable: false,
+      selectable: true,
     }
   );
 
@@ -356,7 +382,7 @@ function drawZodiac(
     const y1 = cx - r0 * sin(30 * index);
     let path = new fabric.Path(`M ${x0}, ${y0} L ${x1} ${y1}`, {
       stroke: 'black',
-      selectable: false,
+      selectable: true,
     });
     canvas.add(path);
 
@@ -367,7 +393,7 @@ function drawZodiac(
 
     let houseNumText = new fabric.Text(`${houseName}`, {
       fontSize: config.fontSize,
-      selectable: false,
+      selectable: true,
       // fontFamily: config.textFont,
     });
     houseNumText.left = x - houseNumText.width! / 2;
@@ -409,7 +435,7 @@ function drawHouse(
     const y1 = cx - r0 * sin(30 * index);
     let path = new fabric.Path(`M ${x0}, ${y0} L ${x1} ${y1}`, {
       stroke: 'black',
-      selectable: false,
+      selectable: true,
     });
     canvas.add(path);
 
@@ -425,7 +451,7 @@ function drawHouse(
 
     const houseNumText = new fabric.Text(`${house.name}`, {
       fontSize: config.fontSize,
-      selectable: false,
+      selectable: true,
       // fontFamily: config.textFont,
     });
     houseNumText.left = x - houseNumText.width! / 2;
@@ -523,7 +549,7 @@ function drawPlanets(
     }
 
     let path = new fabric.Path(`M ${x0}, ${y0} L ${x1} ${y1}`, {
-      selectable: false,
+      selectable: true,
       stroke: 'black',
       strokeDashArray: [3, 2], // strokeDashArray[a,b] =》 每隔a个像素空b个像素
     });
@@ -538,7 +564,7 @@ function drawPlanets(
 
     const planetText = new fabric.Text(planets[i].name, {
       fontSize: fontSize,
-      selectable: false,
+      selectable: true,
       stroke: color,
       // fontFamily: config.planetFontFamily(planets[i].name),
     });
@@ -605,7 +631,7 @@ function drawDistanceStar(
     const y1 = cy - (r1 + 4) * sin(distance_star.long - 30);
 
     let path = new fabric.Path(`M ${x0}, ${y0} L ${x1} ${y1}`, {
-      selectable: false,
+      selectable: true,
       stroke: '#f28b82',
       // strokeDashArray: [3, 2], // strokeDashArray[a,b] =》 每隔a个像素空b个像素
     });
@@ -627,7 +653,7 @@ function drawDistanceStar(
 
     const planetText = new fabric.Text(distance_star.lunar_mansions, {
       fontSize: config.fontSize,
-      selectable: false,
+      selectable: true,
       // stroke: 'black',
       // fontFamily: config.planetFontFamily(planets[i].name),
     });
@@ -699,7 +725,7 @@ function drawDongWei(
     const y1 = cy - r1 * sin(dong_wei.long_of_per_year[i] - 30);
 
     let path = new fabric.Path(`M ${x0}, ${y0} L ${x1} ${y1}`, {
-      selectable: false,
+      selectable: true,
       stroke: 'black',
       // strokeDashArray: [3, 2], // strokeDashArray[a,b] =》 每隔a个像素空b个像素
     });
@@ -720,7 +746,7 @@ function drawDongWei(
 
     const planetText = new fabric.Text(`${i + 1}`, {
       fontSize: config.fontSize / 2,
-      selectable: false,
+      selectable: true,
       // stroke: 'black',
       // fontFamily: config.planetFontFamily(planets[i].name),
     });
@@ -739,7 +765,7 @@ function drawDongWei(
   const y1 = cy - r1 * sin(dong_wei.long - 30);
 
   let path = new fabric.Path(`M ${x0}, ${y0} L ${x1} ${y1}`, {
-    selectable: false,
+    selectable: true,
     stroke: 'blue',
     strokeWidth: 5,
     // strokeDashArray: [3, 2], // strokeDashArray[a,b] =》 每隔a个像素空b个像素
