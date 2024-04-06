@@ -15,7 +15,7 @@ import {
   HoroscopeCompare,
   Profection,
   ReturnHoroscop,
-} from 'src/app/type/interface/respone-data';
+} from 'src/app/type/interface/response-data';
 import { Horoscope as QiZhengHoroscope } from 'src/app/type/interface/response-qizheng';
 import { environment } from 'src/environments/environment';
 

@@ -6,7 +6,7 @@ import { HorostorageService } from 'src/app/services/horostorage/horostorage.ser
 import { Horoconfig } from 'src/app/services/config/horo-config.service';
 import { Canvas } from 'src/app/type/alias/canvas';
 import { fabric } from 'fabric';
-import { ReturnHoroscop } from 'src/app/type/interface/respone-data';
+import { ReturnHoroscop } from 'src/app/type/interface/response-data';
 import { ReturnRequest } from 'src/app/type/interface/request-data';
 import { lastValueFrom } from 'rxjs';
 import { drawAspect, drawReturnHorosco, zoomImage } from 'src/app/utils/image/horo';

@@ -4,7 +4,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { Horoconfig } from 'src/app/services/config/horo-config.service';
 import { HorostorageService } from 'src/app/services/horostorage/horostorage.service';
 import { FirdariaRequest } from 'src/app/type/interface/request-data';
-import { FirdariaPeriod } from 'src/app/type/interface/respone-data';
+import { FirdariaPeriod } from 'src/app/type/interface/response-data';
 
 @Component({
   selector: 'app-firdaria',

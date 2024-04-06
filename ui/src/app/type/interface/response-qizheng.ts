@@ -4,7 +4,7 @@ import {
   PlanetName,
   PlanetSpeedState,
 } from '../enum/qizheng';
-import { GeoPosition, HoroDateTime } from './respone-data';
+import { GeoPosition, HoroDateTime } from './response-data';
 
 export interface Planet {
   name: PlanetName;

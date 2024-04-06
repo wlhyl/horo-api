@@ -1,0 +1,31 @@
+.horo {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+
+    svg {
+        z-index: 2;
+    }
+}
+
+.note {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    z-index: 1;
+
+}
+
+
+
+.sizu {
+    display: flex;
+    flex-direction: row;
+
+    div {
+        display: flex;
+        flex-direction: column;
+    }
+}

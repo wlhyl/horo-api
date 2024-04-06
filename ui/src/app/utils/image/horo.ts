@@ -14,7 +14,7 @@ import {
   Horoscope,
   Planet,
   ReturnHoroscop,
-} from '../../type/interface/respone-data';
+} from '../../type/interface/response-data';
 import { Canvas } from '../../type/alias/canvas';
 import { Horoconfig } from '../../services/config/horo-config.service';
 

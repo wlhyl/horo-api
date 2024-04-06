@@ -8,7 +8,7 @@ import { HorostorageService } from 'src/app/services/horostorage/horostorage.ser
 import {
   HoroscopeCompare,
   ReturnHoroscop,
-} from 'src/app/type/interface/respone-data';
+} from 'src/app/type/interface/response-data';
 import { Canvas } from 'src/app/type/alias/canvas';
 import { Horoconfig } from 'src/app/services/config/horo-config.service';
 import { Platform } from '@ionic/angular';

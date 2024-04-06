@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fabric } from 'fabric';
-import { Horoscope } from '../type/interface/respone-data';
+import { Horoscope } from '../type/interface/response-data';
 import { Horoconfig } from '../services/config/horo-config.service';
 import { HorostorageService } from '../services/horostorage/horostorage.service';
 import { ApiService } from '../services/api/api.service';

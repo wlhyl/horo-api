@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ApiService } from 'src/app/services/api/api.service';
 import { HorostorageService } from 'src/app/services/horostorage/horostorage.service';
 import { ProfectionRequest } from 'src/app/type/interface/request-data';
-import { Profection } from 'src/app/type/interface/respone-data';
+import { Profection } from 'src/app/type/interface/response-data';
 
 @Component({
   selector: 'app-profection',

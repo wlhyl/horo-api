@@ -36,9 +36,171 @@
     <ion-spinner name="bubbles"></ion-spinner>
   </div>
 
-  <!-- <div class="ion-text-center"> -->
-    <div style="display: flex; flex-direction: row;justify-content: center;">
-    <canvas id="canvas" width="0" height="0"></canvas>
+  <div class="horo">
+    <!-- transform-origin='left' [attr.transform]="  'scale(' + scale + ')'  " -->
+    <svg [attr.width]="size" [attr.height]="size" [attr.font-size]="fontSize" xmlns="http://www.w3.org/2000/svg"
+      *ngIf="horoscoData">
+      <circle [attr.cx]="cx" [attr.cy]="cy" [attr.r]="ascHouseR" stroke="black" stroke-width="1" fill="none" />
+      <text [attr.x]="cx" [attr.y]="cy" style="text-anchor: middle;" dominant-baseline="central"
+        (click)="showTip($event, ascHouseTip())">{{ ascHouseText}}</text>
+
+      <!-- 黄道十二宫 -->
+      <circle [attr.cx]="cx" [attr.cy]="cy" [attr.r]="zodiacR" stroke="black" stroke-width="1" fill="none" />
+      <line *ngFor="let line of zodiacAndHouseLine" [attr.x1]=" line.x0" [attr.y1]="line.y0" [attr.x2]="line.x1"
+        [attr.y2]="line.y1" style="stroke:rgb(0,0,0);stroke-width:1;" />
+      <text *ngFor="let text of zodiacText" [attr.x]="text.x" [attr.y]="text.y" style="text-anchor: middle;"
+        dominant-baseline="central">{{ text.name}}</text>
+
+      <!-- 宫位 -->
+      <circle [attr.cx]="cx" [attr.cy]="cy" [attr.r]="houseR" stroke="black" stroke-width="1" fill="none" />
+      <text *ngFor="let house of houseText" [attr.x]="house.x" [attr.y]="house.y" style="text-anchor: middle;"
+        dominant-baseline="central" (click)="showTip($event,houseTip(house.house))">{{ house.house.name}}</text>
+
+      <!-- 本命行星 -->
+      <circle [attr.cx]="cx" [attr.cy]="cy" [attr.r]="nativePlanetR" stroke="black" stroke-width="1" fill="none" />
+      <ng-container *ngFor="let planet of nativePlanetText">
+        <text [attr.x]="planet.text.x" [attr.y]="planet.text.y" text-anchor="middle" [attr.fill]="planet.text.color"
+          dominant-baseline="central" (click)="showTip($event,planetTip(planet.text.planet))">{{
+          planet.text.planet.name}}</text>
+        <line [attr.x1]=" planet.line.x0" [attr.y1]="planet.line.y0" [attr.x2]="planet.line.x1"
+          [attr.y2]="planet.line.y1" style="stroke:rgb(0,0,0);stroke-width:1;stroke-dasharray:5,5;" />
+      </ng-container>
+
+
+      <!-- 二十八宿 -->
+      <circle [attr.cx]="cx" [attr.cy]="cy" [attr.r]="xiuR" stroke="black" stroke-width="1" fill="none" />
+      <ng-container *ngFor="let xiu of xiuText">
+        <text [attr.x]="xiu.text.x" [attr.y]="xiu.text.y" text-anchor="middle" dominant-baseline="central"
+          (click)="showTip($event,xiuTip(xiu.text.xiu, xiu.xiuWidth))">{{
+          xiu.text.xiu.lunar_mansions}}</text>
+        <line [attr.x1]=" xiu.line.x0" [attr.y1]="xiu.line.y0" [attr.x2]="xiu.line.x1" [attr.y2]="xiu.line.y1"
+          style="stroke:rgb(255,0,0);stroke-width:1;" />
+      </ng-container>
+
+
+      <!-- 推运行星 -->
+      <circle [attr.cx]="cx" [attr.cy]="cy" [attr.r]="processPlanetR" stroke="black" stroke-width="1" fill="none" />
+      <ng-container *ngFor="let planet of processPlanetText">
+        <text [attr.x]="planet.text.x" [attr.y]="planet.text.y" text-anchor="middle" [attr.fill]="planet.text.color"
+          dominant-baseline="central" (click)="showTip($event,planetTip(planet.text.planet))">{{
+          planet.text.planet.name}}</text>
+        <line [attr.x1]=" planet.line.x0" [attr.y1]="planet.line.y0" [attr.x2]="planet.line.x1"
+          [attr.y2]="planet.line.y1" style="stroke:rgb(0,0,0);stroke-width:1;stroke-dasharray:5,5;" />
+      </ng-container>
+
+      <!-- 洞微 -->
+      <circle [attr.cx]="cx" [attr.cy]="cy" [attr.r]="dongWeiR" stroke="black" stroke-width="1" fill="none" />
+      <ng-container *ngFor="let dongWei of dongWeiText?.dongWeiOfPerYear; let i=index">
+        <text [attr.x]="dongWei.text.x" [attr.y]="dongWei.text.y" text-anchor="middle" dominant-baseline="central"
+          font-size="7">{{
+          i+1}}</text>
+        <line [attr.x1]=" dongWei.line.x0" [attr.y1]="dongWei.line.y0" [attr.x2]="dongWei.line.x1"
+          [attr.y2]="dongWei.line.y1" style="stroke:rgb(0,0,0);stroke-width:1;" />
+      </ng-container>
+      <line *ngIf="dongWeiText" [attr.x1]=" dongWeiText.dongWei.x0" [attr.y1]="dongWeiText.dongWei.y0"
+        [attr.x2]="dongWeiText.dongWei.x1" [attr.y2]="dongWeiText.dongWei.y1" style="stroke:blue;stroke-width:5;"
+        (click)="showTip($event, dongWeiTip(dongWeiText.dongWei.dongWei))" />
+
+      <!-- tip -->
+      <rect *ngIf="tip.show" [attr.x]="tip.x" [attr.y]="tip.y" [attr.width]="tip.width" [attr.height]="tip.height"
+        fill="bisque" (click)="tip.show=false" />
+      <text *ngIf="tip.show" [attr.x]="tip.x" [attr.y]="tip.y" style="fill: black;" dominant-baseline="hanging"
+        (click)="tip.show=false">
+        <tspan [attr.x]="tip.x" [attr.y]="tip.y+fontSize*i" [attr.font-size]="fontSize"
+          *ngFor="let text of tip.message; let i =index">{{text}}
+        </tspan>
+      </text>
+    </svg>
+
+    <div class="note" [ngStyle]="{'width': size + 'px', 'height': size+'px'}" *ngIf="horoscoData">
+      <div class="native">
+        <div class="sizu">
+          <div>
+            <label> {{horoscoData.native_lunar_calendar.lunar_year_gan_zhi[0]}}</label>
+            <label> {{horoscoData.native_lunar_calendar.lunar_year_gan_zhi[1]}}</label>
+          </div>
+          <div>
+            <label> {{horoscoData.native_lunar_calendar.lunar_month_gan_zhi[0]}}</label>
+            <label> {{horoscoData.native_lunar_calendar.lunar_month_gan_zhi[1]}}</label>
+          </div>
+          <div>
+            <label> {{horoscoData.native_lunar_calendar.lunar_day_gan_zhi[0]}}</label>
+            <label> {{horoscoData.native_lunar_calendar.lunar_day_gan_zhi[1]}}</label>
+          </div>
+          <div>
+            <label> {{horoscoData.native_lunar_calendar.time_gan_zhi[0]}}</label>
+            <label> {{horoscoData.native_lunar_calendar.time_gan_zhi[1]}}</label>
+          </div>
+
+        </div>
+        <!-- 节气 -->
+        <div>
+          {{
+          horoscoData.native_lunar_calendar.solar_term_first.name}}：{{horoscoData.native_lunar_calendar.solar_term_first.year}}-{{horoscoData.native_lunar_calendar.solar_term_first.month.toString().padStart(2,
+          '0')}}-{{horoscoData.native_lunar_calendar.solar_term_first.day.toString().padStart(2, '0')}}
+          {{horoscoData.native_lunar_calendar.solar_term_first.hour.toString().padStart(2,
+          '0')}}:{{horoscoData.native_lunar_calendar.solar_term_first.minute.toString().padStart(2,
+          '0')}}:{{horoscoData.native_lunar_calendar.solar_term_first.second .toString() .padStart(2, '0')}}
+        </div>
+        <div>
+          {{horoscoData.native_lunar_calendar.solar_term_second.name}}：{{
+          horoscoData.native_lunar_calendar.solar_term_second.year
+          }}-{{horoscoData.native_lunar_calendar.solar_term_second.month .toString() .padStart(2,
+          '0')}}-{{horoscoData.native_lunar_calendar.solar_term_second.day .toString() .padStart(2, '0')}}
+          {{horoscoData.native_lunar_calendar.solar_term_second.hour .toString() .padStart(2,
+          '0')}}:{{horoscoData.native_lunar_calendar.solar_term_second.minute .toString() .padStart(2,
+          '0')}}:{{horoscoData.native_lunar_calendar.solar_term_second.second .toString() .padStart(2, '0')}}
+        </div>
+        <!-- 农历 -->
+        <div>
+          农历；{{horoscoData.native_lunar_calendar.lunar_year}}年{{
+          horoscoData.native_lunar_calendar.lunar_month}}{{horoscoData.native_lunar_calendar.lunar_day}}</div>
+      </div>
+
+      <div class="process">
+        <div class="sizu">
+          <div>
+            <label> {{horoscoData.process_lunar_calendar.lunar_year_gan_zhi[0]}}</label>
+            <label> {{horoscoData.process_lunar_calendar.lunar_year_gan_zhi[1]}}</label>
+          </div>
+          <div>
+            <label> {{horoscoData.process_lunar_calendar.lunar_month_gan_zhi[0]}}</label>
+            <label> {{horoscoData.process_lunar_calendar.lunar_month_gan_zhi[1]}}</label>
+          </div>
+          <div>
+            <label> {{horoscoData.process_lunar_calendar.lunar_day_gan_zhi[0]}}</label>
+            <label> {{horoscoData.process_lunar_calendar.lunar_day_gan_zhi[1]}}</label>
+          </div>
+          <div>
+            <label> {{horoscoData.process_lunar_calendar.time_gan_zhi[0]}}</label>
+            <label> {{horoscoData.process_lunar_calendar.time_gan_zhi[1]}}</label>
+          </div>
+
+        </div>
+        <!-- 节气 -->
+        <div>
+          {{
+          horoscoData.process_lunar_calendar.solar_term_first.name}}：{{horoscoData.process_lunar_calendar.solar_term_first.year}}-{{horoscoData.process_lunar_calendar.solar_term_first.month.toString().padStart(2,
+          '0')}}-{{horoscoData.process_lunar_calendar.solar_term_first.day.toString().padStart(2, '0')}}
+          {{horoscoData.process_lunar_calendar.solar_term_first.hour.toString().padStart(2,
+          '0')}}:{{horoscoData.process_lunar_calendar.solar_term_first.minute.toString().padStart(2,
+          '0')}}:{{horoscoData.process_lunar_calendar.solar_term_first.second .toString() .padStart(2, '0')}}
+        </div>
+        <div>
+          {{horoscoData.process_lunar_calendar.solar_term_second.name}}：{{
+          horoscoData.process_lunar_calendar.solar_term_second.year
+          }}-{{horoscoData.process_lunar_calendar.solar_term_second.month .toString() .padStart(2,
+          '0')}}-{{horoscoData.process_lunar_calendar.solar_term_second.day .toString() .padStart(2, '0')}}
+          {{horoscoData.process_lunar_calendar.solar_term_second.hour .toString() .padStart(2,
+          '0')}}:{{horoscoData.process_lunar_calendar.solar_term_second.minute .toString() .padStart(2,
+          '0')}}:{{horoscoData.process_lunar_calendar.solar_term_second.second .toString() .padStart(2, '0')}}
+        </div>
+        <!-- 农历 -->
+        <div>
+          农历；{{horoscoData.process_lunar_calendar.lunar_year}}年{{
+          horoscoData.process_lunar_calendar.lunar_month}}{{horoscoData.process_lunar_calendar.lunar_day}}</div>
+      </div>
+    </div>
   </div>
 
 </ion-content>

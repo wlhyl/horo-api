@@ -4,7 +4,7 @@ import {
   Aspect,
   HoroscopeCompare,
   Planet,
-} from '../../type/interface/respone-data';
+} from '../../type/interface/response-data';
 import { fabric } from 'fabric';
 import {
   cos,
