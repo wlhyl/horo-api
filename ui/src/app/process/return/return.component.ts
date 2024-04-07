@@ -9,7 +9,11 @@ import { fabric } from 'fabric';
 import { ReturnHoroscop } from 'src/app/type/interface/respone-data';
 import { ReturnRequest } from 'src/app/type/interface/request-data';
 import { lastValueFrom } from 'rxjs';
-import { drawAspect, drawReturnHorosco, zoomImage } from 'src/app/utils/image/horo';
+import {
+  drawAspect,
+  drawReturnHorosco,
+  zoomImage,
+} from 'src/app/utils/image/horo';
 import { Platform } from '@ionic/angular';
 import { Title } from '@angular/platform-browser';
 import { ProcessName } from 'src/app/type/enum/process';
@@ -210,6 +214,8 @@ export class ReturnComponent implements OnInit {
     this.processData.date.minute = date.getMinutes();
     this.processData.date.second = date.getSeconds();
 
+    this.horoJson = undefined;
+    this.aspectJson = undefined;
     await this.drawHoroscope(this.process_name);
   }
 }

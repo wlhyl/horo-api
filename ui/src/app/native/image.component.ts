@@ -143,6 +143,8 @@ export class ImageComponent implements OnInit {
     this.horoData.date.minute = date.getMinutes();
     this.horoData.date.second = date.getSeconds();
 
+    this.horoJson = undefined;
+    this.aspectJson = undefined;
     await this.drawHoroscope();
   }
 }
