@@ -290,6 +290,8 @@ export class CompareComponent implements OnInit {
       process_date: this.processData.date,
     };
 
+    this.horoJson = undefined;
+    this.aspectJson = undefined;
     return await lastValueFrom(this.api.lunarReturn(requestData));
   }
 }
