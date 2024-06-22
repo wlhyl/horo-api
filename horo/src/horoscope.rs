@@ -46,7 +46,12 @@ pub struct Horoscope {
     pub planetary_hours: PlanetName,
     //     @field:Schema(description = "行星相位，仅包含四轴、行星间的相位")
     pub aspects: Vec<Aspect>,
+    // 映点
+    pub antiscoins: Vec<Aspect>,
+    // 反映点
+    pub contraantiscias: Vec<Aspect>,
 }
+
 impl Horoscope {
     pub fn new(
         date: HoroDateTime,
@@ -212,8 +217,10 @@ impl Horoscope {
             planetary_hours_list[(first_planetary_hours_index + m + 12) % 7].clone()
         };
 
-        // 计算相位
+        // 计算相位和映点
         let mut aspects: Vec<Aspect> = vec![];
+        let mut antiscoins: Vec<Aspect> = vec![];
+        let mut contraantiscias: Vec<Aspect> = vec![];
         // let asm_and_planets = [
         //     planets.clone(),
         //     vec![asc.clone(), mc.clone(), dsc.clone(), ic.clone()],
@@ -229,6 +236,16 @@ impl Horoscope {
                 let aspect = asm_and_planets[i].has_aspect(asm_and_planets[j], false);
                 if let Some(aspect) = aspect {
                     aspects.push(aspect)
+                }
+
+                let antiscoin = asm_and_planets[i].has_antiscoin(asm_and_planets[j]);
+                if let Some(aspect) = antiscoin {
+                    antiscoins.push(aspect)
+                }
+
+                let contraantiscia = asm_and_planets[i].has_contraantiscia(asm_and_planets[j]);
+                if let Some(aspect) = contraantiscia {
+                    contraantiscias.push(aspect)
                 }
             }
         }
@@ -247,6 +264,8 @@ impl Horoscope {
             planetary_day,
             planetary_hours,
             aspects,
+            antiscoins,
+            contraantiscias,
         })
     }
 }
@@ -285,6 +304,8 @@ pub struct HoroscopeCompare {
 
     // 行星相位，仅包含四轴、行星间的相位
     pub aspects: Vec<Aspect>,
+    pub antiscoins: Vec<Aspect>,
+    pub contraantiscias: Vec<Aspect>,
 }
 
 impl HoroscopeCompare {
@@ -313,8 +334,10 @@ impl HoroscopeCompare {
             ephe_path,
         )?;
 
-        // 计算相位
+        // 计算相位和映点
         let mut aspects: Vec<Aspect> = vec![];
+        let mut antiscoins: Vec<Aspect> = vec![];
+        let mut contraantiscias: Vec<Aspect> = vec![];
 
         let mut asm_and_planets: Vec<_> = horo.planets.iter().collect();
         asm_and_planets.push(&horo.asc);
@@ -333,6 +356,17 @@ impl HoroscopeCompare {
                 let aspect = asm_and_planets[i].has_aspect(asm_and_planets_compare[j], true);
                 if let Some(aspect) = aspect {
                     aspects.push(aspect)
+                }
+
+                let antiscoin = asm_and_planets[i].has_antiscoin(asm_and_planets_compare[j]);
+                if let Some(aspect) = antiscoin {
+                    antiscoins.push(aspect)
+                }
+
+                let contraantiscia =
+                    asm_and_planets[i].has_contraantiscia(asm_and_planets_compare[j]);
+                if let Some(aspect) = contraantiscia {
+                    contraantiscias.push(aspect)
                 }
             }
         }
@@ -365,6 +399,8 @@ impl HoroscopeCompare {
             planets_compare: horo_compare.planets,
 
             aspects,
+            antiscoins,
+            contraantiscias,
         })
     }
 }
@@ -523,14 +559,15 @@ fn sun_on_dsc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<Ho
 mod tests {
     use std::env;
 
+    use geo_position::GeoPosition;
+    use horo_date_time::HoroDateTime;
     use swe::{
         swe_calc_ut, swe_close, swe_cotrans, swe_degnorm, swe_houses, swe_set_ephe_path, Body, Flag,
     };
 
     use crate::{
-        config::PlanetConfig, geo_position::GeoPosition, horo_date_time::HoroDateTime,
-        house::HouseName, planet::PlanetSpeedState::*, utils::calc_eps, Horoscope,
-        HoroscopeCompare, PlanetName::*,
+        config::PlanetConfig, house::HouseName, planet::PlanetSpeedState::*, utils::calc_eps,
+        Horoscope, HoroscopeCompare, PlanetName::*,
     };
 
     #[test]
@@ -728,6 +765,7 @@ mod tests {
         // 相位
         assert_eq!(13, horo.aspects.len());
     }
+
     // 星盘昼夜
     #[test]
     fn test_diurnal() {
@@ -876,7 +914,7 @@ mod tests {
                 geo.clone(),
                 HouseName::Alcabitus,
                 &planet_configs,
-                &ephe_path
+                &ephe_path,
             )
             .unwrap()
             .planetary_hours,
@@ -909,7 +947,7 @@ mod tests {
                 geo.clone(),
                 HouseName::Alcabitus,
                 &planet_configs,
-                &ephe_path
+                &ephe_path,
             )
             .unwrap()
             .planetary_hours,

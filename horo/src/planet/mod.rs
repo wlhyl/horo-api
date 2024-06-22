@@ -186,6 +186,75 @@ impl Planet {
             None
         }
     }
+
+    /**
+     * 这颗行星与给定的行星有相位否，本命盘和比较算法相同
+     * 比较盘中，self为本盘星体
+     * @param p
+     * 另一颗行星
+     * @return
+     * 有相位：true
+     */
+    pub fn has_antiscoin(&self, p: &Planet) -> Option<Aspect> {
+        // 算法：
+        // 两度数之和为180或180+360,即成映点
+
+        let d = swe_degnorm(self.long + p.long) - 180.0;
+        let d = d.abs();
+
+        let nodes = [PlanetName::NorthNode, PlanetName::SouthNode];
+        let orb_half = if nodes.contains(&self.name) || nodes.contains(&p.name) {
+            12.0
+        } else {
+            f64::from(self.orb + p.orb) / 2.0
+        };
+
+        if d > orb_half {
+            return None;
+        }
+
+        let antiscoin_long = swe_degnorm(180.0 - self.long);
+
+        // 映点所在星座和行星所在星座相同
+        let antiscoin_sign_num = (antiscoin_long / 30.0).floor() as u8;
+        let planet_sign_num = (p.long / 30.0).floor() as u8;
+
+        if antiscoin_sign_num == planet_sign_num {
+            Some(Aspect::new(0, false, d, self.name.clone(), p.name.clone()))
+        } else {
+            None
+        }
+    }
+
+    pub fn has_contraantiscia(&self, p: &Planet) -> Option<Aspect> {
+        // 交点不用考虑反映点
+        let nodes = [PlanetName::NorthNode, PlanetName::SouthNode];
+        if nodes.contains(&self.name) || nodes.contains(&p.name) {
+            return None;
+        }
+
+        // 算法：
+        // 两度数之和为360或360+360,即成映点
+
+        let contraantiscia_long = 360.0 - self.long;
+
+        let contraantiscia_sign_num = (contraantiscia_long / 30.0).floor() as u8;
+        let planet_sign_num = (p.long / 30.0).floor() as u8;
+
+        if contraantiscia_sign_num != planet_sign_num {
+            return None;
+        }
+
+        let d = (p.long - contraantiscia_long).abs();
+
+        let orb_half = f64::from(self.orb + p.orb) / 2.0;
+
+        if d > orb_half {
+            return None;
+        } else {
+            Some(Aspect::new(0, false, d, self.name.clone(), p.name.clone()))
+        }
+    }
 }
 
 /// 本行星与另一颗行星有相位否，只计算行星间度数，未计算行星所落星座有相位
@@ -406,3 +475,30 @@ fn compare_has_aspect_0(p0: &Planet, p1: &Planet) -> Option<Aspect> {
         ));
     }
 }
+
+// /// 非比较盘/比较盘映点，本行星与另一颗行星成映点，只计算行星间度数
+// /// 非比较盘和比较盘算法一致
+// /// @param p0
+// /// 行星或虚点
+// /// @param p1
+// /// 另一个行星或虚点
+// /// @return
+// /// 行星p0与行星p1成映点，返回true
+// fn has_antiscoin(p0: &Planet, p1: &Planet) -> Option<Aspect> {
+//     let d0 = swe_degnorm(p0.long - 90.0);
+//     let d1 = swe_degnorm(90.0 - p1.long);
+
+//     let nodes = [PlanetName::NorthNode, PlanetName::SouthNode];
+//     let orb_half = if nodes.contains(&p0.name) || nodes.contains(&p1.name) {
+//         12.0
+//     } else {
+//         f64::from(p0.orb + p1.orb) / 2.0
+//     };
+
+//     let d = swe_degnorm(d0 - d1);
+//     if d <= orb_half {
+//         Some(Aspect::new(0, false, d, p0.name.clone(), p1.name.clone()))
+//     } else {
+//         None
+//     }
+// }

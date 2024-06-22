@@ -37,6 +37,28 @@
         <!-- <ion-toggle [(ngModel)]="isAspect" (ionChange)="reDraw($event)"></ion-toggle> -->
         <ion-label>相位</ion-label>
     </div>
+    <div style="display: flex;flex-direction: column;align-items: center;">
+
+        <div>映点：
+            <div>
+                <div *ngFor="let item of horoscoData?.antiscoins">
+                    <span [ngStyle]="{'font-family': config.planetFontFamily(item.p0)}"> {{ config.planetFontString(
+                        item.p0)}}</span>与<span [ngStyle]="{'font-family': config.planetFontFamily(item.p1)}">{{
+                        config.planetFontString( item.p1)}}</span>，<span *ngFor="let d of [degreeToDMSFn(item.d)]">{{d.d
+                        }}度{{d.m}}分{{d.s}}秒</span>
+                </div>
+            </div>
+        </div>
+        <div>反映点：
+            <div *ngFor="let item of horoscoData?.contraantiscias">
+                <span [ngStyle]="{'font-family': config.planetFontFamily(item.p0)}"> {{ config.planetFontString(
+                    item.p0)}}</span>与<span [ngStyle]="{'font-family': config.planetFontFamily(item.p1)}">{{
+                    config.planetFontString( item.p1)}}</span>，<span *ngFor="let d of [degreeToDMSFn(item.d)]">{{d.d
+                    }}度{{d.m}}分{{d.s}}秒</span>
+            </div>
+        </div>
+
+    </div>
 </ion-content>
 
 <ion-footer>

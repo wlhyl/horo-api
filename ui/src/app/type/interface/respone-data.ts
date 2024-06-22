@@ -67,6 +67,10 @@ export interface Horoscope {
   planetary_day: PlanetName;
   planetary_hours: PlanetName;
   aspects: Array<Aspect>;
+  // 映点
+  antiscoins: Array<Aspect>;
+  // 反映点
+  contraantiscias: Array<Aspect>;
 }
 
 export interface Profection {
@@ -114,6 +118,10 @@ export interface HoroscopeCompare {
 
   // 行星相位，仅包含四轴、行星间的相位
   aspects: Array<Aspect>;
+  // 映点
+  antiscoins: Array<Aspect>;
+  // 反映点
+  contraantiscias: Array<Aspect>;
 }
 
 /**
@@ -150,6 +158,10 @@ export interface ReturnHoroscop {
 
   // 行星相位，仅包含四轴、行星间的相位
   aspects: Array<Aspect>;
+  // 映点
+  antiscoins: Array<Aspect>;
+  // 反映点
+  contraantiscias: Array<Aspect>;
 }
 
 /**

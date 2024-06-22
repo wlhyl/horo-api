@@ -8,6 +8,12 @@ mod no_compare_has_aspect;
 // 比较盘相位
 mod compare_has_aspect;
 
+// 映点
+mod antiscoin;
+
+// 反映点
+mod contraantiscia;
+
 // 构造函数正确存储输入参数
 #[test]
 fn test_new() {

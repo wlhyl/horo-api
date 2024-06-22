@@ -27,13 +27,13 @@
       processData.date.second .toString().padStart(2, '0')}}</h2>
   </div>
 
-  <div class="ion-text-center" *ngIf="solarReturnData">
-    <h2>返照时间：{{ solarReturnData.return_date.year }}年{{ solarReturnData.return_date.month.toString().padStart(2, '0')
+  <div class="ion-text-center" *ngIf="rreturnData">
+    <h2>返照时间：{{ rreturnData.return_date.year }}年{{ rreturnData.return_date.month.toString().padStart(2, '0')
       }}月{{
-      solarReturnData.return_date.day.toString().padStart(2, '0') }}日 {{
-      solarReturnData.return_date.hour.toString().padStart(2, '0') }}:{{
-      solarReturnData.return_date.minute.toString().padStart(2, '0') }}:{{
-      solarReturnData.return_date.second.toString().padStart(2, '0') }}</h2>
+      rreturnData.return_date.day.toString().padStart(2, '0') }}日 {{
+      rreturnData.return_date.hour.toString().padStart(2, '0') }}:{{
+      rreturnData.return_date.minute.toString().padStart(2, '0') }}:{{
+      rreturnData.return_date.second.toString().padStart(2, '0') }}</h2>
   </div>
 
   <div class="ion-text-center" *ngIf="loading">
@@ -43,10 +43,33 @@
   <div class="ion-text-center">
     <canvas id="canvas" width="0" height="0"></canvas>
   </div>
-  <div *ngIf="solarReturnData" class="horo-aspect-toggle">
+  <div *ngIf="rreturnData" class="horo-aspect-toggle">
     <ion-label class="ion-text-right">星盘</ion-label>
     <ion-toggle [(ngModel)]="isAspect" (ionChange)="switchHoroAspect()"></ion-toggle>
     <ion-label>相位</ion-label>
+  </div>
+
+  <div style="display: flex;flex-direction: column;align-items: center;">
+
+    <div>映点：
+      <div>
+        <div *ngFor="let item of rreturnData?.antiscoins">
+          <span [ngStyle]="{'font-family': config.planetFontFamily(item.p0)}"> {{ config.planetFontString(
+            item.p0)}}</span>与<span [ngStyle]="{'font-family': config.planetFontFamily(item.p1)}">{{
+            config.planetFontString( item.p1)}}</span>，<span *ngFor="let d of [degreeToDMSFn(item.d)]">{{d.d
+            }}度{{d.m}}分{{d.s}}秒</span>
+        </div>
+      </div>
+    </div>
+    <div>反映点：
+      <div *ngFor="let item of rreturnData?.contraantiscias">
+        <span [ngStyle]="{'font-family': config.planetFontFamily(item.p0)}"> {{ config.planetFontString(
+          item.p0)}}</span>与<span [ngStyle]="{'font-family': config.planetFontFamily(item.p1)}">{{
+          config.planetFontString( item.p1)}}</span>，<span *ngFor="let d of [degreeToDMSFn(item.d)]">{{d.d
+          }}度{{d.m}}分{{d.s}}秒</span>
+      </div>
+    </div>
+
   </div>
 </ion-content>
 

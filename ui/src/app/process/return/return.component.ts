@@ -17,6 +17,8 @@ import {
 import { Platform } from '@ionic/angular';
 import { Title } from '@angular/platform-browser';
 import { ProcessName } from 'src/app/type/enum/process';
+import { degreeToDMS } from 'src/app/utils/horo-math';
+import { QizhengConfigService } from 'src/app/services/config/qizheng-config.service';
 
 @Component({
   selector: 'app-return',
@@ -32,7 +34,7 @@ export class ReturnComponent implements OnInit {
 
   horoData = this.storage.horoData;
   processData = this.storage.processData;
-  solarReturnData: ReturnHoroscop | null = null;
+  rreturnData: ReturnHoroscop | null = null;
 
   isAspect = false; // 默认绘制星盘
   // canvas缓存，手机浏览器this.draw()执行慢，因此切换horo、aspect时使用此缓存
@@ -49,13 +51,16 @@ export class ReturnComponent implements OnInit {
     return ProcessName.name(this.process_name);
   }
 
+  degreeToDMSFn = degreeToDMS;
+
   constructor(
     private platform: Platform,
     private route: ActivatedRoute,
     private api: ApiService,
     private storage: HorostorageService,
-    private config: Horoconfig,
-    private titleService: Title
+    public config: Horoconfig,
+    private titleService: Title,
+    
   ) {}
 
   async ngOnInit() {
@@ -138,7 +143,7 @@ export class ReturnComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.solarReturnData = await this.getReturnData(process_name);
+      this.rreturnData = await this.getReturnData(process_name);
       this.isAlertOpen = false;
       this.draw();
     } catch (error: any) {
@@ -152,17 +157,17 @@ export class ReturnComponent implements OnInit {
 
   // 绘制星盘和相位
   draw() {
-    if (this.solarReturnData === null) return;
+    if (this.rreturnData === null) return;
 
     this.canvas?.setWidth(0);
     this.canvas?.setHeight(0);
     if (this.isAspect) {
-      drawAspect(this.solarReturnData.aspects, this.canvas!, this.config, {
+      drawAspect(this.rreturnData.aspects, this.canvas!, this.config, {
         width: this.config.apsectImage.width,
         heigth: this.config.apsectImage.heigth,
       });
     } else {
-      drawReturnHorosco(this.solarReturnData, this.canvas!, this.config, {
+      drawReturnHorosco(this.rreturnData, this.canvas!, this.config, {
         width: this.config.HoroscoImage.width,
         heigth: this.config.HoroscoImage.heigth,
       });

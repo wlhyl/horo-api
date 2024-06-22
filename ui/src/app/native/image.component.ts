@@ -9,6 +9,7 @@ import { Platform } from '@ionic/angular';
 import { Canvas } from '../type/alias/canvas';
 import { drawAspect, drawHorosco } from '../utils/image/horo';
 import { Title } from '@angular/platform-browser';
+import { degreeToDMS } from '../utils/horo-math';
 
 @Component({
   selector: 'teanote-image',
@@ -36,10 +37,12 @@ export class ImageComponent implements OnInit {
 
   title = '本命星盘';
 
+  degreeToDMSFn=degreeToDMS;
+
   constructor(
     private platform: Platform,
     private api: ApiService,
-    private config: Horoconfig,
+    public config: Horoconfig,
     private storage: HorostorageService,
     private titleService: Title
   ) {}

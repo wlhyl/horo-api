@@ -47,6 +47,10 @@ pub struct ReturnHoroscop {
 
     /// 行星相位，仅包含四轴、行星间的相位
     pub aspects: Vec<Aspect>,
+    // 映点
+    pub antiscoins: Vec<Aspect>,
+    // 反映点
+    pub contraantiscias: Vec<Aspect>,
 }
 
 /// 计算太阳返照盘
@@ -108,6 +112,8 @@ pub fn solar_return(
         ic: horo.ic,
         planets: horo.planets,
         aspects: horo.aspects,
+        antiscoins: horo.antiscoins,
+        contraantiscias: horo.contraantiscias,
     })
 }
 
@@ -170,5 +176,7 @@ pub fn lunar_return(
         ic: horo.ic,
         planets: horo.planets,
         aspects: horo.aspects,
+        antiscoins: horo.antiscoins,
+        contraantiscias: horo.contraantiscias,
     })
 }

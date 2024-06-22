@@ -156,7 +156,9 @@ impl Profection {
 
 #[cfg(test)]
 mod tests {
-    use crate::{profection::Profection, HoroDateTime};
+    use horo_date_time::HoroDateTime;
+
+    use crate::profection::Profection;
 
     #[test]
     fn test_profection_new() {

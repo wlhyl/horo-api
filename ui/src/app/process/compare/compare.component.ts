@@ -17,6 +17,7 @@ import { CompareRequest } from 'src/app/type/interface/request-data';
 import { lastValueFrom } from 'rxjs';
 import { drawAspect, drawHorosco } from 'src/app/utils/image/compare';
 import { zoomImage } from 'src/app/utils/image/horo';
+import { degreeToDMS } from 'src/app/utils/horo-math';
 
 @Component({
   selector: 'app-compare',
@@ -50,13 +51,16 @@ export class CompareComponent implements OnInit {
     return ProcessName.name(this.process_name);
   }
 
+
+  degreeToDMSFn=degreeToDMS;
+
   constructor(
     private platform: Platform,
     private route: ActivatedRoute,
     private titleService: Title,
     private api: ApiService,
     private storage: HorostorageService,
-    private config: Horoconfig
+    public config: Horoconfig
   ) {}
 
   async ngOnInit() {

@@ -1,6 +1,6 @@
-use crate::{Error,  Horoscope, HouseName, PlanetConfig, PlanetName};
-use horo_date_time::HoroDateTime;
+use crate::{Error, Horoscope, HouseName, PlanetConfig, PlanetName};
 use geo_position::GeoPosition;
+use horo_date_time::HoroDateTime;
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -150,7 +150,10 @@ pub fn firdaria_process(
 
 #[cfg(test)]
 mod test {
-    use crate::{firdaria_process, GeoPosition, HoroDateTime, PlanetConfig, PlanetName};
+    use geo_position::GeoPosition;
+    use horo_date_time::HoroDateTime;
+
+    use crate::{firdaria_process, PlanetConfig, PlanetName};
     use std::env;
 
     const SUB_PERIOD_SERIES: [PlanetName; 7] = [

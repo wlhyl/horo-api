@@ -1,4 +1,4 @@
-FROM node:18.19.1 as build-stage
+FROM node:20.14.0 as build-stage
 
 WORKDIR /app
 COPY ./ /app/
@@ -10,7 +10,7 @@ RUN ionic build --prod
 
 RUN gzip /app/www/*js && gzip /app/www/*css #  && gzip /app/www/*html
 
-FROM nginx:1.25.4-alpine
+FROM nginx:1.27.0-alpine
 
 # RUN rm -rf  /usr/share/nginx/html/*
 

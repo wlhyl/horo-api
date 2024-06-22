@@ -78,10 +78,8 @@ pub fn included_angle(d0: f64, d1: f64) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::newton_iteration;
-    use crate::{
-        horo_date_time::HoroDateTime,
-        utils::{calc_eps, included_angle, mod180},
-    };
+    use crate::utils::{calc_eps, included_angle, mod180};
+    use horo_date_time::HoroDateTime;
     use std::env;
     use swe::{swe_calc_ut, swe_close, swe_set_ephe_path, Body};
 
