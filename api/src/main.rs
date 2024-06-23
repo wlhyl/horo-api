@@ -1,4 +1,7 @@
-use actix_web::{middleware::Logger, web, App, HttpServer};
+use actix_web::{
+    middleware::{self, Logger},
+    web, App, HttpServer,
+};
 use std::{env, net::SocketAddrV4};
 
 #[cfg(feature = "swagger")]
@@ -74,7 +77,9 @@ async fn main() -> std::io::Result<()> {
         #[cfg(feature = "cors")]
         let app = app.wrap(cors);
 
-        let app = app.wrap(Logger::default());
+        let app = app
+            .wrap(Logger::default())
+            .wrap(middleware::Compress::default());
         app
     })
     .workers(args.n)
