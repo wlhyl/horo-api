@@ -4,7 +4,7 @@ use crate::request::{DateRequest, GeoRequest, QiZhengRequst};
 use geo_position::GeoPosition;
 use horo_date_time::HoroDateTime;
 use qizheng::{Horoscope, ASCHouse, LunarMansionsName, Planet, PlanetName, DistanceStarLong, House,HouseName,PlanetSpeedState, DongWei};
-use lunar_calendar::{LunarCalendar,SolarTerm};
+use lunar_calendar::LunarCalendar;
 use ganzhiwuxing::GanZhi;
 
 use utoipa::OpenApi;
@@ -19,7 +19,7 @@ use utoipa::OpenApi;
     components(schemas(
         GanZhi,
         // 农历
-        LunarCalendar,SolarTerm,
+        LunarCalendar,
         
         DateRequest, GeoRequest,
         // 七政 request

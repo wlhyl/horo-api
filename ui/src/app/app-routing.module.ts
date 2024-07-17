@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'clean',
     loadChildren: () => import('./clean/clean.module').then( m => m.CleanPageModule)
   },
+  {
+    path: 'power',
+    loadChildren: () => import('./power/power.module').then( m => m.PowerPageModule)
+  },
 ];
 
 @NgModule({
