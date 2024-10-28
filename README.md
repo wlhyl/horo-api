@@ -1,4 +1,4 @@
-** rust编写的基于actix web的占星web app**
+**rust编写的基于actix web的占星web app**
 
 # api
 ## 单元测试

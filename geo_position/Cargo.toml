@@ -10,5 +10,5 @@ serde = ["dep:serde"]
 swagger=["dep:utoipa"]
 
 [dependencies]
-serde = { version = "1.0.197", features = ["derive"], optional = true}
-utoipa = {version="4.2.0", optional = true}
+serde = { version = "*", features = ["derive"], optional = true}
+utoipa = {version="*", optional = true}

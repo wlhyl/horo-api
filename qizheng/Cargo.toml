@@ -30,5 +30,4 @@ serde = { version = "*", features = ["derive"], optional = true }
 utoipa = { version = "*", optional = true }
 
 [dev-dependencies]
-# dotenvy="0.15.7"
 parameterized = "2.0.0"

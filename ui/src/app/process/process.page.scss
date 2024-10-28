@@ -1,5 +1,15 @@
 .left_col {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+ion-modal {
+  --height: auto;
+
+  align-items: end;
+}
+
+ion-picker {
+  margin-bottom: var(--ion-safe-area-bottom);
+}

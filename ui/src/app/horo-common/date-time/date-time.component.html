@@ -1,3 +1,37 @@
-<ion-label id="open-picker" (click)="openPicker()">{{ year }}-{{month}}-{{day}}
-    {{hour}}:{{minute}}:{{second}}</ion-label>
+<ion-label (click)="isOpen=true">{{ year }}-{{ month }}-{{ day }}
+  {{ hour }}:{{ minute }}:{{ second }}
+</ion-label>
 <ion-icon class="now_date_icon" name="time-outline" (click)="nowDate()"></ion-icon>
+
+<ion-modal #modal [isOpen]="isOpen" (didDismiss)="onDidDismiss($event)">
+  <ng-template>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="modal.dismiss(null, 'cancel')">取消</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="modal.dismiss(currentValue, 'confirm')">确定</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-picker>
+      <ion-picker-column [value]="currentValue.year" (ionChange)="onIonChangeYear($event)">
+        <ion-picker-column-option *ngFor="let v of years" [value]="v">{{ v }}</ion-picker-column-option>
+      </ion-picker-column>
+      <ion-picker-column [value]="currentValue.month" (ionChange)="onIonChangeMonth($event)">
+        <ion-picker-column-option *ngFor="let v of months" [value]="v">{{ v }}</ion-picker-column-option>
+      </ion-picker-column>
+      <ion-picker-column [value]="currentValue.day" (ionChange)="onIonChangeDay($event)">
+        <ion-picker-column-option *ngFor="let v of days" [value]="v">{{ v }}</ion-picker-column-option>
+      </ion-picker-column>
+      <ion-picker-column [value]="currentValue.hour" (ionChange)="onIonChangeHour($event)">
+        <ion-picker-column-option *ngFor="let v of hours" [value]="v">{{ v }}</ion-picker-column-option>
+      </ion-picker-column>
+      <ion-picker-column [value]="currentValue.minute" (ionChange)="onIonChangeMinute($event)">
+        <ion-picker-column-option *ngFor="let v of minutes" [value]="v">{{ v }}</ion-picker-column-option>
+      </ion-picker-column>
+      <ion-picker-column [value]="currentValue.second" (ionChange)="onIonChangeSecond($event)">
+        <ion-picker-column-option *ngFor="let v of seconds" [value]="v">{{ v }}</ion-picker-column-option>
+      </ion-picker-column>
+    </ion-picker>
+  </ng-template>
+</ion-modal>

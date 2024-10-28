@@ -1,3 +1,13 @@
 .now_date_icon {
-    margin-left: 1rem;
+  margin-left: 1rem;
+}
+
+ion-modal {
+  --height: auto;
+
+  align-items: end;
+}
+
+ion-picker {
+  margin-bottom: var(--ion-safe-area-bottom);
 }

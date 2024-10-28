@@ -1,19 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  PickerColumn,
-  PickerColumnOption,
-  PickerController,
-  PickerOptions,
-} from '@ionic/angular';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'horo-date-time',
   templateUrl: './date-time.component.html',
   styleUrls: ['./date-time.component.scss'],
 })
-export class DateTimeComponent implements OnInit {
+export class DateTimeComponent implements OnInit, OnChanges {
   @Input()
-  year = 0;
+  year = 0
+
   @Input()
   month = 1;
   @Input()
@@ -43,164 +38,117 @@ export class DateTimeComponent implements OnInit {
   @Output()
   secondChange = new EventEmitter<number>();
 
-  private years = [...Array(200)].map((_, index) => {
-    let year = 1900 + index;
-    let v = {
-      text: `${year}`,
-      value: year,
-    };
-    return v;
-  });
-  private months: Array<PickerColumnOption> = [...Array(12)].map((_, index) => {
-    let month = 1 + index;
-    let v = {
-      text: `${month}`,
-      value: month,
-    };
-    return v;
-  });
+  years = [...Array(200)].map((_, index) => 1900 + index);
 
-  private get days(): Array<PickerColumnOption> {
+  months = [...Array(12)].map((_, index) => 1 + index);
+
+  get days() {
     // month从0开始
     // 获取本月最后一天: 等于，下一个月第0天
     // 本月: month-1
     // 下一个月: (month-1) + 1= month
-    let n = new Date(this.year, this.month, 0).getDate();
-    let days = [...Array(n)].map((_, index) => {
-      let day = index + 1;
-      return {
-        text: `${day}`,
-        value: day,
-      };
-    });
-    return days;
+    let lastDay = new Date(this.currentValue.year, this.currentValue.month, 0).getDate();
+    return [...Array(lastDay)].map((_, index) => index + 1);
   }
 
-  private hours: Array<PickerColumnOption> = [...Array(24)].map((_, index) => {
-    let v = {
-      text: `${index}`,
-      value: index,
-    };
-    return v;
-  });
+  hours = [...Array(24)].map((_, index) => index);
 
-  private minutes: Array<PickerColumnOption> = [...Array(60)].map(
-    (_, index) => {
-      let v = {
-        text: `${index}`,
-        value: index,
-      };
-      return v;
-    }
-  );
+  minutes = [...Array(60)].map((_, index) => index);
 
-  private seconds: Array<PickerColumnOption> = [...Array(60)].map(
-    (_, index) => {
-      let v = {
-        text: `${index}`,
-        value: index,
-      };
-      return v;
-    }
-  );
+  seconds = [...Array(60)].map((_, index) => index);
 
-  constructor(private pickerController: PickerController) {}
-  ngOnInit() {}
-
-  async openPicker() {
-    const columns: PickerColumn[] = [
-      {
-        name: 'year',
-        options: this.years,
-        // columnWidth: "1000em",
-        selectedIndex: this.years.findIndex((v) => v.value == this.year),
-      },
-      {
-        name: 'month',
-        options: this.months,
-        columnWidth:"2em",
-        selectedIndex: this.months.findIndex((v) => v.value == this.month),
-      },
-      {
-        name: 'day',
-        options: this.days,
-        selectedIndex: this.days.findIndex((v) => v.value == this.day),
-      },
-      {
-        name: 'hour',
-        options: this.hours,
-        selectedIndex: this.hours.findIndex((v) => v.value == this.hour),
-      },
-      {
-        name: 'minute',
-        options: this.minutes,
-        selectedIndex: this.minutes.findIndex((v) => v.value == this.minute),
-      },
-      {
-        name: 'second',
-        options: this.seconds,
-        selectedIndex: this.seconds.findIndex((v) => v.value == this.second),
-      },
-    ];
-
-    const pickerOptions: PickerOptions = {
-      // columns: JSON.parse(JSON.stringify(columns)),
-      columns,
-      buttons: [
-        {
-          text: '取消',
-          role: 'cancel',
-        },
-        {
-          text: '确定',
-          handler: (value) => {
-            this.year = value.year.value;
-            this.month = value.month.value;
-            this.day = value.day.value;
-            this.hour = value.hour.value;
-            this.minute = value.minute.value;
-            this.second = value.second.value;
-            this.emit();
-          },
-        },
-      ],
-    };
-
-    const picker = await this.pickerController.create(pickerOptions);
-
-    picker.addEventListener('ionPickerColChange', async (event: any) => {
-      const column: PickerColumn = event.detail;
-      let year: number = picker.columns[0].options.find((v) => v.selected)
-        ?.value!!;
-      let month: number = picker.columns[1].options.find((v) => v.selected)
-        ?.value!!;
-
-      let dayIndex = picker.columns[2].selectedIndex!!;
-
-      if (column.name === 'year' || column.name == 'month') {
-        // month从0开始
-        // 获取本月最后一天: 等于，下一个月第0天
-        let n = new Date(year, month, 0).getDate();
-        let days = [...Array(n)].map((_, index) => {
-          let day = index + 1;
-          return {
-            text: `${day}`,
-            value: day,
-          };
-        });
-
-        picker.columns[2] = {
-          name: 'day',
-          options: days,
-          selectedIndex: dayIndex < n ? dayIndex : n - 1,
-        };
-        // 不加此行，不能更新列
-        picker.columns = JSON.parse(JSON.stringify(picker.columns));
-      }
-    });
-
-    await picker.present();
+  currentValue = {
+    year: 0,
+    month: 0,
+    day: 0,
+    hour: 0,
+    minute: 0,
+    second: 0,
   }
+
+  isOpen = false
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['year']) {
+      this.currentValue.year = changes['year'].currentValue
+    }
+
+    if (changes['month']) {
+      this.currentValue.month = changes['month'].currentValue
+    }
+
+    if (changes['day']) {
+      this.currentValue.day = changes['day'].currentValue
+    }
+
+
+    if (changes['hour']) {
+      this.currentValue.hour = changes['hour'].currentValue
+    }
+
+    if (changes['minute']) {
+      this.currentValue.minute = changes['minute'].currentValue
+    }
+
+    if (changes['second']) {
+      this.currentValue.second = changes['second'].currentValue
+    }
+  }
+
+
+  onIonChangeYear(event: CustomEvent) {
+    this.currentValue.year = event.detail.value;
+  }
+
+  onIonChangeMonth(event: CustomEvent) {
+    this.currentValue.month = event.detail.value;
+  }
+
+  onIonChangeDay(event: CustomEvent) {
+    this.currentValue.day = event.detail.value;
+  }
+
+  onIonChangeHour(event: CustomEvent) {
+    this.currentValue.hour = event.detail.value;
+  }
+
+  onIonChangeMinute(event: CustomEvent) {
+    this.currentValue.minute = event.detail.value;
+  }
+
+  onIonChangeSecond(event: CustomEvent) {
+    this.currentValue.second = event.detail.value;
+  }
+
+  onDidDismiss(event: CustomEvent) {
+    this.isOpen = false
+
+    if (event.detail.data === null) {
+      this.currentValue.year = this.year
+      this.currentValue.month = this.month
+      this.currentValue.day = this.day
+      this.currentValue.hour = this.hour
+      this.currentValue.minute = this.minute
+      this.currentValue.second = this.second
+    } else {
+      this.year = event.detail.data.year
+      this.month = event.detail.data.month
+      this.day = event.detail.data.day
+      this.hour = event.detail.data.hour
+      this.minute = event.detail.data.minute
+      this.second = event.detail.data.second
+
+      this.emit();
+    }
+  }
+
+
   nowDate() {
     let t = new Date();
     this.year = t.getFullYear();
@@ -211,6 +159,7 @@ export class DateTimeComponent implements OnInit {
     this.second = t.getSeconds();
     this.emit();
   }
+
   private emit(): void {
     this.yearChange.emit(this.year);
     this.monthChange.emit(this.month);
