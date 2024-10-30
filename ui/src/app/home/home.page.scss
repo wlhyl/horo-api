@@ -4,11 +4,16 @@
 
 .container {
   display: flex;
-  position: absolute;
+  //position: absolute;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
+}
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .item {
