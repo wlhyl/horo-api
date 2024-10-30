@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {HttpClient} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs";
 import {
   HoroRequest,
   ProfectionRequest,
@@ -8,27 +8,25 @@ import {
   CompareRequest,
   FirdariaRequest,
   QiZhengRequst,
-} from 'src/app/type/interface/request-data';
+} from "src/app/type/interface/request-data";
 import {
   FirdariaPeriod,
   Horoscope,
   HoroscopeCompare,
   Profection,
   ReturnHoroscop,
-} from 'src/app/type/interface/respone-data';
-import { Horoscope as QiZhengHoroscope } from 'src/app/type/interface/response-qizheng';
-import { environment } from 'src/environments/environment';
+} from "src/app/type/interface/respone-data";
+import {Horoscope as QiZhengHoroscope} from "src/app/type/interface/response-qizheng";
+import {environment} from "src/environments/environment";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ApiService {
   private readonly url = `${environment.base_url}/api`;
-  private readonly http_options = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   /**
    *
@@ -43,11 +41,7 @@ export class ApiService {
    * @returns 获取本命星盘
    */
   public getNative(data: HoroRequest): Observable<Horoscope> {
-    return this.http.post<Horoscope>(
-      `${this.url}/horo/native`,
-      data,
-      this.http_options
-    );
+    return this.http.post<Horoscope>(`${this.url}/horo/native`, data);
   }
 
   /**
@@ -55,11 +49,7 @@ export class ApiService {
    * @returns 获取小限
    */
   public profection(data: ProfectionRequest): Observable<Profection> {
-    return this.http.post<Profection>(
-      `${this.url}/process/profection`,
-      data,
-      this.http_options
-    );
+    return this.http.post<Profection>(`${this.url}/process/profection`, data);
   }
 
   /**
@@ -67,11 +57,7 @@ export class ApiService {
    * @returns 获取法达
    */
   public firdaria(data: FirdariaRequest): Observable<Array<FirdariaPeriod>> {
-    return this.http.post<Array<FirdariaPeriod>>(
-      `${this.url}/process/firdaria`,
-      data,
-      this.http_options
-    );
+    return this.http.post<Array<FirdariaPeriod>>(`${this.url}/process/firdaria`, data);
   }
 
   /**
@@ -79,11 +65,7 @@ export class ApiService {
    * @returns 获取比较盘
    */
   public compare(data: CompareRequest): Observable<HoroscopeCompare> {
-    return this.http.post<HoroscopeCompare>(
-      `${this.url}/process/compare`,
-      data,
-      this.http_options
-    );
+    return this.http.post<HoroscopeCompare>(`${this.url}/process/compare`, data);
   }
 
   /**
@@ -91,11 +73,7 @@ export class ApiService {
    * @returns 获取太阳返照盘
    */
   public solarReturn(data: ReturnRequest): Observable<ReturnHoroscop> {
-    return this.http.post<ReturnHoroscop>(
-      `${this.url}/process/return/solar`,
-      data,
-      this.http_options
-    );
+    return this.http.post<ReturnHoroscop>(`${this.url}/process/return/solar`, data);
   }
 
   /**
@@ -103,11 +81,7 @@ export class ApiService {
    * @returns 获取月亮返照盘
    */
   public lunarReturn(data: ReturnRequest): Observable<ReturnHoroscop> {
-    return this.http.post<ReturnHoroscop>(
-      `${this.url}/process/return/lunar`,
-      data,
-      this.http_options
-    );
+    return this.http.post<ReturnHoroscop>(`${this.url}/process/return/lunar`, data);
   }
 
   /**
@@ -115,10 +89,6 @@ export class ApiService {
    * @returns 获取七政
    */
   public qizheng(data: QiZhengRequst): Observable<QiZhengHoroscope> {
-    return this.http.post<QiZhengHoroscope>(
-      `${this.url}/qizheng/horo`,
-      data,
-      this.http_options
-    );
+    return this.http.post<QiZhengHoroscope>(`${this.url}/qizheng/horo`, data);
   }
 }
