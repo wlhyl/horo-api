@@ -1,8 +1,11 @@
 use crate::{error::Error, request::ReturnRequest, state::AppState};
 use actix_web::{post, web, HttpResponse, Responder};
 use geo_position::GeoPosition;
-use horo::{lunar_return, solar_return, PlanetConfig, ReturnHoroscop};
+use horo::{lunar_return, solar_return, PlanetConfig};
 use horo_date_time::horo_date_time;
+
+#[cfg(feature = "swagger")]
+use horo::ReturnHoroscop;
 
 /// 太阳返照
 #[cfg_attr(feature = "swagger", 

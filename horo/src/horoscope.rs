@@ -273,68 +273,95 @@ impl Horoscope {
 #[derive(Debug)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
-pub struct HoroscopeCompare {
+pub struct HoroscopeComparison {
     /// 原星盘的时间
-    pub date: HoroDateTime,
+    pub original_date: HoroDateTime,
     /// 比较盘时间
-    pub date_compare: HoroDateTime,
-    /// 绘制星盘的地理位置
-    pub geo: GeoPosition,
+    pub comparison_date: HoroDateTime,
+    /// 原星盘的地理位置
+    pub original_geo: GeoPosition,
+    /// 比较星盘的地理位置
+    pub comparison_geo: GeoPosition,
     /// 星盘的宫位
     pub house_name: HouseName,
     /// 12宫头黄经度数
     pub houses_cups: Vec<f64>,
-    // 比较盘12宫头黄经度数
-    // pub houses_cups_compare: Vec<f64>,
-    // 上升点
-    pub asc: Planet,
-    pub asc_compare: Planet,
-    // 中天
-    pub mc: Planet,
-    pub mc_compare: Planet,
-    // 下降点
-    pub dsc: Planet,
-    pub dsc_compare: Planet,
-    //     天底
-    pub ic: Planet,
-    pub ic_compare: Planet,
-    // 七颗行星
-    pub planets: Vec<Planet>,
-    pub planets_compare: Vec<Planet>,
 
-    // 行星相位，仅包含四轴、行星间的相位
+    /// 上升点
+    pub original_asc: Planet,
+    pub comparison_asc: Planet,
+    /// 中天
+    pub original_mc: Planet,
+    pub comparison_mc: Planet,
+    /// 下降点
+    pub original_dsc: Planet,
+    pub comparison_dsc: Planet,
+    /// 天底
+    pub original_ic: Planet,
+    pub comparison_ic: Planet,
+    /// 七颗行星
+    pub original_planets: Vec<Planet>,
+    pub comparison_planets: Vec<Planet>,
+
+    /// 行星相位，仅包含四轴、行星间的相位
     pub aspects: Vec<Aspect>,
+    /// 映点
     pub antiscoins: Vec<Aspect>,
+    /// 反映点
     pub contraantiscias: Vec<Aspect>,
 }
 
-impl HoroscopeCompare {
+impl HoroscopeComparison {
     pub fn new(
         date: HoroDateTime,
         date_compare: HoroDateTime,
         geo: GeoPosition,
+        process_geo: GeoPosition,
         house_name: HouseName,
         planets_config: &[PlanetConfig],
         ephe_path: &str,
     ) -> Result<Self, Error> {
         // 计算原星盘
-        let horo = Horoscope::new(
-            date.clone(),
-            geo.clone(),
-            house_name.clone(),
-            planets_config,
-            ephe_path,
-        )?;
+        let horo = Horoscope::new(date, geo, house_name, planets_config, ephe_path)?;
 
         let horo_compare = Horoscope::new(
-            date_compare.clone(),
-            geo.clone(),
-            house_name.clone(),
+            date_compare,
+            process_geo,
+            house_name,
             planets_config,
             ephe_path,
         )?;
 
         // 计算相位和映点
+        let (aspects, antiscoins, contraantiscias) = Self::calculate_aspects(&horo, &horo_compare);
+
+        Ok(Self {
+            original_date: date,
+            comparison_date: date_compare,
+            original_geo: geo,
+            comparison_geo: process_geo,
+            house_name,
+            houses_cups: horo.houses_cups,
+            original_asc: horo.asc,
+            comparison_asc: horo_compare.asc,
+            original_mc: horo.mc,
+            comparison_mc: horo_compare.mc,
+            original_dsc: horo.dsc,
+            comparison_dsc: horo_compare.dsc,
+            original_ic: horo.ic,
+            comparison_ic: horo_compare.ic,
+            original_planets: horo.planets,
+            comparison_planets: horo_compare.planets,
+            aspects,
+            antiscoins,
+            contraantiscias,
+        })
+    }
+
+    fn calculate_aspects(
+        horo: &Horoscope,
+        horo_compare: &Horoscope,
+    ) -> (Vec<Aspect>, Vec<Aspect>, Vec<Aspect>) {
         let mut aspects: Vec<Aspect> = vec![];
         let mut antiscoins: Vec<Aspect> = vec![];
         let mut contraantiscias: Vec<Aspect> = vec![];
@@ -371,37 +398,7 @@ impl HoroscopeCompare {
             }
         }
 
-        Ok(Self {
-            date,
-
-            date_compare,
-
-            geo,
-
-            house_name,
-
-            houses_cups: horo.houses_cups,
-
-            // houses_cups_compare: horo_compare.houses_cups,
-            asc: horo.asc,
-            asc_compare: horo_compare.asc,
-
-            mc: horo.mc,
-            mc_compare: horo_compare.mc,
-
-            dsc: horo.dsc,
-            dsc_compare: horo_compare.dsc,
-
-            ic: horo.ic,
-            ic_compare: horo_compare.ic,
-
-            planets: horo.planets,
-            planets_compare: horo_compare.planets,
-
-            aspects,
-            antiscoins,
-            contraantiscias,
-        })
+        (aspects, antiscoins, contraantiscias)
     }
 }
 
@@ -567,7 +564,7 @@ mod tests {
 
     use crate::{
         config::PlanetConfig, house::HouseName, planet::PlanetSpeedState::*, utils::calc_eps,
-        Horoscope, HoroscopeCompare, PlanetName::*,
+        Horoscope, HoroscopeComparison, PlanetName::*,
     };
 
     #[test]
@@ -924,14 +921,8 @@ mod tests {
             let t = t0
                 .plus_days((t1.jd_utc - t0.jd_utc) * f64::from(i) / 12.0)
                 .unwrap();
-            let h = Horoscope::new(
-                t,
-                geo.clone(),
-                HouseName::Alcabitus,
-                &planet_configs,
-                &ephe_path,
-            )
-            .unwrap();
+            let h =
+                Horoscope::new(t, geo, HouseName::Alcabitus, &planet_configs, &ephe_path).unwrap();
             assert_eq!(
                 planetary_hours_list[((1 + i) % 7) as usize],
                 h.planetary_hours,
@@ -986,7 +977,7 @@ mod tests {
     }
 
     #[test]
-    fn test_horoscope_compare_new() {
+    fn çtest_horoscope_compare_new() {
         dotenvy::dotenv().ok();
         let ephe_path = env::var("EPHE_PATH")
             .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
@@ -1007,14 +998,22 @@ mod tests {
         assert!(geo.is_ok());
         let geo = geo.unwrap();
 
+        let process_geo = GeoPosition::new(
+            120.0 + 41.0 / 60.0 + 59.0 / 3600.0,
+            30.0 + 1.0 / 60.0 + 53.0 / 3600.0,
+        );
+        assert!(process_geo.is_ok());
+        let process_geo = process_geo.unwrap();
+
         let house = HouseName::Alcabitus;
         let planet_configs = PlanetConfig::default_all_configs();
 
-        let horo = HoroscopeCompare::new(
-            t.clone(),
-            t_compare.clone(),
-            geo.clone(),
-            house.clone(),
+        let horo = HoroscopeComparison::new(
+            t,
+            t_compare,
+            geo,
+            process_geo,
+            house,
             &planet_configs,
             &ephe_path,
         );
@@ -1022,23 +1021,26 @@ mod tests {
         let horo = horo.unwrap();
 
         // 时间
-        assert_eq!(t.year, horo.date.year);
-        assert_eq!(t.month, horo.date.month);
-        assert_eq!(t.hour, horo.date.hour);
-        assert_eq!(t.minute, horo.date.minute);
-        assert_eq!(t.second, horo.date.second);
-        assert_eq!(t.tz, horo.date.tz);
+        assert_eq!(t.year, horo.original_date.year);
+        assert_eq!(t.month, horo.original_date.month);
+        assert_eq!(t.hour, horo.original_date.hour);
+        assert_eq!(t.minute, horo.original_date.minute);
+        assert_eq!(t.second, horo.original_date.second);
+        assert_eq!(t.tz, horo.original_date.tz);
 
-        assert_eq!(t_compare.year, horo.date_compare.year);
-        assert_eq!(t_compare.month, horo.date_compare.month);
-        assert_eq!(t_compare.hour, horo.date_compare.hour);
-        assert_eq!(t_compare.minute, horo.date_compare.minute);
-        assert_eq!(t_compare.second, horo.date_compare.second);
-        assert_eq!(t_compare.tz, horo.date_compare.tz);
+        assert_eq!(t_compare.year, horo.comparison_date.year);
+        assert_eq!(t_compare.month, horo.comparison_date.month);
+        assert_eq!(t_compare.hour, horo.comparison_date.hour);
+        assert_eq!(t_compare.minute, horo.comparison_date.minute);
+        assert_eq!(t_compare.second, horo.comparison_date.second);
+        assert_eq!(t_compare.tz, horo.comparison_date.tz);
 
         // 大地经纬度
-        assert_eq!(geo.long, horo.geo.long); //, this.doubleDelta)
-        assert_eq!(geo.lat, horo.geo.lat); //, this.doubleDelta)
+        assert_eq!(geo.long, horo.original_geo.long); //, this.doubleDelta)
+        assert_eq!(geo.lat, horo.original_geo.lat); //, this.doubleDelta)
+
+        assert_eq!(process_geo.long, horo.comparison_geo.long); 
+        assert_eq!(process_geo.lat, horo.comparison_geo.lat); 
 
         // 宫位系统
         match horo.house_name {
@@ -1064,43 +1066,43 @@ mod tests {
         let eps = eps.unwrap();
 
         let asc_equator = swe_cotrans(ascmc[0], 0.0, 1.0, -eps);
-        assert_eq!(ASC, horo.asc.name, "asc name");
-        assert_eq!(ascmc[0], horo.asc.long, "asc 黄道经度");
-        assert_eq!(0.0, horo.asc.lat, "asc 黄纬");
-        assert_eq!(asc_equator[0], horo.asc.ra, "asc 赤经");
-        assert_eq!(asc_equator[1], horo.asc.dec, "asc 赤纬");
-        assert_eq!(0, horo.asc.orb, "asc 容许度");
-        assert_eq!(均, horo.asc.speed_state, "asc速度是“均”");
+        assert_eq!(ASC, horo.original_asc.name, "asc name");
+        assert_eq!(ascmc[0], horo.original_asc.long, "asc 黄道经度");
+        assert_eq!(0.0, horo.original_asc.lat, "asc 黄纬");
+        assert_eq!(asc_equator[0], horo.original_asc.ra, "asc 赤经");
+        assert_eq!(asc_equator[1], horo.original_asc.dec, "asc 赤纬");
+        assert_eq!(0, horo.original_asc.orb, "asc 容许度");
+        assert_eq!(均, horo.original_asc.speed_state, "asc速度是“均”");
 
         // mc
         let mc_equator = swe_cotrans(ascmc[1], 0.0, 1.0, -eps);
-        assert_eq!(MC, horo.mc.name, "mc name");
-        assert_eq!(ascmc[1], horo.mc.long, "mc 黄道经度");
-        assert_eq!(0.0, horo.mc.lat, "mc 黄纬");
-        assert_eq!(mc_equator[0], horo.mc.ra, "mc 赤经");
-        assert_eq!(mc_equator[1], horo.mc.dec, "mc 赤纬");
-        assert_eq!(0, horo.mc.orb, "mc 容许度");
-        assert_eq!(均, horo.mc.speed_state, "mc速度是均");
+        assert_eq!(MC, horo.original_mc.name, "mc name");
+        assert_eq!(ascmc[1], horo.original_mc.long, "mc 黄道经度");
+        assert_eq!(0.0, horo.original_mc.lat, "mc 黄纬");
+        assert_eq!(mc_equator[0], horo.original_mc.ra, "mc 赤经");
+        assert_eq!(mc_equator[1], horo.original_mc.dec, "mc 赤纬");
+        assert_eq!(0, horo.original_mc.orb, "mc 容许度");
+        assert_eq!(均, horo.original_mc.speed_state, "mc速度是均");
 
         // DSC
         let dsc_equator = swe_cotrans(swe_degnorm(ascmc[0] + 180.0), 0.0, 1.0, -eps);
-        assert_eq!(DSC, horo.dsc.name, "dsc name");
-        assert_eq!(swe_degnorm(ascmc[0] + 180.0), horo.dsc.long, "dsc 黄道经度");
-        assert_eq!(0.0, horo.dsc.lat, "dsc 黄纬");
-        assert_eq!(dsc_equator[0], horo.dsc.ra, "dsc 赤经");
-        assert_eq!(dsc_equator[1], horo.dsc.dec, "dsc 赤纬");
-        assert_eq!(0, horo.dsc.orb, "dsc 容许度");
-        assert_eq!(均, horo.dsc.speed_state, "dsc速冻是均");
+        assert_eq!(DSC, horo.original_dsc.name, "dsc name");
+        assert_eq!(swe_degnorm(ascmc[0] + 180.0), horo.original_dsc.long, "dsc 黄道经度");
+        assert_eq!(0.0, horo.original_dsc.lat, "dsc 黄纬");
+        assert_eq!(dsc_equator[0], horo.original_dsc.ra, "dsc 赤经");
+        assert_eq!(dsc_equator[1], horo.original_dsc.dec, "dsc 赤纬");
+        assert_eq!(0, horo.original_dsc.orb, "dsc 容许度");
+        assert_eq!(均, horo.original_dsc.speed_state, "dsc速冻是均");
 
         // IC
         let ic_equator = swe_cotrans(swe_degnorm(ascmc[1] + 180.0), 0.0, 1.0, -eps);
-        assert_eq!(IC, horo.ic.name, "ic name");
-        assert_eq!(swe_degnorm(ascmc[1] + 180.0), horo.ic.long, "ic 黄道经度");
-        assert_eq!(0.0, horo.ic.lat, "ic 黄纬");
-        assert_eq!(ic_equator[0], horo.ic.ra, "ic 赤经");
-        assert_eq!(ic_equator[1], horo.ic.dec, "ic 赤纬");
-        assert_eq!(0, horo.ic.orb, "ic 容许度");
-        assert_eq!(均, horo.ic.speed_state, "IC速度是均");
+        assert_eq!(IC, horo.original_ic.name, "ic name");
+        assert_eq!(swe_degnorm(ascmc[1] + 180.0), horo.original_ic.long, "ic 黄道经度");
+        assert_eq!(0.0, horo.original_ic.lat, "ic 黄纬");
+        assert_eq!(ic_equator[0], horo.original_ic.ra, "ic 赤经");
+        assert_eq!(ic_equator[1], horo.original_ic.dec, "ic 赤纬");
+        assert_eq!(0, horo.original_ic.orb, "ic 容许度");
+        assert_eq!(均, horo.original_ic.speed_state, "IC速度是均");
 
         // 比较盘12宫
         let yy = swe_houses(t_compare.jd_ut1, geo.lat, geo.long, &(&house).into());
@@ -1113,55 +1115,55 @@ mod tests {
         let eps = eps.unwrap();
 
         let asc_equator = swe_cotrans(ascmc[0], 0.0, 1.0, -eps);
-        assert_eq!(ASC, horo.asc_compare.name, "asc name");
-        assert_eq!(ascmc[0], horo.asc_compare.long, "asc 黄道经度");
-        assert_eq!(0.0, horo.asc_compare.lat, "asc 黄纬");
-        assert_eq!(asc_equator[0], horo.asc_compare.ra, "asc 赤经");
-        assert_eq!(asc_equator[1], horo.asc_compare.dec, "asc 赤纬");
-        assert_eq!(0, horo.asc_compare.orb, "asc 容许度");
-        assert_eq!(均, horo.asc_compare.speed_state, "asc速度是“均”");
+        assert_eq!(ASC, horo.comparison_asc.name, "asc name");
+        assert_eq!(ascmc[0], horo.comparison_asc.long, "asc 黄道经度");
+        assert_eq!(0.0, horo.comparison_asc.lat, "asc 黄纬");
+        assert_eq!(asc_equator[0], horo.comparison_asc.ra, "asc 赤经");
+        assert_eq!(asc_equator[1], horo.comparison_asc.dec, "asc 赤纬");
+        assert_eq!(0, horo.comparison_asc.orb, "asc 容许度");
+        assert_eq!(均, horo.comparison_asc.speed_state, "asc速度是“均”");
 
         // mc
         let mc_equator = swe_cotrans(ascmc[1], 0.0, 1.0, -eps);
-        assert_eq!(MC, horo.mc_compare.name, "mc name");
-        assert_eq!(ascmc[1], horo.mc_compare.long, "mc 黄道经度");
-        assert_eq!(0.0, horo.mc_compare.lat, "mc 黄纬");
-        assert_eq!(mc_equator[0], horo.mc_compare.ra, "mc 赤经");
-        assert_eq!(mc_equator[1], horo.mc_compare.dec, "mc 赤纬");
-        assert_eq!(0, horo.mc_compare.orb, "mc 容许度");
-        assert_eq!(均, horo.mc_compare.speed_state, "mc速度是均");
+        assert_eq!(MC, horo.comparison_mc.name, "mc name");
+        assert_eq!(ascmc[1], horo.comparison_mc.long, "mc 黄道经度");
+        assert_eq!(0.0, horo.comparison_mc.lat, "mc 黄纬");
+        assert_eq!(mc_equator[0], horo.comparison_mc.ra, "mc 赤经");
+        assert_eq!(mc_equator[1], horo.comparison_mc.dec, "mc 赤纬");
+        assert_eq!(0, horo.comparison_mc.orb, "mc 容许度");
+        assert_eq!(均, horo.comparison_mc.speed_state, "mc速度是均");
 
         // DSC
         let dsc_equator = swe_cotrans(swe_degnorm(ascmc[0] + 180.0), 0.0, 1.0, -eps);
-        assert_eq!(DSC, horo.dsc_compare.name, "dsc name");
+        assert_eq!(DSC, horo.comparison_dsc.name, "dsc name");
         assert_eq!(
             swe_degnorm(ascmc[0] + 180.0),
-            horo.dsc_compare.long,
+            horo.comparison_dsc.long,
             "dsc 黄道经度"
         );
-        assert_eq!(0.0, horo.dsc_compare.lat, "dsc 黄纬");
-        assert_eq!(dsc_equator[0], horo.dsc_compare.ra, "dsc 赤经");
-        assert_eq!(dsc_equator[1], horo.dsc_compare.dec, "dsc 赤纬");
-        assert_eq!(0, horo.dsc_compare.orb, "dsc 容许度");
-        assert_eq!(均, horo.dsc_compare.speed_state, "dsc速冻是均");
+        assert_eq!(0.0, horo.comparison_dsc.lat, "dsc 黄纬");
+        assert_eq!(dsc_equator[0], horo.comparison_dsc.ra, "dsc 赤经");
+        assert_eq!(dsc_equator[1], horo.comparison_dsc.dec, "dsc 赤纬");
+        assert_eq!(0, horo.comparison_dsc.orb, "dsc 容许度");
+        assert_eq!(均, horo.comparison_dsc.speed_state, "dsc速冻是均");
 
         // IC
         let ic_equator = swe_cotrans(swe_degnorm(ascmc[1] + 180.0), 0.0, 1.0, -eps);
-        assert_eq!(IC, horo.ic_compare.name, "ic name");
+        assert_eq!(IC, horo.comparison_ic.name, "ic name");
         assert_eq!(
             swe_degnorm(ascmc[1] + 180.0),
-            horo.ic_compare.long,
+            horo.comparison_ic.long,
             "ic 黄道经度"
         );
-        assert_eq!(0.0, horo.ic_compare.lat, "ic 黄纬");
-        assert_eq!(ic_equator[0], horo.ic_compare.ra, "ic 赤经");
-        assert_eq!(ic_equator[1], horo.ic_compare.dec, "ic 赤纬");
-        assert_eq!(0, horo.ic_compare.orb, "ic 容许度");
-        assert_eq!(均, horo.ic_compare.speed_state, "IC速度是均");
+        assert_eq!(0.0, horo.comparison_ic.lat, "ic 黄纬");
+        assert_eq!(ic_equator[0], horo.comparison_ic.ra, "ic 赤经");
+        assert_eq!(ic_equator[1], horo.comparison_ic.dec, "ic 赤纬");
+        assert_eq!(0, horo.comparison_ic.orb, "ic 容许度");
+        assert_eq!(均, horo.comparison_ic.speed_state, "IC速度是均");
 
         // 七颗正星
         for planet_name in [Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn] {
-            let p = horo.planets.iter().find(|p| p.name == planet_name);
+            let p = horo.original_planets.iter().find(|p| p.name == planet_name);
             assert!(p.is_some());
             let p = p.unwrap();
 
@@ -1210,7 +1212,7 @@ mod tests {
 
         // 比较盘七颗正星
         for planet_name in [Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn] {
-            let p = horo.planets_compare.iter().find(|p| p.name == planet_name);
+            let p = horo.comparison_planets.iter().find(|p| p.name == planet_name);
             assert!(p.is_some());
             let p = p.unwrap();
 
@@ -1258,8 +1260,8 @@ mod tests {
         }
 
         // 月交点
-        let north_node = horo.planets.iter().find(|p| p.name == NorthNode);
-        let south_node = horo.planets.iter().find(|p| p.name == SouthNode);
+        let north_node = horo.original_planets.iter().find(|p| p.name == NorthNode);
+        let south_node = horo.original_planets.iter().find(|p| p.name == SouthNode);
 
         assert!(north_node.is_some());
         assert!(south_node.is_some());
@@ -1297,8 +1299,8 @@ mod tests {
         assert_eq!(均, south_node.speed_state, "迟疾, 南交点");
 
         // 比较盘月交点
-        let north_node = horo.planets_compare.iter().find(|p| p.name == NorthNode);
-        let south_node = horo.planets_compare.iter().find(|p| p.name == SouthNode);
+        let north_node = horo.comparison_planets.iter().find(|p| p.name == NorthNode);
+        let south_node = horo.comparison_planets.iter().find(|p| p.name == SouthNode);
 
         assert!(north_node.is_some());
         assert!(south_node.is_some());

@@ -1,8 +1,11 @@
 use crate::{error::Error, request::FirdariaRequest, state::AppState};
 use actix_web::{post, web, HttpResponse, Responder};
 use geo_position::GeoPosition;
-use horo::{firdaria_process, FirdariaPeriod, PlanetConfig};
+use horo::{firdaria_process, PlanetConfig};
 use horo_date_time::horo_date_time;
+
+#[cfg(feature = "swagger")]
+use horo::FirdariaPeriod;
 
 /// 法达
 #[cfg_attr(feature = "swagger", 

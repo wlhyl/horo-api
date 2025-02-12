@@ -67,7 +67,7 @@ pub fn solar_return(
     let xx = swe_calc_ut(native_date.jd_utc, &Body::SeSun, &[])
         .map_err(|e| Error::Function(format!("计算本命星盘太阳黄道经度错误:{e}")))?;
     swe_close();
-    let sun_long = xx[0];
+    let native_sun_long = xx[0];
 
     // 计算推运时刻黄道经度
     let xx = swe_calc_ut(process_date.jd_utc, &Body::SeSun, &[])
@@ -75,10 +75,10 @@ pub fn solar_return(
     let process_sun_long = xx[0];
 
     // 计算迭代初值
-    let jd0 = process_date.jd_utc - swe_degnorm(process_sun_long - sun_long);
+    let jd0 = process_date.jd_utc - swe_degnorm(process_sun_long - native_sun_long);
 
     // 计算返照时间
-    let jd = newton_iteration(jd0, |jd| {
+    let return_jd = newton_iteration(jd0, |jd| {
         let t0 = HoroDateTime::from_jd_zone(jd, process_date.tz)?;
         swe_set_ephe_path(ephe_path);
         let xx = swe_calc_ut(t0.jd_utc, &Body::SeSun, &[]).map_err(|e| {
@@ -87,15 +87,15 @@ pub fn solar_return(
 
         swe_close();
 
-        Ok(mod180(xx[0] - sun_long))
+        Ok(mod180(xx[0] - native_sun_long))
     })?;
 
-    let solar_return_date = HoroDateTime::from_jd_zone(jd, process_date.tz)?;
+    let solar_return_date = HoroDateTime::from_jd_zone(return_jd, process_date.tz)?;
     // 计算返照星盘
     let horo = Horoscope::new(
-        solar_return_date.clone(),
-        geo.clone(),
-        house_name.clone(),
+        solar_return_date,
+        geo,
+        house_name,
         planets_config,
         ephe_path,
     )?;
@@ -131,7 +131,7 @@ pub fn lunar_return(
     let xx = swe_calc_ut(native_date.jd_utc, &Body::SeMoon, &[])
         .map_err(|e| Error::Function(format!("计算本命星盘月亮黄道经度错误:{e}")))?;
     swe_close();
-    let moon_long = xx[0];
+    let native_moon_long = xx[0];
 
     // 计算推运时刻黄道经度
     let xx = swe_calc_ut(process_date.jd_utc, &Body::SeMoon, &[])
@@ -139,10 +139,11 @@ pub fn lunar_return(
     let process_moon_long = xx[0];
 
     // 计算迭代初值
-    let jd0 = process_date.jd_utc - swe_degnorm(process_moon_long - moon_long) / 13.0;
+    // ‌月亮每天在天空中移动约13.18度‌（来自百度AI）
+    let jd0 = process_date.jd_utc - swe_degnorm(process_moon_long - native_moon_long) / 13.18;
 
     // 计算返照时间
-    let jd = newton_iteration(jd0, |jd| {
+    let return_jd = newton_iteration(jd0, |jd| {
         let t0 = HoroDateTime::from_jd_zone(jd, process_date.tz)?;
         swe_set_ephe_path(ephe_path);
         let xx = swe_calc_ut(t0.jd_utc, &Body::SeMoon, &[]).map_err(|e| {
@@ -151,10 +152,10 @@ pub fn lunar_return(
 
         swe_close();
 
-        Ok(mod180(xx[0] - moon_long))
+        Ok(mod180(xx[0] - native_moon_long))
     })?;
 
-    let lunar_return_date = HoroDateTime::from_jd_zone(jd, process_date.tz)?;
+    let lunar_return_date = HoroDateTime::from_jd_zone(return_jd, process_date.tz)?;
     // 计算返照星盘
     let horo = Horoscope::new(
         lunar_return_date.clone(),

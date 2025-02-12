@@ -4,7 +4,7 @@ use swe::HouseSystem;
 #[cfg(feature = "swagger")]
 use utoipa::ToSchema;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Copy)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
 pub enum HouseName {

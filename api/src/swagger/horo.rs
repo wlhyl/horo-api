@@ -7,12 +7,12 @@ use crate::handlers::{
     return_horoscop::{__path_lunar_return_horo, __path_solar_return_horo},
 };
 use crate::request::{
-    CompareRequst, DateRequest, FirdariaRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest,
+    HoroscopeComparisonRequst, DateRequest, FirdariaRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest,
     ReturnRequest,
 };
 use geo_position::GeoPosition;
 use horo::{
-    Aspect, FirdariaPeriod, FirdariaSubPeriod, Horoscope, HoroscopeCompare, HouseName, Planet,
+    Aspect, FirdariaPeriod, FirdariaSubPeriod, Horoscope, HoroscopeComparison, HouseName, Planet,
     PlanetName, PlanetSpeedState, Profection, ReturnHoroscop,
 };
 use horo_date_time::HoroDateTime;
@@ -41,9 +41,9 @@ use utoipa::OpenApi;
         GeoRequest,
         HoroNativeRenReust,
         ProfectionRequest,
-        CompareRequst,
+        HoroscopeComparisonRequst,
         FirdariaRequest,
-        Horoscope,HoroscopeCompare,
+        Horoscope,HoroscopeComparison,
         HouseName,
         Planet,
         PlanetName,

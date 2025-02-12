@@ -1,7 +1,0 @@
-{
-  "name": "horo",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

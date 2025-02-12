@@ -1,5 +1,4 @@
-# FROM rust:1.67.0 as build
-FROM rust:1.82.0-alpine as build
+FROM rust:1.85.0-alpine as build
 WORKDIR /app
 
 RUN sed -i s/dl-cdn.alpinelinux.org/mirror.tuna.tsinghua.edu.cn/g  /etc/apk/repositories
@@ -20,7 +19,8 @@ RUN echo [source.ustc] >> cargo.config
 RUN echo 'registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"' >> cargo.config
 # RUN echo 'registry = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"' >> cargo.config
 
-RUN CARGO_HTTP_MULTIPLEXING=false RUSTFLAGS=-L/app cargo --config cargo.config install  --path api --root /tmp/app
+RUN RUSTFLAGS=-L/app cargo --config cargo.config install  --path api --root /tmp/app
+# RUN CARGO_HTTP_MULTIPLEXING=false RUSTFLAGS=-L/app cargo --config cargo.config install  --path api --root /tmp/app
 # RUN RUSTFLAGS=-L/app cargo install  --path api --root /tmp/app
 
 # RUN RUSTFLAGS="-C target-feature=+crt-static" RUSTFLAGS=-L/app cargo --config cargo.config install  --path api --root /tmp/app
@@ -29,7 +29,7 @@ RUN strip -s /tmp/app/bin/horo_api
 RUN strip  --strip-debug /tmp/app/bin/horo_api
 RUN upx /tmp/app/bin/horo_api
 
-FROM alpine:3.20.1
+FROM alpine:3.21.3
 
 WORKDIR /app
 

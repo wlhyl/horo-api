@@ -11,12 +11,14 @@ serde = [
     "horo_date_time/serde",
     "geo_position/serde",
     "lunar_calendar/serde",
+    "ganzhiwuxing/swagger",
 ]
 swagger = [
     "dep:utoipa",
     "horo_date_time/swagger",
     "geo_position/swagger",
     "lunar_calendar/swagger",
+    "ganzhiwuxing/swagger",
 ]
 
 [dependencies]
@@ -25,6 +27,7 @@ geo_position = { path = "../geo_position" }
 
 rust-swe = { git = "https://github.com/wlhyl/rust-swe.git" }
 lunar_calendar = { git = "https://github.com/wlhyl/lunar-calendar.git", branch = "rust" }
+ganzhiwuxing = { git = "https://github.com/wlhyl/ganzhiwuxin.git", branch = "rust" }
 
 serde = { version = "*", features = ["derive"], optional = true }
 utoipa = { version = "*", optional = true }

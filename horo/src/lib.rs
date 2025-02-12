@@ -2,7 +2,7 @@ pub use aspect::Aspect;
 pub use config::PlanetConfig;
 pub use error::*;
 pub use firdaria::{firdaria_process, FirdariaPeriod, FirdariaSubPeriod};
-pub use horoscope::{Horoscope, HoroscopeCompare};
+pub use horoscope::{Horoscope, HoroscopeComparison};
 pub use house::HouseName;
 pub use planet::*;
 pub use profection::Profection;

@@ -5,6 +5,7 @@ use crate::{
     planet::calc_planets,
     DistanceStarConfig, Error, Planet, PlanetConfig, PlanetName,
 };
+use ganzhiwuxing::GanZhi;
 use geo_position::GeoPosition;
 use horo_date_time::{horo_date_time, HoroDateTime};
 
@@ -42,6 +43,8 @@ pub struct Horoscope {
     native_lunar_calendar: LunarCalendar,
     /// 推运时刻的农历
     process_lunar_calendar: LunarCalendar,
+    /// 本命八字
+    bazi: Vec<GanZhi>,
     /// 洞微大限
     dong_wei: DongWei,
     //    @field:Schema(description = "本命纳间")
@@ -153,6 +156,7 @@ impl Horoscope {
         .collect::<Result<Vec<_>, Error>>()?;
 
         // 计算农历
+        // 假定出生的时区是东八区
         let native_lunar_calendar = lunar_calendar(
             native_date.year,
             native_date.month,
@@ -174,6 +178,32 @@ impl Horoscope {
             ephe_path,
         )
         .map_err(|error| Error::Function(format!("计算推运时间农历错误：{error}")))?;
+
+        // 计算八字
+        // 计算时差
+        // 15度=1小时, 15度=1/24天, 1度=1/(24*15)天
+        let delta_days = (geo.long - 120.0) / (24.0 * 15.0);
+        // 本地时间
+        let local_time = native_date
+            .plus_days(delta_days)
+            .map_err(|error| Error::Function(format!("计算真太阳时错误：{error}")))?;
+        // 当地太阳时的农历
+        let local_lunar_calendar = lunar_calendar(
+            local_time.year,
+            local_time.month,
+            local_time.day,
+            local_time.hour,
+            local_time.minute,
+            local_time.second,
+            ephe_path,
+        )
+        .map_err(|error| Error::Function(format!("计算真太阳时农历错误：{error}")))?;
+        let bazi = vec![
+            native_lunar_calendar.lunar_year_gan_zhi,
+            native_lunar_calendar.lunar_month_gan_zhi,
+            local_lunar_calendar.lunar_day_gan_zhi,
+            local_lunar_calendar.time_gan_zhi,
+        ];
 
         // 计算洞微
         // 各宫位的洞微所管年数
@@ -312,6 +342,7 @@ impl Horoscope {
             houses,
             native_lunar_calendar,
             process_lunar_calendar,
+            bazi,
             dong_wei,
         })
     }
