@@ -103,7 +103,9 @@ docker build -t horo/api .
 ```bash
 docker run -d -p 8080:8080 \
   -v /path/to/log4rs.yaml:/app/log4rs.yaml \
-  -e EPHE_PATH=/app/ephe \
+  -v /path/to/swe:/app/swe \
+  -e LOG4RS_CONFIG=/app/log4rs.yaml \
+  -e EPHE_PATH=/app/swe \
   --name horo-api \
   horo/api
 ```
@@ -112,3 +114,6 @@ docker run -d -p 8080:8080 \
 - 确保星历表文件目录已正确挂载
 - 确保日志配置文件已正确挂载
 - 容器内的路径与环境变量配置路径需保持一致
+
+# 许可证
+项目使用GPL-3.0 许可证 ([LICENSE](LICENSE))。
