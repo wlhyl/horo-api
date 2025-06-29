@@ -1,0 +1,52 @@
+# log4rs.yaml.example 说明
+#
+# 用途：配置项目日志输出格式、级别和目标（如控制台、文件等）。
+# 推荐做法：开发环境建议仅启用控制台输出，便于实时查看日志。生产环境可根据需要增加文件输出等。
+# 主要参数说明：
+#   - refresh_rate：配置文件自动刷新间隔，通常保持默认即可。
+#   - appenders：日志输出目标。常用有 console（控制台）和 file（文件）。
+#   - root.level：日志级别（如 info、debug、warn、error）。
+#   - root.appenders：启用的日志输出目标列表。
+#
+# pattern 说明：
+#   - {d(%Y-%m-%d %H:%M:%S)}：日志时间（年-月-日 时:分:秒）
+#   - {l}：日志级别（INFO/ERROR等）
+#   - {m}：日志内容
+#   - {n}：换行
+#
+# 使用建议：
+#   - 开发环境建议仅保留 stdout，避免日志文件堆积。
+#   - 生产环境如需持久化日志，可取消下方 file 部分的注释，并在 root.appenders 中添加 file。
+#
+# 启用日志输出到文件方法：
+#   1. 取消 file 部分的注释（见下方）。
+#   2. 在 root.appenders 下添加 file。
+#   3. 可根据需要修改日志文件路径和 pattern。
+#
+# 例：
+# root:
+#   level: info
+#   appenders:
+#     - stdout
+#     - file
+
+refresh_rate: 30 seconds
+
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "[{d(%Y-%m-%d %H:%M:%S)}] [{l}] {m}{n}"
+
+  # file:
+  #   kind: file
+  #   path: "log/output.log"
+  #   encoder:
+  #     pattern: "[{d(%Y-%m-%d %H:%M:%S)}] [{l}] {m}{n}"
+
+root:
+  level: info
+  appenders:
+    - stdout
+    # - file
+ 

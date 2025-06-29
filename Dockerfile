@@ -1,4 +1,4 @@
-FROM rust:1.85.0-alpine as build
+FROM rust:1.88.0-alpine as build
 WORKDIR /app
 
 RUN sed -i s/dl-cdn.alpinelinux.org/mirror.tuna.tsinghua.edu.cn/g  /etc/apk/repositories
@@ -29,11 +29,15 @@ RUN strip -s /tmp/app/bin/horo_api
 RUN strip  --strip-debug /tmp/app/bin/horo_api
 RUN upx /tmp/app/bin/horo_api
 
-FROM alpine:3.21.3
+FROM alpine:3.22
 
 WORKDIR /app
 
 COPY --from=build /tmp/app/bin/horo_api /app/bin/horo_api
+
+# 创建非root用户并切换
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
 
 EXPOSE 8080
 
