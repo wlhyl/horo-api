@@ -1,16 +1,17 @@
 use crate::{
+    DistanceStarConfig, Error, Planet, PlanetConfig, PlanetName,
     dong_wei::DongWei,
     house::{ASCHouse, House, HouseName},
-    lunar_mansions::{calc_distance_star_long, calc_xiu_degree, DistanceStarLong},
+    lunar_mansions::{DistanceStarLong, calc_distance_star_long, calc_xiu_degree},
     planet::calc_planets,
-    DistanceStarConfig, Error, Planet, PlanetConfig, PlanetName,
+    transformed_stars::{StarTransformedStar, transformed_stars},
 };
 use ganzhiwuxing::GanZhi;
 use geo_position::GeoPosition;
-use horo_date_time::{horo_date_time, HoroDateTime};
+use horo_date_time::{HoroDateTime, horo_date_time};
 
-use lunar_calendar::{lunar_calendar, LunarCalendar};
-use swe::{swe_degnorm, swe_houses, HouseSystem};
+use lunar_calendar::{LunarCalendar, lunar_calendar};
+use swe::{HouseSystem, swe_degnorm, swe_houses};
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -49,18 +50,14 @@ pub struct Horoscope {
     dong_wei: DongWei,
     //    @field:Schema(description = "本命纳间")
     //    val naYin = getNaYinData(nativeLunarCalendar.yearGanZhi)
+    /// 本命变曜
+    native_transformed_stars: Vec<StarTransformedStar>,
+    /// 流年变曜
+    process_transformed_stars: Vec<StarTransformedStar>, //    @field:Schema(description = "本命神煞")
+                                                         //    val nativeShenShas = getShenShas(nativeTime, geo, ephePath)
 
-    //    @field:Schema(description = "本命变曜")
-    //    val nativeVirtualStars =  getVirtualStars(nativeTime, geo, ephePath)
-
-    //    @field:Schema(description = "流年变曜")
-    //    val processVirtualStars =  getVirtualStars(processTime, geo, ephePath)
-
-    //    @field:Schema(description = "本命神煞")
-    //    val nativeShenShas = getShenShas(nativeTime, geo, ephePath)
-
-    //    @field:Schema(description = "流年变曜")
-    //    val processShenShas = getShenShas(processTime, geo, ephePath)
+                                                         //    @field:Schema(description = "流年变曜")
+                                                         //    val processShenShas = getShenShas(processTime, geo, ephePath)
 }
 
 impl Horoscope {
@@ -331,6 +328,9 @@ impl Horoscope {
             process_dong_wei_xiu_degree,
         );
 
+        let native_transformed_stars = transformed_stars(&native_lunar_calendar);
+        let process_transformed_stars = transformed_stars(&process_lunar_calendar);
+
         Ok(Self {
             native_date,
             process_date,
@@ -344,6 +344,8 @@ impl Horoscope {
             process_lunar_calendar,
             bazi,
             dong_wei,
+            native_transformed_stars,
+            process_transformed_stars,
         })
     }
 }

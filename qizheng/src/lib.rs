@@ -13,3 +13,5 @@ mod horo;
 mod house;
 mod lunar_mansions;
 mod planet;
+mod transformed_stars;
+mod ten_gods;

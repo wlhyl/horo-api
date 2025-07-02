@@ -1,12 +1,13 @@
 use crate::{
-    config::PlanetConfig,
-    lunar_mansions::{calc_xiu_degree, LunarMansionsName},
     DistanceStarLong, Error,
+    config::PlanetConfig,
+    lunar_mansions::{LunarMansionsName, calc_xiu_degree},
 };
-use horo_date_time::HoroDateTime;
-use swe::{swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path, Body, Flag};
 use PlanetName::*;
 use PlanetSpeedState::*;
+use ganzhiwuxing::TianGan;
+use horo_date_time::HoroDateTime;
+use swe::{Body, Flag, swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path};
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -39,6 +40,24 @@ pub enum PlanetName {
     罗, // 南交
     孛,
     气,
+}
+
+impl PlanetName {
+    pub(crate) fn to_tian_gan(&self) -> Option<TianGan> {
+        match self {
+            日 => None,
+            月 => Some(TianGan::己),
+            水 => Some(TianGan::庚),
+            金 => Some(TianGan::丁),
+            火 => Some(TianGan::甲),
+            木 => Some(TianGan::丙),
+            土 => Some(TianGan::戊),
+            计 => Some(TianGan::壬),
+            罗 => Some(TianGan::癸),
+            孛 => Some(TianGan::乙),
+            气 => Some(TianGan::辛),
+        }
+    }
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize))]
@@ -216,11 +235,7 @@ pub(crate) fn calc_planets(
                 .map_err(|e| Error::Function(format!("计算行星错误:{e}")))?;
             let speed1 = xx[3];
 
-            if speed0 * speed1 > 0.0 {
-                false
-            } else {
-                true
-            }
+            if speed0 * speed1 > 0.0 { false } else { true }
         } else {
             false
         };
@@ -259,8 +274,8 @@ pub(crate) fn calc_planets(
 
 #[cfg(test)]
 mod tests {
-    use crate::config::PlanetConfig;
     use crate::LunarMansionsName::角;
+    use crate::config::PlanetConfig;
 
     use super::Planet;
     use super::PlanetName::*;
