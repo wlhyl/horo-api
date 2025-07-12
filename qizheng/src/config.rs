@@ -1,6 +1,6 @@
 use crate::{
     lunar_mansions::LunarMansionsName::{self, *},
-    planet::PlanetName::{self, *},
+    planet::name::PlanetName::{self, *},
 };
 
 pub struct PlanetConfig {
@@ -248,7 +248,7 @@ mod tests {
 
         use crate::{
             config::PlanetConfig,
-            planet::PlanetName::{self, *},
+            planet::name::PlanetName::{self, *},
         };
 
         #[test]
@@ -316,8 +316,8 @@ mod tests {
         use parameterized::parameterized;
 
         use crate::{
-            config::DistanceStarConfig,
             LunarMansionsName::{self, *},
+            config::DistanceStarConfig,
         };
 
         #[test]

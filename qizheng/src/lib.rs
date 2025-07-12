@@ -4,7 +4,7 @@ pub use error::Error;
 pub use horo::Horoscope;
 pub use house::{ASCHouse, House, HouseName};
 pub use lunar_mansions::{DistanceStarLong, LunarMansionsName};
-pub use planet::{Planet, PlanetName, PlanetSpeedState};
+pub use planet::{Planet, name::PlanetName, planet_speed_state::PlanetSpeedState};
 
 mod config;
 mod dong_wei;
@@ -13,5 +13,5 @@ mod horo;
 mod house;
 mod lunar_mansions;
 mod planet;
-mod transformed_stars;
 mod ten_gods;
+mod transformed_stars;

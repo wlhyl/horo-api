@@ -1,12 +1,14 @@
+pub(crate) mod name;
+pub(crate) mod planet_speed_state;
+
 use crate::{
     DistanceStarLong, Error,
+    PlanetName::{self, *},
     config::PlanetConfig,
     lunar_mansions::{LunarMansionsName, calc_xiu_degree},
 };
-use PlanetName::*;
-use PlanetSpeedState::*;
-use ganzhiwuxing::TianGan;
 use horo_date_time::HoroDateTime;
+use planet_speed_state::*;
 use swe::{Body, Flag, swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path};
 
 #[cfg(feature = "serde")]
@@ -14,51 +16,6 @@ use serde::Serialize;
 
 #[cfg(feature = "swagger")]
 use utoipa::ToSchema;
-
-#[derive(PartialEq, Eq, Debug)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
-#[cfg_attr(feature = "swagger", derive(ToSchema))]
-pub enum PlanetSpeedState {
-    疾,
-    均,
-    迟,
-    // 留,伏,逆，此三者由前端计算
-}
-
-#[cfg_attr(feature = "serde", derive(Serialize))]
-#[cfg_attr(feature = "swagger", derive(ToSchema))]
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub enum PlanetName {
-    日,
-    月,
-    水,
-    金,
-    火,
-    木,
-    土,
-    计, // 北交
-    罗, // 南交
-    孛,
-    气,
-}
-
-impl PlanetName {
-    pub(crate) fn to_tian_gan(&self) -> Option<TianGan> {
-        match self {
-            日 => None,
-            月 => Some(TianGan::己),
-            水 => Some(TianGan::庚),
-            金 => Some(TianGan::丁),
-            火 => Some(TianGan::甲),
-            木 => Some(TianGan::丙),
-            土 => Some(TianGan::戊),
-            计 => Some(TianGan::壬),
-            罗 => Some(TianGan::癸),
-            孛 => Some(TianGan::乙),
-            气 => Some(TianGan::辛),
-        }
-    }
-}
 
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
@@ -92,14 +49,14 @@ impl Planet {
     ) -> Self {
         let speed_state = if config.min < config.max {
             if speed.abs() > config.max {
-                疾
+                PlanetSpeedState::疾
             } else if speed.abs() < config.min {
-                迟
+                PlanetSpeedState::迟
             } else {
-                均
+                PlanetSpeedState::均
             }
         } else {
-            均
+            PlanetSpeedState::均
         };
 
         let is_stationary = if [水, 金, 火, 木, 土].contains(&name) {
@@ -279,7 +236,7 @@ mod tests {
 
     use super::Planet;
     use super::PlanetName::*;
-    use super::PlanetSpeedState::*;
+    use super::planet_speed_state::*;
 
     #[test]
     fn test_new() {
@@ -314,7 +271,7 @@ mod tests {
             false,
             &PlanetConfig::new(日, 1.0, 2.0),
         );
-        assert_eq!(疾, p0.speed_state, "逆行，快");
+        assert_eq!(PlanetSpeedState::疾, p0.speed_state, "逆行，快");
 
         // 顺行
         let p1 = Planet::new(
@@ -326,7 +283,7 @@ mod tests {
             false,
             &PlanetConfig::new(日, 1.0, 2.0),
         );
-        assert_eq!(疾, p1.speed_state, "顺行，快")
+        assert_eq!(PlanetSpeedState::疾, p1.speed_state, "顺行，快")
     }
 
     // 慢
@@ -342,7 +299,7 @@ mod tests {
             false,
             &PlanetConfig::new(日, 1.0, 2.0),
         );
-        assert_eq!(迟, p0.speed_state, "逆行，慢");
+        assert_eq!(PlanetSpeedState::迟, p0.speed_state, "逆行，慢");
 
         // 顺行
         let p1 = Planet::new(
@@ -354,7 +311,7 @@ mod tests {
             false,
             &PlanetConfig::new(日, 1.0, 2.0),
         );
-        assert_eq!(迟, p1.speed_state, "顺行，慢");
+        assert_eq!(PlanetSpeedState::迟, p1.speed_state, "顺行，慢");
     }
 
     // 平均
@@ -369,7 +326,7 @@ mod tests {
             false,
             &PlanetConfig::new(日, 2.0, 2.0),
         );
-        assert_eq!(均, p0.speed_state, "逆行，均");
+        assert_eq!(PlanetSpeedState::均, p0.speed_state, "逆行，均");
 
         let p1 = Planet::new(
             日,
@@ -380,7 +337,7 @@ mod tests {
             false,
             &PlanetConfig::new(日, 2.0, 2.0),
         );
-        assert_eq!(均, p1.speed_state, "顺行，均");
+        assert_eq!(PlanetSpeedState::均, p1.speed_state, "顺行，均");
     }
 
     // 停滞
