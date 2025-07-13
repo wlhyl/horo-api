@@ -77,20 +77,6 @@ impl House {
     }
 }
 
-// data class DongWeiData(
-//     @field:Schema(description = "洞微大限每一年的黄道经度，从0岁起至洞微大限总年数，洞微大限总年数略去小数部分，起算点为每年的公历生日")
-//     val perYearLong : List<Double>,
-
-//     @field:Schema(description = "当前推运时间的洞微大限黄道经度")
-//     val processTimeLong :Double,
-
-//     @field:Schema(description = "当前推运时间的洞微大限黄道经度所在宿名")
-//     val xiuName :String,
-
-//     @field:Schema(description = "当前推运时间的洞微大限道经度的入宿度数")
-//     val d :Double,
-// )
-
 // data class NaYingData(
 //     @field:Schema(description = "年干支的纳音")
 //     var naYin :String,
