@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use ganzhiwuxing::TianGan;
 use lunar_calendar::LunarCalendar;
 
@@ -27,7 +30,7 @@ pub(crate) struct StarTransformedStar {
     ten_gods: TenGods,
 }
 
-/// 计算变星
+/// 计算变曜
 #[inline]
 pub(crate) fn transformed_stars(t: &LunarCalendar) -> Vec<StarTransformedStar> {
     let year_tian_gan = t.lunar_year_gan_zhi.gan();
@@ -62,7 +65,7 @@ const PLANETS: [PlanetName; 10] = [
 
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub(crate) enum TransformedStar {
     天禄,
     天暗,
@@ -155,49 +158,49 @@ impl TransformedStar {
     #[inline]
     pub(crate) fn planet(&self, t: &LunarCalendar) -> PlanetName {
         match self {
-            TransformedStar::天禄 => 计算_天禄(t),
+            TransformedStar::天禄 => calculate_tianlu(t),
             TransformedStar::天暗 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 1) % 10]
             }
             TransformedStar::天福 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 2) % 10]
             }
             TransformedStar::天耗 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 3) % 10]
             }
             TransformedStar::天荫 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 4) % 10]
             }
             TransformedStar::天贵 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 5) % 10]
             }
             TransformedStar::天刑 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 6) % 10]
             }
             TransformedStar::天印 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 7) % 10]
             }
             TransformedStar::天囚 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 8) % 10]
             }
             TransformedStar::天权 => {
-                let p = 计算_天禄(t);
+                let p = calculate_tianlu(t);
                 let index = PLANETS.iter().position(|&x| x == p).unwrap();
                 PLANETS[(index + 9) % 10]
             }
@@ -206,7 +209,7 @@ impl TransformedStar {
 }
 
 #[inline]
-fn 计算_天禄(t: &LunarCalendar) -> PlanetName {
+fn calculate_tianlu(t: &LunarCalendar) -> PlanetName {
     match t.lunar_year_gan_zhi.gan() {
         TianGan::甲 => PlanetName::火,
         TianGan::乙 => PlanetName::孛,
