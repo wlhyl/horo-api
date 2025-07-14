@@ -36,3 +36,5 @@ utoipa = { version = "*", optional = true }
 [dev-dependencies]
 dotenvy = "0.15.7"
 parameterized = "2.0.0"
+insta = { version = "1.43.1", features = ["yaml"] }
+serde_json = "1.0.140"
