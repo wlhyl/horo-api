@@ -1,0 +1,548 @@
+---
+source: qizheng/src/horo.rs
+expression: horoscope
+---
+native_date:
+  year: 1983
+  month: 10
+  day: 27
+  hour: 18
+  minute: 30
+  second: 0
+  tz: 8
+process_date:
+  year: 2023
+  month: 10
+  day: 27
+  hour: 18
+  minute: 30
+  second: 0
+  tz: 8
+geo:
+  long: 116.383333
+  lat: 39.9
+native_planets:
+  - name: 日
+    long: 213.43000456632512
+    speed: 0.9977292124213387
+    xiu: 角
+    xiu_degree: 9.825144259942164
+    speed_state: 均
+    is_stationary: false
+  - name: 月
+    long: 101.26245031337744
+    speed: 13.782876802180951
+    xiu: 井
+    xiu_degree: 6.189068557604074
+    speed_state: 疾
+    is_stationary: false
+  - name: 水
+    long: 211.302387243145
+    speed: 1.6671814216889902
+    xiu: 角
+    xiu_degree: 7.697526936762046
+    speed_state: 疾
+    is_stationary: false
+  - name: 金
+    long: 167.14762113192228
+    speed: 0.9321386946692951
+    xiu: 张
+    xiu_degree: 11.68985108970071
+    speed_state: 均
+    is_stationary: false
+  - name: 火
+    long: 166.8436517988742
+    speed: 0.6059601138918594
+    xiu: 张
+    xiu_degree: 11.385881756652623
+    speed_state: 均
+    is_stationary: false
+  - name: 木
+    long: 251.48185378762244
+    speed: 0.19958810439754407
+    xiu: 心
+    xiu_degree: 3.918022971238315
+    speed_state: 疾
+    is_stationary: false
+  - name: 土
+    long: 216.7763070008444
+    speed: 0.1205321985791453
+    xiu: 亢
+    xiu_degree: 2.519257562634664
+    speed_state: 疾
+    is_stationary: false
+  - name: 计
+    long: 77.99961942327226
+    speed: -0.052922587675684814
+    xiu: 毕
+    xiu_degree: 9.761336500615386
+    speed_state: 均
+    is_stationary: false
+  - name: 罗
+    long: 257.9996194232723
+    speed: -0.052922587675684814
+    xiu: 尾
+    xiu_degree: 2.079368119218543
+    speed_state: 均
+    is_stationary: false
+  - name: 孛
+    long: 324.8627729043782
+    speed: 0.1118949107739026
+    xiu: 虚
+    xiu_degree: 1.6966763546651578
+    speed_state: 均
+    is_stationary: false
+  - name: 气
+    long: 341.3729472541222
+    speed: 0.035200321903032655
+    xiu: 危
+    xiu_degree: 8.248409817487186
+    speed_state: 均
+    is_stationary: false
+process_planets:
+  - name: 日
+    long: 213.742216909942
+    speed: 0.9971603968055087
+    xiu: 角
+    xiu_degree: 10.137356603559027
+    speed_state: 均
+    is_stationary: false
+  - name: 月
+    long: 14.84028604703537
+    speed: 14.503362513958626
+    xiu: 壁
+    xiu_degree: 5.909526347193573
+    speed_state: 疾
+    is_stationary: false
+  - name: 水
+    long: 218.43541721999705
+    speed: 1.612525145461763
+    xiu: 亢
+    xiu_degree: 4.178367781787301
+    speed_state: 疾
+    is_stationary: false
+  - name: 金
+    long: 167.3689627818675
+    speed: 1.0199107160381207
+    xiu: 张
+    xiu_degree: 11.91119273964594
+    speed_state: 均
+    is_stationary: false
+  - name: 火
+    long: 220.41109195270445
+    speed: 0.6879781213716387
+    xiu: 亢
+    xiu_degree: 6.154042514494705
+    speed_state: 疾
+    is_stationary: false
+  - name: 木
+    long: 41.423996506602826
+    speed: -0.1337138991798827
+    xiu: 娄
+    xiu_degree: 7.679235873520518
+    speed_state: 均
+    is_stationary: false
+  - name: 土
+    long: 330.5666176557897
+    speed: -0.01347265288867621
+    xiu: 虚
+    xiu_degree: 7.400521106076667
+    speed_state: 迟
+    is_stationary: false
+  - name: 计
+    long: 24.347842186385694
+    speed: -0.0529848099513207
+    xiu: 奎
+    xiu_degree: 2.1962422303790703
+    speed_state: 均
+    is_stationary: false
+  - name: 罗
+    long: 204.3478421863857
+    speed: -0.0529848099513207
+    xiu: 角
+    xiu_degree: 0.7429818800027306
+    speed_state: 均
+    is_stationary: false
+  - name: 孛
+    long: 152.66657082930743
+    speed: 0.11152635427839173
+    xiu: 星
+    xiu_degree: 5.619899146581844
+    speed_state: 均
+    is_stationary: false
+  - name: 气
+    long: 135.64965025742936
+    speed: 0.035200321903032655
+    xiu: 柳
+    xiu_degree: 5.576302478045193
+    speed_state: 均
+    is_stationary: false
+distance_star_long:
+  - lunar_mansions: 角
+    long: 203.60486030638296
+  - lunar_mansions: 亢
+    long: 214.25704943820975
+  - lunar_mansions: 氐
+    long: 224.84635223692615
+  - lunar_mansions: 房
+    long: 242.7038746913695
+  - lunar_mansions: 心
+    long: 247.56383081638413
+  - lunar_mansions: 尾
+    long: 255.92025130405375
+  - lunar_mansions: 箕
+    long: 271.02744024396395
+  - lunar_mansions: 斗
+    long: 279.94766076889016
+  - lunar_mansions: 牛
+    long: 303.81620519787145
+  - lunar_mansions: 女
+    long: 311.49298060410473
+  - lunar_mansions: 虚
+    long: 323.166096549713
+  - lunar_mansions: 危
+    long: 333.124537436635
+  - lunar_mansions: 室
+    long: 353.2596952304448
+  - lunar_mansions: 壁
+    long: 8.930759699841797
+  - lunar_mansions: 奎
+    long: 22.151599956006624
+  - lunar_mansions: 娄
+    long: 33.74476063308231
+  - lunar_mansions: 胃
+    long: 46.70990476245799
+  - lunar_mansions: 昴
+    long: 59.18610095622858
+  - lunar_mansions: 毕
+    long: 68.23828292265688
+  - lunar_mansions: 觜
+    long: 83.4796301615932
+  - lunar_mansions: 参
+    long: 84.45432225162948
+  - lunar_mansions: 井
+    long: 95.07338175577337
+  - lunar_mansions: 鬼
+    long: 125.49749030204352
+  - lunar_mansions: 柳
+    long: 130.07334777938416
+  - lunar_mansions: 星
+    long: 147.0466716827256
+  - lunar_mansions: 张
+    long: 155.45777004222157
+  - lunar_mansions: 翼
+    long: 173.45689085597388
+  - lunar_mansions: 轸
+    long: 190.4904092505354
+asc_house:
+  asc_long: 58.97712440546679
+  xiu: 奎
+  xiu_degree: 11.2784046103185
+houses:
+  - name: 命
+    long: 30
+    xiu: 奎
+    xiu_degree: 7.848400043993376
+  - name: 财
+    long: 60
+    xiu: 昴
+    xiu_degree: 0.8138990437714213
+  - name: 兄
+    long: 90
+    xiu: 参
+    xiu_degree: 5.545677748370522
+  - name: 田
+    long: 120
+    xiu: 井
+    xiu_degree: 24.92661824422663
+  - name: 子
+    long: 150
+    xiu: 星
+    xiu_degree: 2.953328317274412
+  - name: 奴
+    long: 180
+    xiu: 翼
+    xiu_degree: 6.543109144026118
+  - name: 妻
+    long: 210
+    xiu: 角
+    xiu_degree: 6.39513969361704
+  - name: 疾
+    long: 240
+    xiu: 氐
+    xiu_degree: 15.153647763073849
+  - name: 迁
+    long: 270
+    xiu: 尾
+    xiu_degree: 14.07974869594625
+  - name: 官
+    long: 300
+    xiu: 斗
+    xiu_degree: 20.05233923110984
+  - name: 福
+    long: 330
+    xiu: 虚
+    xiu_degree: 6.833903450286982
+  - name: 相
+    long: 0
+    xiu: 室
+    xiu_degree: 6.740304769555223
+native_lunar_calendar:
+  is_lean_year: false
+  lunar_year: 癸亥
+  lunar_month: 九月
+  lunar_day: 廿二
+  lunar_year_gan_zhi: 癸亥
+  lunar_month_gan_zhi: 壬戌
+  lunar_day_gan_zhi: 戊子
+  time_gan_zhi: 辛酉
+  solar_term_first:
+    name: 寒露
+    year: 1983
+    month: 10
+    day: 9
+    hour: 4
+    minute: 51
+    second: 3
+  solar_term_second:
+    name: 霜降
+    year: 1983
+    month: 10
+    day: 24
+    hour: 7
+    minute: 54
+    second: 16
+process_lunar_calendar:
+  is_lean_year: true
+  lunar_year: 癸卯
+  lunar_month: 九月
+  lunar_day: 十三
+  lunar_year_gan_zhi: 癸卯
+  lunar_month_gan_zhi: 壬戌
+  lunar_day_gan_zhi: 戊午
+  time_gan_zhi: 辛酉
+  solar_term_first:
+    name: 寒露
+    year: 2023
+    month: 10
+    day: 8
+    hour: 21
+    minute: 15
+    second: 35
+  solar_term_second:
+    name: 霜降
+    year: 2023
+    month: 10
+    day: 24
+    hour: 0
+    minute: 20
+    second: 52
+bazi:
+  - 癸亥
+  - 壬戌
+  - 戊子
+  - 辛酉
+dong_wei:
+  long_of_per_year:
+    - 60
+    - 57.30242155574113
+    - 54.612213544390066
+    - 51.922005533039
+    - 49.23179752168794
+    - 46.53421907742907
+    - 43.844011066078004
+    - 41.15380305472694
+    - 38.46359504337588
+    - 35.76601659911701
+    - 33.07580858776595
+    - 30.385600576414884
+    - 27.43211515659727
+    - 24.426366456886896
+    - 21.42883018531781
+    - 18.431293913748725
+    - 15.433757642179636
+    - 12.428008942469265
+    - 9.430472670900176
+    - 6.432936399331091
+    - 3.4354001277620014
+    - 0.42965142805163126
+    - 357.66480374399777
+    - 354.9388888743065
+    - 352.21297400461526
+    - 349.47959087500703
+    - 346.7536760053158
+    - 344.02776113562453
+    - 341.30184626593325
+    - 338.5684631363251
+    - 335.8425482666338
+    - 333.1166333969426
+    - 330.3907185272513
+    - 328.28244503001395
+    - 326.28390515047386
+    - 324.28536527093377
+    - 322.28682539139373
+    - 320.2828100601289
+    - 318.28427018058886
+    - 316.2857303010488
+    - 314.28719042150874
+    - 312.2831750902439
+    - 310.2846352107038
+    - 308.2860953311638
+    - 306.2875554516237
+    - 304.28354012035885
+    - 302.2850002408188
+    - 300.2864603612787
+    - 296.7897044214395
+    - 293.0320042161007
+    - 289.28457095121365
+    - 285.53713768632656
+    - 281.7897044214395
+    - 278.0320042161007
+    - 274.28457095121365
+    - 270.53713768632656
+    - 266.33144947964263
+    - 262.03735483748386
+    - 257.7549926943474
+    - 253.4726305512109
+    - 249.19026840807442
+    - 244.89617376591565
+    - 240.61381162277914
+    - 237.66538484804536
+    - 234.94014841200755
+    - 232.20744557477508
+    - 229.48220913873726
+    - 226.75697270269941
+    - 224.0317362666616
+    - 221.29903342942913
+    - 218.5737969933913
+    - 215.84856055735347
+    - 213.12332412131565
+    - 210.39062128408318
+    - 204.2923737873114
+    - 197.62976350437862
+    - 190.96715322144587
+    - 184.28628921171054
+    - 177.62367892877776
+    - 170.96106864584502
+    - 164.29845836291224
+    - 157.6175943531769
+    - 150.95498407024417
+    - 144.2923737873114
+    - 137.62976350437862
+    - 130.94889949464329
+    - 124.28628921171054
+    - 117.86118089783474
+    - 111.86446676859052
+    - 105.8513232855675
+    - 99.85460915632325
+    - 93.857895027079
+    - 87.86235157057814
+    - 81.85249935382939
+    - 75.85906749832856
+    - 69.86563564282773
+    - 63.872203787326896
+  long: 314.28719042150874
+  xiu: 女
+  xiu_degree: 2.7942098174040098
+native_transformed_stars:
+  - star: 罗
+    transformed_star: 天禄
+    transformed_star_house: 官禄
+    transformed_star_describe: 仕人遇之，主食俸禄，庶人有之，变主享福。禄主当生入命宫，田财旺气大亨通，官星更在高强位，年少声名达圣聪。凡禄主与官禄并详。一宜在七强宫，二宜照命，三喜顺行，四喜庙旺，五要在当生年纳音长生、临官、帝旺宫，以上并得用，主大富贵。如在五弱宫，或入四杀位，更行留、逆，故为福不纯。主人淹滞不遂。
+    ten_gods: 比肩
+  - star: 火
+    transformed_star: 天暗
+    transformed_star_house: 相貌
+    transformed_star_describe: 此谓吉星化囚，须吉而不吉也。富贵因何福不荣，只缘命里暗伤星，高强皆是为凶恶，入陷弧高祸自轻。凡天暗星与相貌同推。此星最忌在官宫及官、魁、文星、身命适之，皆无发达。
+    ten_gods: 伤官
+  - star: 孛
+    transformed_star: 天福
+    transformed_star_house: 财帛、福德、迁移
+    transformed_star_describe: 德者，福之基，亦要人之有德者，必得福寿也。身宫及命福星临，庙旺高强享福深，若遇陷宫并恶曜，荣华逍遥铄祸难禁。凡天福与福德、财帛、迁移同详。宜照福德为上，身命次之，男女宫见之，为上吉，缘此宫与福德相对，故为上喜。在庙旺兼行顺段为福。如在陷弱宫及伏逆留段为浅，更宜消详身命要本，方可断之。
+    ten_gods: 食神
+  - star: 木
+    transformed_star: 天耗
+    transformed_star_house: 兄弟
+    transformed_star_describe: 唐玄宗时，天耗星盗贵妃玉环及香囊而去，帝梦中叱之，答曰：吾天耗也。天耗之星不可逢，生来财帛化为空，若临贵地并权禄，尚自区区待限通。凡天耗星与兄弟同推，此星耗财之神，故以兄弟当之，忌在田财二宫，另宫无甚害。
+    ten_gods: 正财
+  - star: 金
+    transformed_star: 天荫
+    transformed_star_house: 妻妾
+    transformed_star_describe: 主父母蒙贵封荫之下。荫星逢著有操持，须是高强庙旺时，福禄印权并贵会，官荣极品耀天墀。凡天荫星与妻妾同推，喜入生旺宫，得妻财。入死绝宫主多病。顺行则吉，逆行则凶。七强宫见之相宜，五弱宫不利。此星居迁移主外壻，在奴仆不宜正婚，居四正宫，主有妻财，恶星不犯，主夫妻偕老也。
+    ten_gods: 偏财
+  - star: 土
+    transformed_star: 天贵
+    transformed_star_house: 男女
+    transformed_star_describe: 吉星夹之有贵，凶星拱夹则贱。身遇高强及印权，命宫三合更相联，贵多刑少居官禄，职位荣华禄更迁。凡天贵星与男女并详。此星居七强顺行、乐、庙、旺宫及当生贵人禄马之位，主生贵子。在迁移、奴仆、兄弟宫，主过房子，或在五弱，被恶曜刑破，多主伤克，更男女宫星陷，主绝嗣。男女星好还有子。
+    ten_gods: 正官
+  - star: 月
+    transformed_star: 天刑
+    transformed_star_house: 奴仆
+    transformed_star_describe: 谓犯徒流贼盗刺字于面、于肘者。天刑若陷最为恶，身命田宅怕逢著，限临必主身不全，黥面文身方免却。凡天刑星与奴仆同推。此星在闲极宫无恶曜相犯奴仆得力，或在七强及得地，主仆从奸狡。更有凶星入宫，小人无故相侵犯凌辱。此星宜弱不宜强，宜顺不宜逆，若是命主星，又不妨，无自刑之理。
+    ten_gods: 七杀
+  - star: 水
+    transformed_star: 天印
+    transformed_star_house: 田宅
+    transformed_star_describe: 喜官禄等星。生来须有皇恩命，官禄高强赖此星，若遇科名科甲贵，因茲食禄播王庭。凡天印星与田宅并详。此星喜居田宅宫及七强入庙生旺之地，主多产业。如留逆无气更在闲极陷地，俱不得祖业。田宅宫别有吉星临照亦能自创立。如田宅有忌星相犯，加命弱失陷，必无田宅。
+    ten_gods: 正印
+  - star: 气
+    transformed_star: 天囚
+    transformed_star_house: 疾厄
+    transformed_star_describe: 若遇阑干、贯索相并，主牢狱之患。天囚若在四刑宫，脓血伤残命夭终，若是寿星临照著，也须为福不为凶。凡天囚星与疾厄同推。此星怕入七强生旺及在逆段，或照命，或临身，并不相宜也。若是紫木星为囚星，然其性本善，不可便以凶忌为嫌，但戊癸人见之减力，终不为祸。
+    ten_gods: 偏印
+  - star: 计
+    transformed_star: 天权
+    transformed_star_house: 命宫
+    transformed_star_describe: 主有威权，掌生杀之职。权星遇贵在高强，纵有刑囚亦不妨，更遇合宫高格局，定须官到紫微郎。凡天权星与命宫并详。此星照命及伴身，若入庙顺行，主得贵人扶持，更与太阳福禄同宫，尤奇。
+    ten_gods: 劫财
+process_transformed_stars:
+  - star: 罗
+    transformed_star: 天禄
+    transformed_star_house: 官禄
+    transformed_star_describe: 仕人遇之，主食俸禄，庶人有之，变主享福。禄主当生入命宫，田财旺气大亨通，官星更在高强位，年少声名达圣聪。凡禄主与官禄并详。一宜在七强宫，二宜照命，三喜顺行，四喜庙旺，五要在当生年纳音长生、临官、帝旺宫，以上并得用，主大富贵。如在五弱宫，或入四杀位，更行留、逆，故为福不纯。主人淹滞不遂。
+    ten_gods: 比肩
+  - star: 火
+    transformed_star: 天暗
+    transformed_star_house: 相貌
+    transformed_star_describe: 此谓吉星化囚，须吉而不吉也。富贵因何福不荣，只缘命里暗伤星，高强皆是为凶恶，入陷弧高祸自轻。凡天暗星与相貌同推。此星最忌在官宫及官、魁、文星、身命适之，皆无发达。
+    ten_gods: 伤官
+  - star: 孛
+    transformed_star: 天福
+    transformed_star_house: 财帛、福德、迁移
+    transformed_star_describe: 德者，福之基，亦要人之有德者，必得福寿也。身宫及命福星临，庙旺高强享福深，若遇陷宫并恶曜，荣华逍遥铄祸难禁。凡天福与福德、财帛、迁移同详。宜照福德为上，身命次之，男女宫见之，为上吉，缘此宫与福德相对，故为上喜。在庙旺兼行顺段为福。如在陷弱宫及伏逆留段为浅，更宜消详身命要本，方可断之。
+    ten_gods: 食神
+  - star: 木
+    transformed_star: 天耗
+    transformed_star_house: 兄弟
+    transformed_star_describe: 唐玄宗时，天耗星盗贵妃玉环及香囊而去，帝梦中叱之，答曰：吾天耗也。天耗之星不可逢，生来财帛化为空，若临贵地并权禄，尚自区区待限通。凡天耗星与兄弟同推，此星耗财之神，故以兄弟当之，忌在田财二宫，另宫无甚害。
+    ten_gods: 正财
+  - star: 金
+    transformed_star: 天荫
+    transformed_star_house: 妻妾
+    transformed_star_describe: 主父母蒙贵封荫之下。荫星逢著有操持，须是高强庙旺时，福禄印权并贵会，官荣极品耀天墀。凡天荫星与妻妾同推，喜入生旺宫，得妻财。入死绝宫主多病。顺行则吉，逆行则凶。七强宫见之相宜，五弱宫不利。此星居迁移主外壻，在奴仆不宜正婚，居四正宫，主有妻财，恶星不犯，主夫妻偕老也。
+    ten_gods: 偏财
+  - star: 土
+    transformed_star: 天贵
+    transformed_star_house: 男女
+    transformed_star_describe: 吉星夹之有贵，凶星拱夹则贱。身遇高强及印权，命宫三合更相联，贵多刑少居官禄，职位荣华禄更迁。凡天贵星与男女并详。此星居七强顺行、乐、庙、旺宫及当生贵人禄马之位，主生贵子。在迁移、奴仆、兄弟宫，主过房子，或在五弱，被恶曜刑破，多主伤克，更男女宫星陷，主绝嗣。男女星好还有子。
+    ten_gods: 正官
+  - star: 月
+    transformed_star: 天刑
+    transformed_star_house: 奴仆
+    transformed_star_describe: 谓犯徒流贼盗刺字于面、于肘者。天刑若陷最为恶，身命田宅怕逢著，限临必主身不全，黥面文身方免却。凡天刑星与奴仆同推。此星在闲极宫无恶曜相犯奴仆得力，或在七强及得地，主仆从奸狡。更有凶星入宫，小人无故相侵犯凌辱。此星宜弱不宜强，宜顺不宜逆，若是命主星，又不妨，无自刑之理。
+    ten_gods: 七杀
+  - star: 水
+    transformed_star: 天印
+    transformed_star_house: 田宅
+    transformed_star_describe: 喜官禄等星。生来须有皇恩命，官禄高强赖此星，若遇科名科甲贵，因茲食禄播王庭。凡天印星与田宅并详。此星喜居田宅宫及七强入庙生旺之地，主多产业。如留逆无气更在闲极陷地，俱不得祖业。田宅宫别有吉星临照亦能自创立。如田宅有忌星相犯，加命弱失陷，必无田宅。
+    ten_gods: 正印
+  - star: 气
+    transformed_star: 天囚
+    transformed_star_house: 疾厄
+    transformed_star_describe: 若遇阑干、贯索相并，主牢狱之患。天囚若在四刑宫，脓血伤残命夭终，若是寿星临照著，也须为福不为凶。凡天囚星与疾厄同推。此星怕入七强生旺及在逆段，或照命，或临身，并不相宜也。若是紫木星为囚星，然其性本善，不可便以凶忌为嫌，但戊癸人见之减力，终不为祸。
+    ten_gods: 偏印
+  - star: 计
+    transformed_star: 天权
+    transformed_star_house: 命宫
+    transformed_star_describe: 主有威权，掌生杀之职。权星遇贵在高强，纵有刑囚亦不妨，更遇合宫高格局，定须官到紫微郎。凡天权星与命宫并详。此星照命及伴身，若入庙顺行，主得贵人扶持，更与太阳福禄同宫，尤奇。
+    ten_gods: 劫财

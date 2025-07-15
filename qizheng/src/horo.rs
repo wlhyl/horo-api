@@ -1,6 +1,6 @@
 use crate::{
     DistanceStarConfig, Error, Planet, PlanetConfig, PlanetName,
-    dong_wei::DongWei,
+    dong_wei::{DongWei, calc_dong_wei},
     house::{ASCHouse, House, HouseName},
     lunar_mansions::{DistanceStarLong, calc_distance_star_long, calc_xiu_degree},
     planet::calc_planets,
@@ -8,7 +8,7 @@ use crate::{
 };
 use ganzhiwuxing::GanZhi;
 use geo_position::GeoPosition;
-use horo_date_time::{HoroDateTime, horo_date_time};
+use horo_date_time::HoroDateTime;
 
 use lunar_calendar::{LunarCalendar, lunar_calendar};
 use swe::{HouseSystem, swe_degnorm, swe_houses};
@@ -203,130 +203,13 @@ impl Horoscope {
         ];
 
         // 计算洞微
-        // 各宫位的洞微所管年数
-        let mut ages_of_per_house_for_dong_wei = [
-            15.0, 10.0, 11.0, 15.0, 8.0, 7.0, 11.0, 4.5, 4.5, 4.5, 5.0, 5.0,
-        ];
-
-        ages_of_per_house_for_dong_wei[0] = (ming_du_long - houses[0].long) / 3.0 + 10.0;
-
-        // 计算给定时间洞微大限所在的黄道经度
-
-        let mut date_of_per_house_for_dong_wei = vec![native_date];
-        for age in ages_of_per_house_for_dong_wei {
-            // let age = ages_of_per_house_for_dong_wei[index];
-            // 年龄数的整数部分
-            let age_int_part = age.floor();
-            // 非整数年，如:4.5年，(下一年的jd_utc-本年的jd_utc)*年龄的小数部分，得到此限开始的jd_utc
-
-            let start_date_of_current_house = date_of_per_house_for_dong_wei.last().unwrap();
-            // 计算一下宫位的起运时间
-            // 由于可能出现2月29日，因此使用horo_date_time函数
-            let current_start_date = horo_date_time(
-                start_date_of_current_house.year + (age_int_part as i32),
-                start_date_of_current_house.month,
-                start_date_of_current_house.day,
-                start_date_of_current_house.hour,
-                start_date_of_current_house.minute,
-                start_date_of_current_house.second,
-                start_date_of_current_house.tz,
-                false,
-            )?;
-
-            let next_start_date = horo_date_time(
-                start_date_of_current_house.year + (age_int_part as i32) + 1,
-                start_date_of_current_house.month,
-                start_date_of_current_house.day,
-                start_date_of_current_house.hour,
-                start_date_of_current_house.minute,
-                start_date_of_current_house.second,
-                start_date_of_current_house.tz,
-                false,
-            )?;
-
-            let start_jd_utc = current_start_date.jd_utc
-                + (age - age_int_part) * (next_start_date.jd_utc - current_start_date.jd_utc);
-
-            let start_date_of_next_house =
-                HoroDateTime::from_jd_zone(start_jd_utc, current_start_date.tz)?;
-
-            date_of_per_house_for_dong_wei.push(start_date_of_next_house);
-        }
-
-        let dong_long_per_year: Result<Vec<_>, Error> = (native_date.year
-            ..date_of_per_house_for_dong_wei.last().unwrap().year)
-            .into_iter()
-            .map(|year| {
-                let date = horo_date_time(
-                    year,
-                    native_date.month,
-                    native_date.day,
-                    native_date.hour,
-                    native_date.minute,
-                    native_date.second,
-                    native_date.tz,
-                    false,
-                )?;
-
-                let long = date_of_per_house_for_dong_wei.iter().enumerate().find_map(
-                    |(index, start_date)| {
-                        let next_index = (index + 1) % date_of_per_house_for_dong_wei.len();
-                        let next_start_date = date_of_per_house_for_dong_wei[next_index];
-
-                        if date.jd_utc < next_start_date.jd_utc {
-                            let long = swe_degnorm(
-                                // 第一年从第2宫开始
-                                houses[1].long
-                                    - (index * 30) as f64
-                                    - 30.0 * (date.jd_utc - start_date.jd_utc)
-                                        / (next_start_date.jd_utc - start_date.jd_utc),
-                            );
-                            Some(long)
-                        } else {
-                            None
-                        }
-                    },
-                );
-
-                let long = long.unwrap();
-
-                Ok(long)
-            })
-            .collect();
-
-        let dong_long_per_year = dong_long_per_year?;
-
-        let process_dong_wei_long =
-            date_of_per_house_for_dong_wei
-                .iter()
-                .enumerate()
-                .find_map(|(index, start_date)| {
-                    let next_index = (index + 1) % date_of_per_house_for_dong_wei.len();
-                    let next_date = date_of_per_house_for_dong_wei[next_index];
-
-                    if process_date.jd_utc < next_date.jd_utc {
-                        let long = swe_degnorm(
-                            houses[1].long
-                                - (index * 30) as f64
-                                - 30.0 * (process_date.jd_utc - start_date.jd_utc)
-                                    / (next_date.jd_utc - start_date.jd_utc),
-                        );
-                        Some(long)
-                    } else {
-                        None
-                    }
-                });
-
-        let process_dong_wei_long = process_dong_wei_long.unwrap();
-        let (process_dong_wei_xiu, process_dong_wei_xiu_degree) =
-            calc_xiu_degree(process_dong_wei_long, &distance_star_long)?;
-
-        let dong_wei = DongWei::new(
-            dong_long_per_year,
-            process_dong_wei_long,
-            process_dong_wei_xiu,
-            process_dong_wei_xiu_degree,
-        );
+        let dong_wei = calc_dong_wei(
+            ming_du_long,
+            houses[0].long,
+            &native_date,
+            &process_date,
+            &distance_star_long,
+        )?;
 
         let native_transformed_stars = transformed_stars(&native_lunar_calendar);
         let process_transformed_stars = transformed_stars(&process_lunar_calendar);
@@ -347,5 +230,36 @@ impl Horoscope {
             native_transformed_stars,
             process_transformed_stars,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use geo_position::GeoPosition;
+    use horo_date_time::horo_date_time;
+    use std::env;
+
+    #[test]
+    fn test_horoscope() {
+        dotenvy::dotenv().ok();
+        let ephe_path = env::var("EPHE_PATH").unwrap();
+        let native_date = horo_date_time(1983, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        let process_date = horo_date_time(2023, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        let geo = GeoPosition::new(116.383333, 39.9).unwrap();
+        let planets_config = PlanetConfig::default_all_configs();
+        let distance_star_config = DistanceStarConfig::default_all_configs();
+
+        let horoscope = Horoscope::new(
+            native_date,
+            process_date,
+            geo,
+            &planets_config,
+            &distance_star_config,
+            &ephe_path,
+        )
+        .unwrap();
+
+        insta::assert_yaml_snapshot!(horoscope);
     }
 }
