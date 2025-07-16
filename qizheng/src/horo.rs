@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::{
     DistanceStarConfig, Error, Planet, PlanetConfig, PlanetName,
     dong_wei::{DongWei, calc_dong_wei},
@@ -73,6 +75,28 @@ impl Horoscope {
             return Err(Error::InvalidProcessDateTime(
                 "推运时间必需大于等于出生时间".to_string(),
             ));
+        }
+
+        // 行星必需是：日、月、水、金、火、木、土、气、计、罗、孛
+        // 检查planets_config有且只有这些行星
+        let required_planets: HashSet<PlanetName> = [
+            PlanetName::日,
+            PlanetName::月,
+            PlanetName::水,
+            PlanetName::金,
+            PlanetName::火,
+            PlanetName::木,
+            PlanetName::土,
+            PlanetName::气,
+            PlanetName::计,
+            PlanetName::罗,
+            PlanetName::孛,
+        ]
+        .into();
+
+        let config_set_planets: HashSet<_> = planets_config.iter().map(|p| p.name).collect();
+        if config_set_planets != required_planets {
+            return Err(Error::Function("planets_config必须且只能包含以下11颗行星：日、月、水、金、火、木、土、气、计、罗、孛".to_string()));
         }
 
         let distance_star_long =
@@ -261,5 +285,74 @@ mod tests {
         .unwrap();
 
         insta::assert_yaml_snapshot!(horoscope);
+    }
+
+    #[test]
+    fn test_process_date_before_native_date() {
+        dotenvy::dotenv().ok();
+        let ephe_path = env::var("EPHE_PATH").unwrap();
+        let native_date = horo_date_time(2023, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        let process_date = horo_date_time(1983, 10, 27, 18, 30, 0, 8.0, false).unwrap(); // 推运时间早于出生时间
+        let geo = GeoPosition::new(116.383333, 39.9).unwrap();
+        let planets_config = PlanetConfig::default_all_configs();
+        let distance_star_config = DistanceStarConfig::default_all_configs();
+
+        let result = Horoscope::new(
+            native_date,
+            process_date,
+            geo,
+            &planets_config,
+            &distance_star_config,
+            &ephe_path,
+        );
+
+        assert!(matches!(result, Err(Error::InvalidProcessDateTime(_))));
+    }
+
+    #[test]
+    fn test_incomplete_planets_config() {
+        dotenvy::dotenv().ok();
+        let ephe_path = env::var("EPHE_PATH").unwrap();
+        let native_date = horo_date_time(1983, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        let process_date = horo_date_time(2023, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        let geo = GeoPosition::new(116.383333, 39.9).unwrap();
+        // 传入一个不完整的行星配置
+        let planets_config: Vec<PlanetConfig> = vec![PlanetConfig::new(PlanetName::日, 0.0, 0.0)];
+        let distance_star_config = DistanceStarConfig::default_all_configs();
+
+        let result = Horoscope::new(
+            native_date,
+            process_date,
+            geo,
+            &planets_config,
+            &distance_star_config,
+            &ephe_path,
+        );
+
+        // 验证是否返回了预期的行星配置错误
+        assert!(matches!(result, Err(Error::Function(_))));
+        if let Err(Error::Function(msg)) = result {
+            assert!(msg.contains("planets_config必须且只能包含以下11颗行星"));
+        }
+    }
+
+    #[test]
+    fn test_invalid_ephe_path() {
+        let native_date = horo_date_time(1983, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        let process_date = horo_date_time(2023, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        let geo = GeoPosition::new(116.383333, 39.9).unwrap();
+        let planets_config = PlanetConfig::default_all_configs();
+        let distance_star_config = DistanceStarConfig::default_all_configs();
+
+        let result = Horoscope::new(
+            native_date,
+            process_date,
+            geo,
+            &planets_config,
+            &distance_star_config,
+            "invalid/path", // 无效路径
+        );
+
+        assert!(result.is_err());
     }
 }

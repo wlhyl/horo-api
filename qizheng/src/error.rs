@@ -30,3 +30,39 @@ impl Display for Error {
         write!(f, "{}", s)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use horo_date_time::Error as HoroDateTimeError;
+
+    #[test]
+    fn test_from_horo_date_time_error() {
+        let err = HoroDateTimeError::InvalidDateTime("invalid date".to_string());
+        let converted_err: Error = err.into();
+        assert!(matches!(converted_err, Error::InvalidDateTime(_)));
+
+        let err = HoroDateTimeError::InvalidZone("invalid zone".to_string());
+        let converted_err: Error = err.into();
+        assert!(matches!(converted_err, Error::InvalidZone(_)));
+
+        let err = HoroDateTimeError::Function("function error".to_string());
+        let converted_err: Error = err.into();
+        assert!(matches!(converted_err, Error::Function(_)));
+    }
+
+    #[test]
+    fn test_display_error() {
+        let err = Error::Function("test function".to_string());
+        assert_eq!(format!("{}", err), "test function");
+
+        let err = Error::InvalidProcessDateTime("invalid process time".to_string());
+        assert_eq!(format!("{}", err), "invalid process time");
+
+        let err = Error::InvalidDateTime("invalid date time".to_string());
+        assert_eq!(format!("{}", err), "invalid date time");
+
+        let err = Error::InvalidZone("invalid zone".to_string());
+        assert_eq!(format!("{}", err), "invalid zone");
+    }
+}
