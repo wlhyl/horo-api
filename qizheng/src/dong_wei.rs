@@ -8,6 +8,16 @@ use swe::swe_degnorm;
 #[cfg(feature = "swagger")]
 use utoipa::ToSchema;
 
+/// 二十八宿洞微大限时间
+#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "swagger", derive(ToSchema))]
+pub struct LunarMansionsDongWeiTime {
+    /// 宿名
+    lunar_mansions: LunarMansionsName,
+    /// 洞微大限时间
+    time: HoroDateTime,
+}
+
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
 /// 洞微大限
@@ -20,20 +30,23 @@ pub struct DongWei {
     xiu: LunarMansionsName,
     /// 当前推运时间的洞微大限道经度的入宿度数
     xiu_degree: f64,
+    /// 每个二十八宿距星的洞微大限时间
+    lunar_mansions_dong_wei_time: Vec<Option<LunarMansionsDongWeiTime>>,
 }
-
 impl DongWei {
     pub fn new(
         long_of_per_year: Vec<f64>,
         long: f64,
         xiu: LunarMansionsName,
         xiu_degree: f64,
+        lunar_mansions_dong_wei_time: Vec<Option<LunarMansionsDongWeiTime>>,
     ) -> Self {
         Self {
             long_of_per_year,
             long,
             xiu,
             xiu_degree,
+            lunar_mansions_dong_wei_time,
         }
     }
 }
@@ -44,6 +57,8 @@ fn calc_dong_wei_long_at_date(
     first_house_long: f64,
     date_of_per_house_for_dong_wei: &[HoroDateTime],
 ) -> Result<f64, Error> {
+    // 注意： date_of_per_house_for_dong_wei实际有13个元素
+    // 最后一个元素是第2宫头的时间
     date_of_per_house_for_dong_wei
         .windows(2)
         .enumerate()
@@ -66,6 +81,54 @@ fn calc_dong_wei_long_at_date(
         .unwrap_or(Err(Error::InvalidProcessDateTime(
             "推运时间超出洞微大限的计算范围".to_string(),
         )))
+}
+
+/// 计算给定黄道经度的洞微大限时间
+///
+/// 该函数根据给定的黄道经度，计算出对应的洞微大限时间点。
+///
+/// # 参数
+///
+/// - `long`: 给定的黄道经度
+/// - `first_house_long`: 第一宫的起始经度
+/// - `date_of_per_house_for_dong_wei`: 各宫位起运时间序列
+///
+/// # 返回值
+///
+/// 返回对应的儒略日时间，如果给定经度不在洞微大限范围内，则返回错误。
+fn calc_date_from_dong_wei_long(
+    long: f64,
+    first_house_long: f64,
+    date_of_per_house_for_dong_wei: &[HoroDateTime],
+) -> Result<f64, Error> {
+    // 注意： date_of_per_house_for_dong_wei实际有13个元素
+    // 最后一个元素是第2宫头的时间
+
+    // 遍历每个宫位的时间区间，找到给定经度对应的时间区间
+    for (index, window) in date_of_per_house_for_dong_wei.windows(2).enumerate() {
+        let start_date = &window[0];
+        let next_start_date = &window[1];
+
+        // 计算当前区间起始的经度
+        let start_long = swe_degnorm(first_house_long + 30.0 - (index * 30) as f64);
+
+        // 计算目标经度与起始经度的差值（逆行方向）
+        let diff = swe_degnorm(start_long - long);
+
+        // 洞微大限每个宫位区间为30度。如果差值在30度内，说明目标经度在此区间。
+        // diff < 30.0 对应于时间上的 [start_date, next_start_date)
+        // 当 long 等于区间的结束经度时，diff会等于30.0，此时应归入下一个区间计算
+        if diff < 30.0 {
+            // 使用线性插值计算对应的儒略日
+            let ratio = diff / 30.0;
+            let jd = start_date.jd_utc + ratio * (next_start_date.jd_utc - start_date.jd_utc);
+            return Ok(jd);
+        }
+    }
+
+    Err(Error::InvalidProcessDateTime(
+        "给定经度超出洞微大限的计算范围".to_string(),
+    ))
 }
 
 /// 计算洞微大限
@@ -116,6 +179,7 @@ pub(crate) fn calc_dong_wei(
             false,
         )?;
 
+        // 算法：如4.1年，0.1*回归年长度=0.1对应的传略日数
         let start_jd_utc = current_start_date.jd_utc
             + (age - age_int_part) * (next_start_date.jd_utc - current_start_date.jd_utc);
 
@@ -158,11 +222,51 @@ pub(crate) fn calc_dong_wei(
     let (process_dong_wei_xiu, process_dong_wei_xiu_degree) =
         calc_xiu_degree(process_dong_wei_long, distance_star_long)?;
 
+    // 计算每个二十八宿距星的洞微大限时间
+    let lunar_mansions_dong_wei_time: Result<Vec<_>, Error> = distance_star_long
+        .iter()
+        .enumerate()
+        .map(|(index, star)| {
+            let jd_utc = calc_date_from_dong_wei_long(
+                star.long,
+                first_house_long,
+                &date_of_per_house_for_dong_wei,
+            )
+            .ok();
+            if jd_utc.is_none() {
+                return Ok(None);
+            }
+            let time = HoroDateTime::from_jd_zone(jd_utc.unwrap(), native_date.tz)?;
+            Ok(Some(LunarMansionsDongWeiTime {
+                lunar_mansions: distance_star_long
+                    [(distance_star_long.len() - 1 + index) % distance_star_long.len()]
+                .lunar_mansions,
+                time,
+            }))
+        })
+        .collect();
+
+    let mut lunar_mansions_dong_wei_time = lunar_mansions_dong_wei_time?;
+
+    // 对 lunar_mansions_dong_wei_time 按时间排序
+    // Some 在前，None 在后，Some 内部按时间升序
+    lunar_mansions_dong_wei_time.sort_by(|a, b| match (a, b) {
+        (Some(a_val), Some(b_val)) => a_val
+            .time
+            .jd_utc
+            .partial_cmp(&b_val.time.jd_utc)
+            .unwrap_or(std::cmp::Ordering::Equal),
+        (Some(_), None) => std::cmp::Ordering::Less,
+        (None, Some(_)) => std::cmp::Ordering::Greater,
+        (None, None) => std::cmp::Ordering::Equal,
+    });
+
     let dong_wei = DongWei::new(
         dong_wei_long_per_year,
         process_dong_wei_long,
         process_dong_wei_xiu,
         process_dong_wei_xiu_degree,
+        lunar_mansions_dong_wei_time,
     );
 
     Ok(dong_wei)
@@ -171,8 +275,10 @@ pub(crate) fn calc_dong_wei(
 #[cfg(test)]
 mod tests {
     use crate::{
-        DistanceStarConfig, PlanetConfig, PlanetName, dong_wei::calc_dong_wei,
-        lunar_mansions::calc_distance_star_long, planet::calc_planets,
+        DistanceStarConfig, Error, PlanetConfig, PlanetName,
+        dong_wei::{calc_date_from_dong_wei_long, calc_dong_wei},
+        lunar_mansions::calc_distance_star_long,
+        planet::calc_planets,
     };
     use geo_position::GeoPosition;
     use horo_date_time::horo_date_time;
@@ -273,6 +379,65 @@ mod tests {
             first_house_long,
             &date_of_per_house_for_dong_wei,
         );
+        assert!(matches!(result, Err(Error::InvalidProcessDateTime(_))));
+    }
+
+    #[test]
+    fn test_calc_date_from_dong_wei_long() {
+        let first_house_long = 210.0;
+        // 伪造一个时间序列
+        // 1983-10-27: 240 -> 210 (15 years)
+        // 1998-10-27: 210 -> 180 (10 years)
+        // 2008-10-27: 180 -> 150 (11 years)
+        // 2019-10-27
+        let date_of_per_house_for_dong_wei = vec![
+            horo_date_time(1983, 10, 27, 18, 30, 0, 8.0, false).unwrap(),
+            horo_date_time(1998, 10, 27, 18, 30, 0, 8.0, false).unwrap(),
+            horo_date_time(2008, 10, 27, 18, 30, 0, 8.0, false).unwrap(),
+            horo_date_time(2019, 10, 27, 18, 30, 0, 8.0, false).unwrap(),
+        ];
+
+        // 1. 成功案例: 在第二个区间 (210 -> 180) 的中间
+        let long = 195.0;
+        let jd =
+            calc_date_from_dong_wei_long(long, first_house_long, &date_of_per_house_for_dong_wei)
+                .unwrap();
+        // 1998 + 10/2 = 2003
+        let expected_date = horo_date_time(2003, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        assert!(
+            (jd - expected_date.jd_utc).abs() < 1.0,
+            "jd={jd}, expected_jd={}",
+            expected_date.jd_utc
+        );
+
+        // 2. 边界案例: long 等于区间的开始
+        let long = 210.0;
+        let jd =
+            calc_date_from_dong_wei_long(long, first_house_long, &date_of_per_house_for_dong_wei)
+                .unwrap();
+        let expected_date = horo_date_time(1998, 10, 27, 18, 30, 0, 8.0, false).unwrap();
+        assert!((jd - expected_date.jd_utc).abs() < 1e-9);
+
+        // 3. 边界案例: long 等于整个推运的终点
+        let long = 150.0;
+        let result =
+            calc_date_from_dong_wei_long(long, first_house_long, &date_of_per_house_for_dong_wei);
+        assert!(matches!(result, Err(Error::InvalidProcessDateTime(_))));
+
+        // 4. 错误案例: 超出范围 (小于终点)
+        let long = 149.0;
+        let result =
+            calc_date_from_dong_wei_long(long, first_house_long, &date_of_per_house_for_dong_wei);
+        assert!(matches!(result, Err(Error::InvalidProcessDateTime(_))));
+
+        // 5. 错误案例: 超出范围 (大于起点)
+        let long = 241.0;
+        let result =
+            calc_date_from_dong_wei_long(long, first_house_long, &date_of_per_house_for_dong_wei);
+        // 第一个区间从240.0开始，所以241超出了范围。
+        // 但由于逻辑`swe_degnorm(start_long - long)`会进行角度归一化，
+        // `swe_degnorm(240 - 241)`的结果是359，大于30，因此会被判定为超出范围。
+        // 这个判断是正确的。
         assert!(matches!(result, Err(Error::InvalidProcessDateTime(_))));
     }
 }
