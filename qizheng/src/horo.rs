@@ -13,7 +13,10 @@ use geo_position::GeoPosition;
 use horo_date_time::HoroDateTime;
 
 use lunar_calendar::{LunarCalendar, lunar_calendar};
-use swe::{HouseSystem, swe_degnorm, swe_houses};
+use swe::{
+    Body, HouseSystem, swe_calc_ut, swe_close, swe_cotrans, swe_degnorm, swe_houses,
+    swe_set_ephe_path,
+};
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -124,9 +127,15 @@ impl Horoscope {
                 return Err(Error::Function("swe_houses()调用失败".to_owned()));
             };
 
-        let asc_long = ascmc[0];
+        // let asc_long = ascmc[0];
 
-        // 命宫的黄道经经度
+        // 命宫的赤道经度
+        let eps = calc_eps(native_date.jd_utc, ephe_path)?;
+        // 计算asc的赤经、赤纬
+        let asc_equator = swe_cotrans(ascmc[0], 0.0, 1.0, -eps);
+        let asc_long = asc_equator[0];
+
+        // 命宫的赤道经度
         let asc_house_long = (asc_long / 30.0).floor() * 30.0;
 
         // 算命度
@@ -254,6 +263,17 @@ impl Horoscope {
             native_transformed_stars,
             process_transformed_stars,
         })
+    }
+}
+
+pub fn calc_eps(jd_utc: f64, ephe_path: &str) -> Result<f64, Error> {
+    swe_set_ephe_path(ephe_path);
+    let ret = swe_calc_ut(jd_utc, &Body::SeEclNut, &[]);
+    swe_close();
+
+    match ret {
+        Ok(v) => Ok(v[0]),
+        Err(e) => Err(Error::Function(format!("计算黄赤倾角错误:{e}"))),
     }
 }
 

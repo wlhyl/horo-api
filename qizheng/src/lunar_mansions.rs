@@ -68,7 +68,7 @@ pub(crate) fn calc_distance_star_long(
 
     for distance_star in distance_star_config {
         let star_name = format!(",{}", distance_star.distance_star);
-        let (_, xx) = swe_fixstar2_ut(&star_name, jd_utc, &[Flag::SeflgSwieph])
+        let (_, xx) = swe_fixstar2_ut(&star_name, jd_utc, &[Flag::SeflgSwieph,Flag::SeflgEquatorial])
             .map_err(|e| Error::Function(format!("计算二十八距星错误:{e}")))?;
         distance_star_long.push(DistanceStarLong {
             lunar_mansions: distance_star.lunar_mansions,

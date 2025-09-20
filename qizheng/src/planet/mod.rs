@@ -174,7 +174,8 @@ pub(crate) fn calc_planets(
 
             (star_long, speed)
         } else {
-            let xx = swe_calc_ut(jd_utc, &body, &[Flag::SeflgSpeed])
+
+            let xx = swe_calc_ut(jd_utc, &body, &[Flag::SeflgSpeed,Flag::SeflgEquatorial])
                 .map_err(|e| Error::Function(format!("计算行星错误:{e}")))?;
 
             (xx[0], xx[3])
