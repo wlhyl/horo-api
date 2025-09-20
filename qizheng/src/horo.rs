@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use crate::{
-    DistanceStarConfig, Error, Planet, PlanetConfig, PlanetName,
+    DistanceStarConfig, Error, LunarMansionsName, Planet, PlanetConfig, PlanetName,
     dong_wei::{DongWei, calc_dong_wei},
     house::{ASCHouse, House, HouseName},
     lunar_mansions::{DistanceStarLong, calc_distance_star_long, calc_xiu_degree},
@@ -104,20 +104,48 @@ impl Horoscope {
 
         let distance_star_long =
             calc_distance_star_long(native_date.jd_utc, distance_star_config, ephe_path)?;
+
+        // 以虚6度为水瓶座15度
+        let 虚 = distance_star_long
+            .iter()
+            .find(|d| d.lunar_mansions == LunarMansionsName::虚)
+            .unwrap();
+        let 室 = distance_star_long
+            .iter()
+            .find(|d| d.lunar_mansions == LunarMansionsName::室)
+            .unwrap();
+
+        // 所有赤经都需要移动的度数
+        // let delta = swe_degnorm(虚.long + 6.0 - 325.0);
+        let delta = swe_degnorm(虚.long + swe_degnorm(室.long - 虚.long) * 6.0 / 15.0 - 325.0);
+        println!("移动度数：{}", delta);
+
         // 计算行星
-        let native_planets = calc_planets(
+        let native_planets: Vec<_> = calc_planets(
             native_date.jd_utc,
             &distance_star_long,
             &planets_config,
             ephe_path,
-        )?;
+        )?
+        .into_iter()
+        .map(|mut p| {
+            p.long = swe_degnorm(p.long - delta);
+            p
+        })
+        .collect();
 
-        let process_planets = calc_planets(
+        let process_planets: Vec<_> = calc_planets(
             process_date.jd_utc,
             &distance_star_long,
             &planets_config,
             ephe_path,
-        )?;
+        )?
+        .into_iter()
+        .map(|mut p| {
+            p.long = swe_degnorm(p.long - delta);
+            p
+        })
+        .collect();
 
         // 计算命宫
         let (_, ascmc) =
@@ -133,7 +161,7 @@ impl Horoscope {
         let eps = calc_eps(native_date.jd_utc, ephe_path)?;
         // 计算asc的赤经、赤纬
         let asc_equator = swe_cotrans(ascmc[0], 0.0, 1.0, -eps);
-        let asc_long = asc_equator[0];
+        let asc_long = swe_degnorm(asc_equator[0] - delta);
 
         // 命宫的赤道经度
         let asc_house_long = (asc_long / 30.0).floor() * 30.0;
@@ -158,6 +186,14 @@ impl Horoscope {
         let (ming_du_xiu, ming_du_xiu_degree) = calc_xiu_degree(ming_du_long, &distance_star_long)?;
 
         let asc_house = ASCHouse::new(asc_long, ming_du_xiu, ming_du_xiu_degree);
+
+        let distance_star_long: Vec<_> = distance_star_long
+            .into_iter()
+            .map(|mut d| {
+                d.long = swe_degnorm(d.long - delta);
+                d
+            })
+            .collect();
 
         // 计算宫位
 
