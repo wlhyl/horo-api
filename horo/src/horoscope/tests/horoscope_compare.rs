@@ -389,6 +389,83 @@ fn çtest_horoscope_compare_new() {
     assert_eq!(0, south_node.orb, "容许度, 南交点");
     assert_eq!(均, south_node.speed_state, "迟疾, 南交点");
 
+    // 福点
+    let part_of_fortune = horo.original_part_of_fortune;
+    let asc = horo.original_asc;
+    let sun = horo
+        .original_planets
+        .iter()
+        .find(|p| p.name == Sun)
+        .unwrap();
+    let moon = horo
+        .original_planets
+        .iter()
+        .find(|p| p.name == Moon)
+        .unwrap();
+
+    let eps = calc_eps(native_date.jd_utc, &ephe_path).unwrap();
+
+    let part_of_fortune_long = swe_degnorm(asc.long + moon.long - sun.long);
+    let part_of_fortune_equator = swe_cotrans(part_of_fortune_long, 0.0, 1.0, -eps);
+
+    assert_eq!(PartOfFortune, part_of_fortune.name, "原星盘福点名称");
+    assert_eq!(
+        part_of_fortune_long, part_of_fortune.long,
+        "原星盘福点黄道经度"
+    );
+    assert_eq!(0.0, part_of_fortune.lat, "原星盘福点黄纬");
+    assert_eq!(
+        part_of_fortune_equator[0], part_of_fortune.ra,
+        "原星盘福点赤经"
+    );
+    assert_eq!(
+        part_of_fortune_equator[1], part_of_fortune.dec,
+        "原星盘福点赤纬"
+    );
+    assert_eq!(0, part_of_fortune.orb, "原星盘福点容许度");
+    assert_eq!(均, part_of_fortune.speed_state, "原星盘福点速度是“均”");
+
+    let comparison_part_of_fortune = horo.comparison_part_of_fortune;
+    let compa_asc = horo.comparison_asc;
+    let compa_sun = horo
+        .comparison_planets
+        .iter()
+        .find(|p| p.name == Sun)
+        .unwrap();
+    let compa_moon = horo
+        .comparison_planets
+        .iter()
+        .find(|p| p.name == Moon)
+        .unwrap();
+
+    let eps = calc_eps(compare_date.jd_utc, &ephe_path).unwrap();
+
+    let compa_part_of_fortune_long = swe_degnorm(compa_asc.long + compa_sun.long - compa_moon.long);
+    let compa_part_of_fortune_equator = swe_cotrans(compa_part_of_fortune_long, 0.0, 1.0, -eps);
+
+    assert_eq!(
+        PartOfFortune, comparison_part_of_fortune.name,
+        "比较盘福点名称"
+    );
+    assert_eq!(
+        compa_part_of_fortune_long, comparison_part_of_fortune.long,
+        "比较盘福点黄道经度"
+    );
+    assert_eq!(0.0, comparison_part_of_fortune.lat, "比较盘福点黄纬");
+    assert_eq!(
+        compa_part_of_fortune_equator[0], comparison_part_of_fortune.ra,
+        "比较盘福点赤经"
+    );
+    assert_eq!(
+        compa_part_of_fortune_equator[1], comparison_part_of_fortune.dec,
+        "比较盘福点赤纬"
+    );
+    assert_eq!(0, comparison_part_of_fortune.orb, "比较盘福点容许度");
+    assert_eq!(
+        均, comparison_part_of_fortune.speed_state,
+        "比较盘福点速度是“均”"
+    );
+
     // 相位
-    assert_eq!(36, horo.aspects.len());
+    assert_eq!(38, horo.aspects.len());
 }

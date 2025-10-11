@@ -41,6 +41,7 @@ pub enum PlanetName {
     // MeanNode,
     NorthNode,
     SouthNode,
+    PartOfFortune,
 }
 
 impl PlanetName {
@@ -87,6 +88,7 @@ impl PlanetName {
         }
     }
 }
+
 #[derive(Clone, Debug)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]

@@ -1,8 +1,11 @@
-use swe::{swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path, Body};
+#[cfg(test)]
+mod tests;
+
+use swe::{Body, swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path};
 
 use crate::{
-    utils::{mod180, newton_iteration},
     Aspect, Error, Horoscope, HouseName, Planet, PlanetConfig,
+    utils::{mod180, newton_iteration},
 };
 use geo_position::GeoPosition;
 
@@ -44,6 +47,9 @@ pub struct ReturnHoroscop {
 
     /// 七颗行星
     pub planets: Vec<Planet>,
+
+    /// 福点
+    pub part_of_fortune: Planet,
 
     /// 行星相位，仅包含四轴、行星间的相位
     pub aspects: Vec<Aspect>,
@@ -110,6 +116,8 @@ pub fn solar_return(
         mc: horo.mc,
         dsc: horo.dsc,
         ic: horo.ic,
+        // 福点
+        part_of_fortune: horo.part_of_fortune,
         planets: horo.planets,
         aspects: horo.aspects,
         antiscoins: horo.antiscoins,
@@ -175,6 +183,8 @@ pub fn lunar_return(
         mc: horo.mc,
         dsc: horo.dsc,
         ic: horo.ic,
+        // 福点
+        part_of_fortune: horo.part_of_fortune,
         planets: horo.planets,
         aspects: horo.aspects,
         antiscoins: horo.antiscoins,

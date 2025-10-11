@@ -7,7 +7,11 @@ use swe::{
 };
 
 use crate::{
-    Horoscope, PlanetName::*, config::PlanetConfig, house::HouseName, planet::PlanetSpeedState::*,
+    Horoscope,
+    PlanetName::{self, *},
+    config::PlanetConfig,
+    house::HouseName,
+    planet::PlanetSpeedState::*,
     utils::calc_eps,
 };
 
@@ -416,4 +420,146 @@ fn test_planetary_hours() {
             .planetary_hours,
         "日出前的行星时"
     )
+}
+
+// 福点
+// 白天盘的福点
+#[test]
+fn test_daytime_fortunes() {
+    dotenvy::dotenv().ok();
+    let ephe_path = env::var("EPHE_PATH")
+        .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
+
+    let geo = GeoPosition::new(
+        102.0 + 41.0 / 60.0 + 59.0 / 3600.0,
+        25.0 + 1.0 / 60.0 + 53.0 / 3600.0,
+    );
+    let geo = geo.unwrap();
+
+    let house = HouseName::Alcabitus;
+    let planet_configs = PlanetConfig::default_all_configs();
+
+    let diurnal = HoroDateTime::new(2021, 9, 14, 10, 30, 20, 8.0);
+
+    let diurnal = diurnal.unwrap();
+
+    let horo_diurnal = Horoscope::new(diurnal, geo, house, &planet_configs, &ephe_path);
+
+    let horo_diurnal = horo_diurnal.unwrap();
+
+    assert!(horo_diurnal.is_diurnal, "白天盘");
+
+    // 计算福点
+    let asc = horo_diurnal.asc.long;
+    let sun = horo_diurnal
+        .planets
+        .iter()
+        .find(|p| p.name == PlanetName::Sun)
+        .unwrap()
+        .long;
+    let moon = horo_diurnal
+        .planets
+        .iter()
+        .find(|p| p.name == PlanetName::Moon)
+        .unwrap()
+        .long;
+    let part_of_fortune_long = swe_degnorm(asc + moon - sun);
+
+    let eps = calc_eps(diurnal.jd_utc, &ephe_path);
+    let eps = eps.unwrap();
+
+    let part_of_fortune_equator = swe_cotrans(part_of_fortune_long, 0.0, 1.0, -eps);
+    assert_eq!(
+        PartOfFortune, horo_diurnal.part_of_fortune.name,
+        "白天盘的福点名称"
+    );
+    assert_eq!(
+        part_of_fortune_long, horo_diurnal.part_of_fortune.long,
+        "白天盘的福点黄道经度"
+    );
+    assert_eq!(0.0, horo_diurnal.part_of_fortune.lat, "白天盘的福点黄纬");
+    assert_eq!(
+        part_of_fortune_equator[0], horo_diurnal.part_of_fortune.ra,
+        "白天盘的福点赤经"
+    );
+    assert_eq!(
+        part_of_fortune_equator[1], horo_diurnal.part_of_fortune.dec,
+        "白天盘的福点赤纬"
+    );
+    assert_eq!(0, horo_diurnal.part_of_fortune.orb, "白天盘的福点容许度");
+    assert_eq!(
+        均, horo_diurnal.part_of_fortune.speed_state,
+        "白天盘的福点速度是“均”"
+    );
+}
+
+// 夜间盘的福点
+#[test]
+fn test_nocturnal_fortunes() {
+    dotenvy::dotenv().ok();
+    let ephe_path = env::var("EPHE_PATH")
+        .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
+
+    let geo = GeoPosition::new(
+        102.0 + 41.0 / 60.0 + 59.0 / 3600.0,
+        25.0 + 1.0 / 60.0 + 53.0 / 3600.0,
+    );
+    assert!(geo.is_ok());
+    let geo = geo.unwrap();
+
+    let house = HouseName::Alcabitus;
+    let planet_configs = PlanetConfig::default_all_configs();
+
+    let nocturnal = HoroDateTime::new(2021, 9, 14, 22, 30, 20, 8.0);
+
+    let nocturnal = nocturnal.unwrap();
+
+    let horo_nocturnal = Horoscope::new(nocturnal, geo, house.clone(), &planet_configs, &ephe_path);
+
+    let horo_nocturnal = horo_nocturnal.unwrap();
+
+    assert!(!horo_nocturnal.is_diurnal, "夜间盘");
+
+    // 计算福点
+    let asc = horo_nocturnal.asc.long;
+    let sun = horo_nocturnal
+        .planets
+        .iter()
+        .find(|p| p.name == PlanetName::Sun)
+        .unwrap()
+        .long;
+    let moon = horo_nocturnal
+        .planets
+        .iter()
+        .find(|p| p.name == PlanetName::Moon)
+        .unwrap()
+        .long;
+    let part_of_fortune_long = swe_degnorm(asc + sun - moon);
+
+    let eps = calc_eps(nocturnal.jd_utc, &ephe_path);
+    let eps = eps.unwrap();
+
+    let part_of_fortune_equator = swe_cotrans(part_of_fortune_long, 0.0, 1.0, -eps);
+    assert_eq!(
+        PartOfFortune, horo_nocturnal.part_of_fortune.name,
+        "夜间盘的福点名称"
+    );
+    assert_eq!(
+        part_of_fortune_long, horo_nocturnal.part_of_fortune.long,
+        "夜间盘的福点黄道经度"
+    );
+    assert_eq!(0.0, horo_nocturnal.part_of_fortune.lat, "夜间盘的福点黄纬");
+    assert_eq!(
+        part_of_fortune_equator[0], horo_nocturnal.part_of_fortune.ra,
+        "夜间盘的福点赤经"
+    );
+    assert_eq!(
+        part_of_fortune_equator[1], horo_nocturnal.part_of_fortune.dec,
+        "夜间盘的福点赤纬"
+    );
+    assert_eq!(0, horo_nocturnal.part_of_fortune.orb, "夜间盘的福点容许度");
+    assert_eq!(
+        均, horo_nocturnal.part_of_fortune.speed_state,
+        "夜间盘的福点速度是“均”"
+    );
 }

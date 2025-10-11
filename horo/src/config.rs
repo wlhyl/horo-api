@@ -28,6 +28,7 @@ impl PlanetConfig {
             MC => PlanetConfig::new(MC, 0, 0.0, 0.0),
             DSC => PlanetConfig::new(DSC, 0, 0.0, 0.0),
             IC => PlanetConfig::new(IC, 0, 0.0, 0.0),
+            PartOfFortune => PlanetConfig::new(PartOfFortune, 0, 0.0, 0.0),
             Sun => PlanetConfig::new(
                 Sun, 15, 0.0, //如果行星每日速度平均，可以设置max与min相等
                 0.0,
@@ -50,12 +51,13 @@ impl PlanetConfig {
     }
 
     // 所有行星的默认配置
-    pub fn default_all_configs() -> [PlanetConfig; 13] {
+    pub fn default_all_configs() -> [PlanetConfig; 14] {
         [
             PlanetConfig::default_config(&ASC),
             PlanetConfig::default_config(&MC),
             PlanetConfig::default_config(&DSC),
             PlanetConfig::default_config(&IC),
+            PlanetConfig::default_config(&PartOfFortune),
             PlanetConfig::default_config(&Sun),
             PlanetConfig::default_config(&Moon),
             PlanetConfig::default_config(&Mercury),
@@ -99,6 +101,7 @@ mod tests {
         (DSC, 0, 0.0, 0.0),
         (IC, 0, 0.0, 0.0),
         (Sun, 15, 0.0, 0.0),
+        (PartOfFortune, 0, 0.0, 0.0),
         (Moon, 12, 12.5, 13.5),
         (Mercury, 7, 1.0, 1.5),
         (Venus, 7, 50.0 / 60.0, 1.0 + 10.0 / 60.0),
@@ -122,6 +125,7 @@ mod tests {
         (MC, 0, 0.0, 0.0),
         (DSC, 0, 0.0, 0.0),
         (IC, 0, 0.0, 0.0),
+        (PartOfFortune, 0, 0.0, 0.0),
         (Sun, 15, 0.0, 0.0),
         (Moon, 12, 12.5, 13.5),
         (Mercury, 7, 1.0, 1.5),

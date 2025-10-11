@@ -39,6 +39,8 @@ pub struct Horoscope {
     pub dsc: Planet,
     //     @field:Schema(description = "天底")
     pub ic: Planet,
+    /// 福点
+    pub part_of_fortune: Planet,
     //     @field:Schema(description = "七颗行星")
     pub planets: Vec<Planet>,
     //     @field:Schema(description = "白天盘:true,夜间盘:false")
@@ -152,6 +154,33 @@ impl Horoscope {
         let diff = swe_degnorm(asc.long - sun.long);
         let is_diurnal = diff <= 180.0;
 
+        // 计算福点
+        let moon = planets.iter().find(|p| p.name == PlanetName::Moon).unwrap();
+        let default_planet_config = PlanetConfig::default_config(&PlanetName::PartOfFortune);
+        let planet_config = planets_config
+            .iter()
+            .find(|p| p.name == PlanetName::PartOfFortune)
+            .unwrap_or(&default_planet_config);
+        let part_of_fortune_long = if is_diurnal {
+            // 昼生
+            // 福点=上升点+月亮−太阳
+            swe_degnorm(ascmc[0] + moon.long - sun.long)
+        } else {
+            // 夜生
+            // 福点=上升点+太阳−月亮
+            swe_degnorm(ascmc[0] + sun.long - moon.long)
+        };
+        let part_of_fortune_equator = swe_cotrans(part_of_fortune_long, 0.0, 1.0, -eps);
+        let part_of_fortune = Planet::new(
+            PlanetName::PartOfFortune,
+            part_of_fortune_long,
+            0.0,
+            0.0,
+            part_of_fortune_equator[0],
+            part_of_fortune_equator[1],
+            planet_config,
+        );
+
         // 计算时主星
         //月、火、水、木、金、土、日
         // 一、二、三、四、五、六、日
@@ -234,6 +263,7 @@ impl Horoscope {
         asm_and_planets.push(&mc);
         asm_and_planets.push(&dsc);
         asm_and_planets.push(&ic);
+        asm_and_planets.push(&part_of_fortune);
         for i in 0..asm_and_planets.len() {
             for j in i..asm_and_planets.len() {
                 let aspect = asm_and_planets[i].has_aspect(asm_and_planets[j], false);
@@ -262,6 +292,7 @@ impl Horoscope {
             mc,
             dsc,
             ic,
+            part_of_fortune,
             planets,
             is_diurnal,
             planetary_day,
@@ -302,6 +333,9 @@ pub struct HoroscopeComparison {
     /// 天底
     pub original_ic: Planet,
     pub comparison_ic: Planet,
+    /// 福点
+    pub original_part_of_fortune: Planet,
+    pub comparison_part_of_fortune: Planet,
     /// 七颗行星
     pub original_planets: Vec<Planet>,
     pub comparison_planets: Vec<Planet>,
@@ -353,6 +387,10 @@ impl HoroscopeComparison {
             comparison_dsc: horo_compare.dsc,
             original_ic: horo.ic,
             comparison_ic: horo_compare.ic,
+            // 福点
+            original_part_of_fortune: horo.part_of_fortune,
+            comparison_part_of_fortune: horo_compare.part_of_fortune,
+            // 行星
             original_planets: horo.planets,
             comparison_planets: horo_compare.planets,
             aspects,
@@ -374,12 +412,16 @@ impl HoroscopeComparison {
         asm_and_planets.push(&horo.mc);
         asm_and_planets.push(&horo.dsc);
         asm_and_planets.push(&horo.ic);
+        // 福点
+        asm_and_planets.push(&horo.part_of_fortune);
 
         let mut asm_and_planets_compare: Vec<_> = horo_compare.planets.iter().collect();
         asm_and_planets_compare.push(&horo_compare.asc);
         asm_and_planets_compare.push(&horo_compare.mc);
         asm_and_planets_compare.push(&horo_compare.dsc);
         asm_and_planets_compare.push(&horo_compare.ic);
+        // 福点
+        asm_and_planets_compare.push(&horo_compare.part_of_fortune);
 
         for i in 0..asm_and_planets.len() {
             for j in 0..asm_and_planets_compare.len() {
