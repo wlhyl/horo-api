@@ -103,4 +103,4 @@ docker build -t horo/api .
 
 ## 许可协议
 
-本项目采用 GPL-3.0 协议开源，详见 [LICENSE](LICENSE)。
+本项目采用 AGPL-3.0 协议开源，详见 [LICENSE](LICENSE)。
