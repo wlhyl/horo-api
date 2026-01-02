@@ -1,5 +1,6 @@
 ---
 source: qizheng/src/dong_wei.rs
+assertion_line: 337
 expression: dong_wei
 ---
 long_of_per_year:
@@ -103,3 +104,256 @@ long_of_per_year:
 long: 314.28719042150874
 xiu: 女
 xiu_degree: 2.7942098174040098
+lunar_mansions_dong_wei_time:
+  - lunar_mansions: 胃
+    time:
+      year: 1984
+      month: 2
+      day: 15
+      hour: 4
+      minute: 45
+      second: 42
+      tz: 8
+  - lunar_mansions: 娄
+    time:
+      year: 1988
+      month: 10
+      day: 3
+      hour: 22
+      minute: 25
+      second: 22
+      tz: 8
+  - lunar_mansions: 奎
+    time:
+      year: 1993
+      month: 7
+      day: 29
+      hour: 0
+      minute: 13
+      second: 20
+      tz: 8
+  - lunar_mansions: 壁
+    time:
+      year: 1997
+      month: 7
+      day: 31
+      hour: 18
+      minute: 16
+      second: 39
+      tz: 8
+  - lunar_mansions: 室
+    time:
+      year: 2001
+      month: 12
+      day: 27
+      hour: 14
+      minute: 51
+      second: 40
+      tz: 8
+  - lunar_mansions: 危
+    time:
+      year: 2007
+      month: 6
+      day: 9
+      hour: 14
+      minute: 45
+      second: 24
+      tz: 8
+  - lunar_mansions: 虚
+    time:
+      year: 2014
+      month: 10
+      day: 26
+      hour: 17
+      minute: 5
+      second: 58
+      tz: 8
+  - lunar_mansions: 女
+    time:
+      year: 2019
+      month: 5
+      day: 20
+      hour: 4
+      minute: 28
+      second: 43
+      tz: 8
+  - lunar_mansions: 牛
+    time:
+      year: 2025
+      month: 3
+      day: 21
+      hour: 2
+      minute: 4
+      second: 49
+      tz: 8
+  - lunar_mansions: 斗
+    time:
+      year: 2029
+      month: 1
+      day: 21
+      hour: 2
+      minute: 55
+      second: 20
+      tz: 8
+  - lunar_mansions: 箕
+    time:
+      year: 2036
+      month: 4
+      day: 24
+      hour: 4
+      minute: 27
+      second: 40
+      tz: 8
+  - lunar_mansions: 尾
+    time:
+      year: 2038
+      month: 9
+      day: 10
+      hour: 0
+      minute: 22
+      second: 7
+      tz: 8
+  - lunar_mansions: 心
+    time:
+      year: 2042
+      month: 4
+      day: 2
+      hour: 3
+      minute: 38
+      second: 49
+      tz: 8
+  - lunar_mansions: 房
+    time:
+      year: 2044
+      month: 3
+      day: 14
+      hour: 9
+      minute: 32
+      second: 26
+      tz: 8
+  - lunar_mansions: 氐
+    time:
+      year: 2045
+      month: 5
+      day: 2
+      hour: 15
+      minute: 4
+      second: 1
+      tz: 8
+  - lunar_mansions: 亢
+    time:
+      year: 2051
+      month: 7
+      day: 10
+      hour: 15
+      minute: 59
+      second: 54
+      tz: 8
+  - lunar_mansions: 角
+    time:
+      year: 2055
+      month: 5
+      day: 28
+      hour: 22
+      minute: 15
+      second: 12
+      tz: 8
+  - lunar_mansions: 轸
+    time:
+      year: 2057
+      month: 12
+      day: 4
+      hour: 10
+      minute: 26
+      second: 33
+      tz: 8
+  - lunar_mansions: 翼
+    time:
+      year: 2059
+      month: 11
+      day: 22
+      hour: 21
+      minute: 19
+      second: 22
+      tz: 8
+  - lunar_mansions: 张
+    time:
+      year: 2062
+      month: 6
+      day: 13
+      hour: 0
+      minute: 59
+      second: 34
+      tz: 8
+  - lunar_mansions: 星
+    time:
+      year: 2065
+      month: 2
+      day: 23
+      hour: 2
+      minute: 14
+      second: 13
+      tz: 8
+  - lunar_mansions: 柳
+    time:
+      year: 2066
+      month: 5
+      day: 29
+      hour: 21
+      minute: 8
+      second: 56
+      tz: 8
+  - lunar_mansions: 鬼
+    time:
+      year: 2068
+      month: 12
+      day: 14
+      hour: 17
+      minute: 40
+      second: 31
+      tz: 8
+  - lunar_mansions: 井
+    time:
+      year: 2069
+      month: 8
+      day: 22
+      hour: 10
+      minute: 0
+      second: 46
+      tz: 8
+  - lunar_mansions: 参
+    time:
+      year: 2074
+      month: 8
+      day: 14
+      hour: 18
+      minute: 55
+      second: 1
+      tz: 8
+  - lunar_mansions: 觜
+    time:
+      year: 2076
+      month: 5
+      day: 22
+      hour: 7
+      minute: 40
+      second: 32
+      tz: 8
+  - lunar_mansions: 毕
+    time:
+      year: 2076
+      month: 7
+      day: 20
+      hour: 16
+      minute: 17
+      second: 8
+      tz: 8
+  - lunar_mansions: 昴
+    time:
+      year: 2079
+      month: 2
+      day: 3
+      hour: 21
+      minute: 2
+      second: 19
+      tz: 8

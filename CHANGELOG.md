@@ -4,6 +4,12 @@
 
 - 推运计划增加次限、三限
 
+##[0.2.3] - 2026-01-02
+
+### Fixed
+
+- Fix Bug [#2](https://github.com/wlhyl/horo-api/issues/2) 跨年日小限日期错误
+
 ## [0.2.2] - 2025-11-26
 
 ### Changed

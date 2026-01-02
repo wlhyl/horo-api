@@ -1,5 +1,5 @@
 use crate::Error;
-use horo_date_time::{horo_date_time, HoroDateTime};
+use horo_date_time::{HoroDateTime, horo_date_time};
 
 #[cfg(feature = "serde")]
 use serde::Serialize;
@@ -72,11 +72,7 @@ impl Profection {
         // 小限所在月分
         let profection_month = if process_date.jd_utc < profection_birthday_month.jd_utc {
             let month = process_date.month - 1;
-            if month == 0 {
-                12
-            } else {
-                month
-            }
+            if month == 0 { 12 } else { month }
         } else {
             process_date.month
         };
@@ -90,9 +86,17 @@ impl Profection {
         }
 
         // 天小限
-        // 小限所在月与出生日相同的时间
+        // 小限所在的年数
+        let profection_year = if profection_month > process_date.month {
+            // 月小限是12月，推运是1月
+            process_date.year - 1
+        } else {
+            process_date.year
+        };
+
+        // 小限所在月与出生日相同的时间，即月小限开始时间
         let profection_birthday_day = horo_date_time(
-            process_date.year,
+            profection_year,
             profection_month,
             native_date.day,
             native_date.hour,
@@ -102,12 +106,12 @@ impl Profection {
             false,
         )?;
 
-        // 下一个小限所在月与出生日相同的时间
+        // 下一个小限所在月与出生日相同的时间，即月小限结束时间
         let profection_birthday_next_day = horo_date_time(
             if profection_month == 12 {
-                process_date.year + 1
+                profection_year + 1
             } else {
-                process_date.year
+                profection_year
             },
             if profection_month == 12 {
                 1
@@ -124,11 +128,12 @@ impl Profection {
         // 两个小限月之间相差的天数
         let profection_month_days =
             profection_birthday_next_day.jd_utc - profection_birthday_day.jd_utc;
-        // 小限天数
+        // 推运时间距月小限开始时间的天数
         let profection_days = process_date.jd_utc - profection_birthday_day.jd_utc;
 
+        // 计算日小限所在的宫位
         let n = 12.0 * profection_days / profection_month_days;
-        let n = n as u8; // 0.24为月小限所在宫位，因此向下取整
+        let n = n as u8; // [0，12)为月小限所在宫位，0对应1宫，1对应2宫，因此向下取整
 
         // 日小限所在宫位
         let mut profection_day_house = (profection_month_house + n) % 12;
@@ -136,6 +141,7 @@ impl Profection {
             profection_day_house = 12;
         }
 
+        // 计算每宫对应的日小限开始时间
         // 每个宫位对应的天数，用于计算每宫对应的日小限区间
         let n = profection_month_days / 12.0;
 
@@ -285,7 +291,7 @@ mod tests {
         assert_eq!(profection.day_house, 2);
         assert_eq!(profection.date_per_house.len(), 12);
 
-        // 出后第13年，已过生日，每宫对应的日小限开始时间，11月小月,
+        // 出后第13年，未过生日，每宫对应的日小限开始时间，11月小月,
         let native_date = HoroDateTime::new(2023, 10, 15, 19, 45, 1, 8.0);
         let profection_date = HoroDateTime::new(2036, 12, 14, 18, 40, 1, 8.0);
 
@@ -340,6 +346,31 @@ mod tests {
             let date = profection_month_date.plus_days(day);
             assert!(date.is_ok());
             let date = date.unwrap();
+            assert_eq!(profection.date_per_house[i].year, date.year);
+            assert_eq!(profection.date_per_house[i].month, date.month);
+            assert_eq!(profection.date_per_house[i].day, date.day);
+            assert_eq!(profection.date_per_house[i].hour, date.hour);
+            assert_eq!(profection.date_per_house[i].minute, date.minute);
+            assert_eq!(profection.date_per_house[i].second, date.second);
+            assert_eq!(profection.date_per_house[i].tz, date.tz);
+        }
+    }
+
+    // 推运时间在1月，但还没到1月生日
+    #[test]
+    fn test_profection_month_date_before_birthday() {
+        let native_date = HoroDateTime::new(2023, 10, 15, 19, 45, 1, 8.0).unwrap();
+        let profection_date = HoroDateTime::new(2036, 1, 1, 18, 40, 1, 8.0).unwrap();
+
+        let profection = Profection::new(native_date, profection_date).unwrap();
+
+        // 月小限开始时间
+        let profection_month_date = HoroDateTime::new(2035, 12, 15, 19, 45, 1, 8.0).unwrap();
+
+        for i in 0..12 {
+            let day = 31.0 / 12.0 * f64::from(i as u8);
+            let date = profection_month_date.plus_days(day).unwrap();
+
             assert_eq!(profection.date_per_house[i].year, date.year);
             assert_eq!(profection.date_per_house[i].month, date.month);
             assert_eq!(profection.date_per_house[i].day, date.day);
