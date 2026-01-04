@@ -1,0 +1,52 @@
+---
+source: horo/src/fixed_star.rs
+expression: result
+---
+- fixed_star: 氐宿一
+  long: 225.0755122698646
+  xiu: 氐
+  xiu_degree: 0
+- fixed_star: 大陵五
+  long: 56.16819012896253
+  xiu: 胃
+  xiu_degree: 9.233530934554345
+- fixed_star: 毕宿五
+  long: 69.79031729413396
+  xiu: 毕
+  xiu_degree: 1.3242354328021548
+- fixed_star: 心宿二
+  long: 249.7534270333241
+  xiu: 心
+  xiu_degree: 1.9625877245270544
+- fixed_star: 角宿一
+  long: 203.83614814724376
+  xiu: 角
+  xiu_degree: 0
+- fixed_star: 轩辕十四
+  long: 149.8290408340544
+  xiu: 星
+  xiu_degree: 2.5494155317634863
+- fixed_star: 大角星
+  long: 204.22817307454272
+  xiu: 角
+  xiu_degree: 0.3920249272989622
+- fixed_star: 参宿四
+  long: 88.75663033835276
+  xiu: 参
+  xiu_degree: 4.073012818632208
+- fixed_star: 五车二
+  long: 81.8599962020464
+  xiu: 毕
+  xiu_degree: 13.393914340714602
+- fixed_star: 北门师落
+  long: 333.8526634637142
+  xiu: 危
+  xiu_degree: 0.507614439914903
+- fixed_star: 天狼星
+  long: 104.08530410001214
+  xiu: 井
+  xiu_degree: 8.781515957770836
+- fixed_star: 南河三
+  long: 115.78749684149668
+  xiu: 井
+  xiu_degree: 20.483708699255374

@@ -3,6 +3,7 @@ mod tests;
 
 use crate::{
     Aspect, Error, HouseName, Planet, PlanetConfig, PlanetName,
+    fixed_star::{FixedStar, calc_fixed_star_long},
     utils::{calc_eps, mod180, newton_iteration},
 };
 use geo_position::GeoPosition;
@@ -55,6 +56,8 @@ pub struct Horoscope {
     pub antiscoins: Vec<Aspect>,
     // 反映点
     pub contraantiscias: Vec<Aspect>,
+    // 恒星
+    pub fixed_stars: Vec<FixedStar>,
 }
 
 impl Horoscope {
@@ -283,6 +286,9 @@ impl Horoscope {
             }
         }
 
+        // 计算恒星
+        let fixed_stars = calc_fixed_star_long(date.jd_utc, ephe_path)?;
+
         Ok(Self {
             date,
             geo,
@@ -300,6 +306,7 @@ impl Horoscope {
             aspects,
             antiscoins,
             contraantiscias,
+            fixed_stars,
         })
     }
 }

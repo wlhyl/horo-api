@@ -1,18 +1,19 @@
 [package]
 name = "horo"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2024"
 publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-serde = ["dep:serde", "horo_date_time/serde", "geo_position/serde"]
-swagger = ["dep:utoipa", "horo_date_time/swagger", "geo_position/swagger"]
+serde = ["dep:serde", "horo_date_time/serde", "geo_position/serde", "qizheng/serde"]
+swagger = ["dep:utoipa", "horo_date_time/swagger", "geo_position/swagger", "qizheng/swagger"]
 
 [dependencies]
 horo_date_time = { path = "../horo_date_time" }
 geo_position = { path = "../geo_position" }
+qizheng = { path = "../qizheng" }
 
 rust-swe = { git = "https://github.com/wlhyl/rust-swe.git" }
 
@@ -21,4 +22,5 @@ utoipa = { version = "*", optional = true }
 
 [dev-dependencies]
 dotenvy = "0.15.7"
-parameterized = "2.0.0"
+parameterized = "2.1.0"
+insta = { version = "1.46.0", features = ["yaml"] }

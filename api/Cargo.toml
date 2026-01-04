@@ -1,6 +1,6 @@
 [package]
 name = "horo_api"
-version = "0.2.3"
+version = "0.3.0"
 edition = "2024"
 publish = false
 
@@ -29,7 +29,7 @@ lunar_calendar = { git = "https://github.com/wlhyl/lunar-calendar.git", branch =
 
 actix-cors = { version = "0.7.1", optional = true }
 actix-web = "4.12.1"
-clap = { version = "4.5.53", features = ["derive"] }
+clap = { version = "4.5.54", features = ["derive"] }
 dotenvy = "0.15.7"
 log = "0.4.29"
 log4rs = "1.4.0"

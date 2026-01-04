@@ -58,7 +58,7 @@ pub struct DistanceStarLong {
 }
 
 /// 计算二十八宿黄道经度
-pub(crate) fn calc_distance_star_long(
+pub fn calc_distance_star_long(
     jd_utc: f64,
     distance_star_config: &[DistanceStarConfig],
     ephe_path: &str,
@@ -79,8 +79,8 @@ pub(crate) fn calc_distance_star_long(
     Ok(distance_star_long)
 }
 
-// 计算入宿度
-pub(crate) fn calc_xiu_degree(
+/// 计算入宿度
+pub fn calc_xiu_degree(
     star_long: f64,
     distance_star_long: &[DistanceStarLong],
 ) -> Result<(LunarMansionsName, f64), Error> {

@@ -18,3 +18,4 @@ mod planet;
 mod profection;
 mod return_horoscop;
 mod utils;
+mod fixed_star;

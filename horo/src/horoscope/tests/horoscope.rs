@@ -209,6 +209,9 @@ fn test_horoscope_new() {
 
     // 相位
     assert_eq!(13, horo.aspects.len());
+
+    // 恒星
+    assert_eq!(12, horo.fixed_stars.len());
 }
 
 // 星盘昼夜

@@ -19,6 +19,17 @@ impl From<horo_date_time::Error> for Error {
     }
 }
 
+impl From<qizheng::Error> for Error {
+    fn from(value: qizheng::Error) -> Self {
+        match value {
+            qizheng::Error::Function(s) => Error::Function(s),
+            qizheng::Error::InvalidProcessDateTime(s) => Error::InvalidProfectionDateTime(s),
+            qizheng::Error::InvalidDateTime(s) => Error::InvalidDateTime(s),
+            qizheng::Error::InvalidZone(s) => Error::InvalidZone(s),
+        }
+    }
+}
+
 impl Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let s = match self {
