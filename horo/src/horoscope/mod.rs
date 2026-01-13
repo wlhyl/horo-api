@@ -325,8 +325,10 @@ pub struct HoroscopeComparison {
     pub comparison_geo: GeoPosition,
     /// 星盘的宫位
     pub house_name: HouseName,
-    /// 12宫头黄经度数
+    /// 原盘12宫头黄经度数
     pub houses_cups: Vec<f64>,
+    /// 比较盘12宫头黄经度数
+    comparison_cups: Vec<f64>,
 
     /// 上升点
     pub original_asc: Planet,
@@ -386,6 +388,7 @@ impl HoroscopeComparison {
             comparison_geo: process_geo,
             house_name,
             houses_cups: horo.houses_cups,
+            comparison_cups: horo_compare.houses_cups,
             original_asc: horo.asc,
             comparison_asc: horo_compare.asc,
             original_mc: horo.mc,
