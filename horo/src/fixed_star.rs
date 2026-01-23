@@ -19,6 +19,7 @@ pub enum FixedStarName {
     角宿一,
     大角星,
     氐宿一,
+    氐宿四,
     心宿二,
     北门师落,
     大陵五,
@@ -26,6 +27,7 @@ pub enum FixedStarName {
     五车二,
     参宿四,
     天狼星,
+    北河三,
     南河三,
     轩辕十四,
 }
@@ -43,12 +45,15 @@ pub struct FixedStar {
     pub xiu: LunarMansionsName,
     /// 行星在黄道上的入宿度
     pub xiu_degree: f64,
+    /// 描述
+    pub desc: &'static str,
 }
 
 impl FixedStarName {
     fn to_swe_name(&self) -> &'static str {
         match self {
             氐宿一 => "al-2Lib",
+            氐宿四 => "beLib",
             大陵五 => "bePer",
             毕宿五 => "alTau",
             心宿二 => "alSco",
@@ -59,7 +64,28 @@ impl FixedStarName {
             五车二 => "alAur",
             北门师落 => "alPsA",
             天狼星 => "alCMa",
+            北河三 => "beGem",
             南河三 => "alCMi",
+        }
+    }
+
+    /// 描述
+    pub fn desc(&self) -> &'static str {
+        match self {
+            角宿一 => "王者",
+            大角星 => "吉，有宗教信仰、带来财富",
+            氐宿一 => "火、土、王者",
+            氐宿四 => "凶性",
+            心宿二 => "火、土、王者",
+            北门师落 => "带来名望",
+            大陵五 => "火、土",
+            毕宿五 => "火、土、王者",
+            五车二 => "带来财富、名望",
+            参宿四 => "火、土，带来财富、名望",
+            天狼星 => "带来王者般升迁",
+            北河三 => "火、土",
+            南河三 => "王者",
+            轩辕十四 => "王者，带来财富",
         }
     }
 }
@@ -78,6 +104,7 @@ pub fn calc_fixed_star_long(jd_utc: f64, ephe_path: &str) -> Result<Vec<FixedSta
         角宿一,
         大角星,
         氐宿一,
+        氐宿四,
         心宿二,
         北门师落,
         大陵五,
@@ -85,6 +112,7 @@ pub fn calc_fixed_star_long(jd_utc: f64, ephe_path: &str) -> Result<Vec<FixedSta
         五车二,
         参宿四,
         天狼星,
+        北河三,
         南河三,
         轩辕十四,
     ] {
@@ -100,6 +128,7 @@ pub fn calc_fixed_star_long(jd_utc: f64, ephe_path: &str) -> Result<Vec<FixedSta
             long: star_long,
             xiu: xiu_degree.0,
             xiu_degree: xiu_degree.1,
+            desc: fixed_star.desc(),
         });
     }
     swe_close();

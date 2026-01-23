@@ -211,7 +211,7 @@ fn test_horoscope_new() {
     assert_eq!(13, horo.aspects.len());
 
     // 恒星
-    assert_eq!(12, horo.fixed_stars.len());
+    assert_eq!(14, horo.fixed_stars.len());
 }
 
 // 星盘昼夜
