@@ -1,8 +1,12 @@
 # Changelog
 
-### Planned
+##[unreleased]
 
-- 推运计划增加次限、三限
+### Changed
+
+- 更新 Dockerfile：
+  - 升级 Rust 版本到 1.93.1
+  - swisseph 总是使用最新版本
 
 ##[0.4.0] - 2026-01-24
 

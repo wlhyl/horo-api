@@ -1,14 +1,13 @@
-FROM rust:1.93.0-alpine as build
+FROM rust:1.93.1-alpine as build
 WORKDIR /app
 
 RUN sed -i s/dl-cdn.alpinelinux.org/mirror.tuna.tsinghua.edu.cn/g  /etc/apk/repositories
-RUN apk add make musl-dev upx
+RUN apk add make musl-dev upx git
 
 # 编译swe
-RUN mkdir /tmp/swe && cd /tmp/swe &&\
-  wget https://github.com/aloistr/swisseph/archive/refs/tags/v2.10.03.tar.gz -O swe.tar.gz &&\
-  tar xvzf swe.tar.gz && \
-  cd swisseph-2.10.03 && \
+RUN cd /tmp/ &&\
+  git clone --depth 1 --filter=blob:none --sparse https://github.com/aloistr/swisseph.git &&\
+  cd swisseph &&\
   make libswe.a && cp libswe.a /app
 
 COPY ./ /app/
@@ -41,5 +40,4 @@ USER appuser
 
 EXPOSE 8080
 
-# ENTRYPOINT /app/bin/horo_api
-CMD /app/bin/horo_api
+ENTRYPOINT /app/bin/horo_api
