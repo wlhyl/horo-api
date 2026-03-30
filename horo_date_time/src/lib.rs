@@ -1,7 +1,8 @@
 mod error;
 
 use swe::{
-    swe_date_conversion, swe_julday, swe_revjul, swe_utc_time_zone, swe_utc_to_jd, Calendar,
+    Calendar, swe_date_conversion, swe_jdut1_to_utc, swe_julday, swe_revjul, swe_utc_time_zone,
+    swe_utc_to_jd,
 };
 
 pub use crate::error::Error;
@@ -79,7 +80,7 @@ impl HoroDateTime {
         let s = ((t_utc.3 - f64::from(h)) * 60.0 - f64::from(mi)) * 60.0;
 
         // 计算jd_ut1
-        let jd_et_ut1 = match swe_utc_to_jd(
+        let jd_et_ut1 = swe_utc_to_jd(
             y,
             m,
             d,
@@ -91,10 +92,8 @@ impl HoroDateTime {
             } else {
                 Calendar::Gregorian
             },
-        ) {
-            Ok(v) => v,
-            Err(e) => return Err(Error::Function(format!("swe_utc_to_jd()调用失败:{}", e))),
-        };
+        )
+        .map_err(|e| Error::Function(format!("swe_utc_to_jd()调用失败:{}", e)))?;
 
         let t_local = swe_utc_time_zone(y, m, d, h, mi, s, -time_zone);
 
@@ -125,6 +124,63 @@ impl HoroDateTime {
             tz: time_zone,
             jd_et: jd_et_ut1[0],
             jd_ut1: jd_et_ut1[1],
+        })
+    }
+
+    /// 从UT1的儒略日和时区转换HoroDateTime
+    pub fn from_jd_ut1_zone(jd_ut1: f64, time_zone: f64) -> Result<Self, Error> {
+        if jd_ut1 < 0.0 {
+            return Err(Error::InvalidDateTime(format!("jd={}超出支持范围", jd_ut1)).into());
+        }
+        if time_zone < -12.0 || time_zone > 12.0 {
+            return Err(
+                Error::InvalidZone(format!("{}, There is no such time zone.", time_zone)).into(),
+            );
+        }
+
+        let calendar = if jd_ut1 < 2299160.5 {
+            Calendar::Julian
+        } else {
+            Calendar::Gregorian
+        };
+
+        let (year, month, day, hour, min, dsec) = swe_jdut1_to_utc(jd_ut1, calendar);
+
+        // 计算jd_et
+        let jd_et_ut1 = swe_utc_to_jd(year, month, day, hour, min, dsec, calendar)
+            .map_err(|e| Error::Function(format!("swe_utc_to_jd()调用失败:{}", e)))?;
+
+        let jd_utc = swe_julday(year, month, day, dsec, calendar);
+
+        let t_local = swe_utc_time_zone(year, month, day, hour, min, dsec, -time_zone);
+
+        let year = if t_local.0 <= 0 {
+            t_local.0 - 1
+        } else {
+            t_local.0
+        };
+        let month = t_local.1 as u8;
+        let day = t_local.2 as u8;
+        let hour = t_local.3 as u8;
+        let minute = t_local.4 as u8;
+        let second = t_local.5 as u8;
+        let ms = (t_local.5 - f64::from(second)) * 1000.0;
+
+        // 2020年12月21日，5：29：59，引起60秒异常
+        // 四舍五入后，可能会得到60秒，舍弃多出的1秒
+
+        Ok(Self {
+            year,
+            month,
+            day,
+            hour,
+            minute,
+            second,
+            ms,
+            jd_utc: jd_utc,
+            tz: time_zone,
+            jd_et: jd_et_ut1[0],
+            jd_ut1: jd_ut1,
         })
     }
 
@@ -189,7 +245,7 @@ impl HoroDateTime {
             month.into(),
             day.into(),
             dhour,
-            calendar.clone(),
+            calendar,
         )
         .is_err()
         {
@@ -211,19 +267,12 @@ impl HoroDateTime {
             t_utc.1,
             t_utc.2,
             f64::from(t_utc.3) + f64::from(t_utc.4) / 60.0 + t_utc.5 / 3600.0,
-            calendar.clone(),
+            calendar,
         );
         let jd_et_ut1 = swe_utc_to_jd(
             t_utc.0, t_utc.1, t_utc.2, t_utc.3, t_utc.4, t_utc.5, calendar,
-        );
-
-        let jd_et_ut1 = match jd_et_ut1 {
-            Ok(v) => v,
-            Err(e) => {
-                let msg = format!("swe_utc_to_jd()错误。{}", e);
-                return Err(Error::Function(msg));
-            }
-        };
+        )
+        .map_err(|e| Error::Function(format!("swe_utc_to_jd()错误。{}", e)))?;
         Ok(Self {
             year,
             month,
@@ -331,8 +380,8 @@ pub fn horo_date_time(
 
 #[cfg(test)]
 mod test {
-    use super::{horo_date_time, HoroDateTime};
-    use swe::{swe_julday, swe_utc_to_jd, Calendar};
+    use super::{HoroDateTime, horo_date_time};
+    use swe::{Calendar, swe_julday, swe_utc_to_jd};
 
     const LEAP_SECONDS: [i32; 27] = [
         19720630, 19721231, 19731231, 19741231, 19751231, 19761231, 19771231, 19781231, 19791231,
@@ -726,5 +775,41 @@ mod test {
         assert_eq!(27, t.second, "秒");
         assert_eq!(8.0, t.tz, "时区");
         assert_eq!(jd, t.jd_utc, "儒略日");
+    }
+
+    #[test]
+    fn test_from_jd_ut1_zone() {
+        let t = HoroDateTime::new(2021, 4, 8, 20, 54, 27, 8.0).unwrap();
+        let t2 = HoroDateTime::from_jd_ut1_zone(t.jd_ut1, 8.0).unwrap();
+
+        assert_eq!(t.year, t2.year, "年");
+        assert_eq!(t.month, t2.month, "月");
+        assert_eq!(t.day, t2.day, "日");
+        assert_eq!(t.hour, t2.hour, "时");
+        assert_eq!(t.minute, t2.minute, "分");
+        assert!((t.second as i32 - t2.second as i32).abs() <= 1, "秒数差异应在1秒内");
+        assert_eq!(t.tz, t2.tz, "时区");
+        assert!((t.jd_ut1 - t2.jd_ut1).abs() < 1e-6, "jd_ut1应一致");
+    }
+
+    #[test]
+    fn test_from_jd_ut1_zone_invalid() {
+        assert!(HoroDateTime::from_jd_ut1_zone(-1.0, 8.0).is_err());
+        assert!(HoroDateTime::from_jd_ut1_zone(2459312.5, -13.0).is_err());
+        assert!(HoroDateTime::from_jd_ut1_zone(2459312.5, 13.0).is_err());
+    }
+
+    #[test]
+    fn test_from_jd_ut1_zone_1582() {
+        let t = HoroDateTime::new(1582, 10, 15, 12, 0, 0, 0.0).unwrap();
+        let t2 = HoroDateTime::from_jd_ut1_zone(t.jd_ut1, 0.0).unwrap();
+
+        assert_eq!(t.year, t2.year, "年");
+        assert_eq!(t.month, t2.month, "月");
+        assert_eq!(t.day, t2.day, "日");
+        assert_eq!(t.hour, t2.hour, "时");
+        assert_eq!(t.minute, t2.minute, "分");
+        assert!((t.second as i32 - t2.second as i32).abs() <= 1, "秒数差异应在1秒内");
+        assert!((t.jd_ut1 - t2.jd_ut1).abs() < 1e-6, "jd_ut1应一致");
     }
 }
