@@ -10,7 +10,7 @@ serde = ["dep:serde"]
 swagger=["dep:utoipa"]
 
 [dependencies]
-rust-swe = { git = "https://github.com/wlhyl/rust-swe.git" }
+rust-swe = { workspace = true }
 
-serde = { version = "*", features = ["derive"], optional = true}
-utoipa = {version="*", optional = true}
+serde = { workspace = true, optional = true }
+utoipa = { workspace = true, optional = true }

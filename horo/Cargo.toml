@@ -15,12 +15,12 @@ horo_date_time = { path = "../horo_date_time" }
 geo_position = { path = "../geo_position" }
 qizheng = { path = "../qizheng" }
 
-rust-swe = { git = "https://github.com/wlhyl/rust-swe.git" }
+rust-swe = { workspace = true }
 
-serde = { version = "*", features = ["derive"], optional = true }
-utoipa = { version = "*", optional = true }
+serde = { workspace = true, optional = true }
+utoipa = { workspace = true, optional = true }
 
 [dev-dependencies]
-dotenvy = "0.15.7"
-parameterized = "2.1.0"
-insta = { version = "1.46.0", features = ["yaml"] }
+dotenvy = { workspace = true }
+parameterized = { workspace = true }
+insta = { workspace = true }

@@ -11,5 +11,5 @@ serde = ["dep:serde"]
 swagger=["dep:utoipa"]
 
 [dependencies]
-serde = { version = "*", features = ["derive"], optional = true}
-utoipa = {version="*", optional = true}
+serde = { workspace = true, optional = true }
+utoipa = { workspace = true, optional = true }

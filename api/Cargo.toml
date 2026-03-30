@@ -24,28 +24,20 @@ geo_position = { path = "../geo_position", features = ["serde"] }
 horo = { path = "../horo", features = ["serde"] }
 qizheng = { path = "../qizheng", features = ["serde"] }
 
-ganzhiwuxing = { git = "https://github.com/wlhyl/ganzhiwuxin.git", branch = "rust" }
-lunar_calendar = { git = "https://github.com/wlhyl/lunar-calendar.git", branch = "rust" }
+ganzhiwuxing = { workspace = true }
+lunar_calendar = { workspace = true }
 
-actix-cors = { version = "0.7.1", optional = true }
-actix-web = "4.12.1"
-clap = { version = "4.5.54", features = ["derive"] }
-dotenvy = "0.15.7"
-log = "0.4.29"
-log4rs = "1.4.0"
+actix-cors = { workspace = true, optional = true }
+actix-web = { workspace = true }
+clap = { workspace = true }
+dotenvy = { workspace = true }
+log = { workspace = true }
+log4rs = { workspace = true }
 
-serde = { version = "1.0.228", features = ["derive"] }
-# serde_json = "1.0.120"
+serde = { workspace = true }
 
-# swagger
-utoipa = { version = "5.4.0", features = ["actix_extras"], optional = true }
-utoipa-swagger-ui = { version = "9.0.2", features = [
-    "actix-web",
-    "vendored",
-], optional = true }
+utoipa = { workspace = true, optional = true }
+utoipa-swagger-ui = { workspace = true, optional = true }
 
-# 验证
-# actix-web-validator = "5.0.1"
-validator = { version = "0.20.0", features = ["derive", "unic"] }
-actix-web-validator = "7.0.0"
-# actix-web-validator = { git = "https://github.com/wlhyl/actix-web-validator.git" }
+validator = { workspace = true }
+actix-web-validator = { workspace = true }

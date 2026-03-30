@@ -26,15 +26,15 @@ swagger = [
 horo_date_time = { path = "../horo_date_time" }
 geo_position = { path = "../geo_position" }
 
-rust-swe = { git = "https://github.com/wlhyl/rust-swe.git" }
-lunar_calendar = { git = "https://github.com/wlhyl/lunar-calendar.git", branch = "rust" }
-ganzhiwuxing = { git = "https://github.com/wlhyl/ganzhiwuxin.git", branch = "rust" }
+rust-swe = { workspace = true }
+lunar_calendar = { workspace = true }
+ganzhiwuxing = { workspace = true }
 
-serde = { version = "*", features = ["derive"], optional = true }
-utoipa = { version = "*", optional = true }
+serde = { workspace = true, optional = true }
+utoipa = { workspace = true, optional = true }
 
 [dev-dependencies]
-dotenvy = "0.15.7"
-parameterized = "2.0.0"
-insta = { version = "1.43.1", features = ["yaml"] }
-serde_json = "1.0.140"
+dotenvy = { workspace = true }
+parameterized = { workspace = true }
+insta = { workspace = true }
+serde_json = { workspace = true }
