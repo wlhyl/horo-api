@@ -296,10 +296,10 @@ mod tests {
         let distance_star_config = DistanceStarConfig::default_all_configs();
 
         let distance_star_long =
-            calc_distance_star_long(native_date.jd_utc, &distance_star_config, &ephe_path).unwrap();
+            calc_distance_star_long(native_date.jd_ut1, &distance_star_config, &ephe_path).unwrap();
 
         let native_planets = calc_planets(
-            native_date.jd_utc,
+            native_date.jd_ut1,
             &distance_star_long,
             &planets_config,
             &ephe_path,
@@ -307,7 +307,7 @@ mod tests {
         .unwrap();
 
         let (_, ascmc) =
-            swe_houses(native_date.jd_ut1, geo.lat, geo.long, &HouseSystem::B).unwrap();
+            swe_houses(native_date.jd_ut1, geo.lat, geo.long, HouseSystem::B).unwrap();
 
         let asc_long = ascmc[0];
         let first_house_long = (asc_long / 30.0).floor() * 30.0;

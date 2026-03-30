@@ -93,7 +93,7 @@ impl Planet {
 
 //   计算行星
 pub(crate) fn calc_planets(
-    jd_utc: f64,
+    jd_ut1: f64,
     distance_star_long: &[DistanceStarLong],
     planets_config: &[PlanetConfig],
     ephe_path: &str,
@@ -170,11 +170,11 @@ pub(crate) fn calc_planets(
             let start_date = HoroDateTime::new(1975, 3, 13, 16, 0, 0, 0.0)?;
             let start_long = 230.5;
             let speed = 360.0 / 10227.1792;
-            let star_long = swe_degnorm((jd_utc - start_date.jd_utc) * speed + start_long);
+            let star_long = swe_degnorm((jd_ut1 - start_date.jd_ut1) * speed + start_long);
 
             (star_long, speed)
         } else {
-            let xx = swe_calc_ut(jd_utc, &body, &[Flag::SeflgSpeed])
+            let xx = swe_calc_ut(jd_ut1, body, &[Flag::SeflgSpeed])
                 .map_err(|e| Error::Function(format!("计算行星错误:{e}")))?;
 
             (xx[0], xx[3])
@@ -189,10 +189,10 @@ pub(crate) fn calc_planets(
 
         // 计算停滞，以当前时间，前两日，后两日的速度改变作为本日是停滞
         let is_stationary = if [水, 金, 火, 木, 土].contains(&planet_name) {
-            let xx = swe_calc_ut(jd_utc - 2.0, &body, &[Flag::SeflgSpeed])
+            let xx = swe_calc_ut(jd_ut1 - 2.0, body, &[Flag::SeflgSpeed])
                 .map_err(|e| Error::Function(format!("计算行星错误:{e}")))?;
             let speed0 = xx[3];
-            let xx = swe_calc_ut(jd_utc + 2.0, &body, &[Flag::SeflgSpeed])
+            let xx = swe_calc_ut(jd_ut1 + 2.0, body, &[Flag::SeflgSpeed])
                 .map_err(|e| Error::Function(format!("计算行星错误:{e}")))?;
             let speed1 = xx[3];
 

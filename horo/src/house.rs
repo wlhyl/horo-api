@@ -25,8 +25,8 @@ impl HouseName {
     }
 }
 
-impl From<&HouseName> for HouseSystem {
-    fn from(value: &HouseName) -> Self {
+impl From<HouseName> for HouseSystem {
+    fn from(value: HouseName) -> Self {
         match value {
             HouseName::Alcabitus => HouseSystem::B,
             HouseName::Placidus => HouseSystem::P,
@@ -54,16 +54,16 @@ mod tests {
 
     #[test]
     fn test_house_name_to_house_system() {
-        let house_system: HouseSystem = (&HouseName::Alcabitus).into();
+        let house_system: HouseSystem = HouseName::Alcabitus.into();
         assert!(matches!(house_system, HouseSystem::B));
 
-        let house_system: HouseSystem = (&HouseName::Placidus).into();
+        let house_system: HouseSystem = HouseName::Placidus.into();
         assert!(matches!(house_system, HouseSystem::P));
 
-        let house_system: HouseSystem = (&HouseName::Regiomontanus).into();
+        let house_system: HouseSystem = HouseName::Regiomontanus.into();
         assert!(matches!(house_system, HouseSystem::R));
 
-        let house_system: HouseSystem = (&HouseName::WholeSign).into();
+        let house_system: HouseSystem = HouseName::WholeSign.into();
         assert!(matches!(house_system, HouseSystem::W));
     }
 }

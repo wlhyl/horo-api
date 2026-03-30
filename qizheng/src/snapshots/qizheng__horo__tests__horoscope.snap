@@ -1,5 +1,6 @@
 ---
 source: qizheng/src/horo.rs
+assertion_line: 287
 expression: horoscope
 ---
 native_date:
@@ -23,270 +24,270 @@ geo:
   lat: 39.9
 native_planets:
   - name: 日
-    long: 213.43000456632512
-    speed: 0.9977292124213387
+    long: 213.4300107158187
+    speed: 0.9977292161049013
     xiu: 角
-    xiu_degree: 9.825144259942164
+    xiu_degree: 9.825150408899333
     speed_state: 均
     is_stationary: false
   - name: 月
-    long: 101.26245031337744
-    speed: 13.782876802180951
+    long: 101.26253526403268
+    speed: 13.782877932576783
     xiu: 井
-    xiu_degree: 6.189068557604074
+    xiu_degree: 6.189153507292957
     speed_state: 疾
     is_stationary: false
   - name: 水
-    long: 211.302387243145
-    speed: 1.6671814216889902
+    long: 211.30239751898418
+    speed: 1.6671813699913949
     xiu: 角
-    xiu_degree: 7.697526936762046
+    xiu_degree: 7.697537212064816
     speed_state: 疾
     is_stationary: false
   - name: 金
-    long: 167.14762113192228
-    speed: 0.9321386946692951
+    long: 167.14762687711473
+    speed: 0.9321387467467346
     xiu: 张
-    xiu_degree: 11.68985108970071
+    xiu_degree: 11.689856833892037
     speed_state: 均
     is_stationary: false
   - name: 火
-    long: 166.8436517988742
-    speed: 0.6059601138918594
+    long: 166.84365553363045
+    speed: 0.6059601116336215
     xiu: 张
-    xiu_degree: 11.385881756652623
+    xiu_degree: 11.385885490407759
     speed_state: 均
     is_stationary: false
   - name: 木
-    long: 251.48185378762244
-    speed: 0.19958810439754407
+    long: 251.48185501780506
+    speed: 0.19958811614065952
     xiu: 心
-    xiu_degree: 3.918022971238315
+    xiu_degree: 3.9180242013379427
     speed_state: 疾
     is_stationary: false
   - name: 土
-    long: 216.7763070008444
-    speed: 0.1205321985791453
+    long: 216.77630774373162
+    speed: 0.12053220435090653
     xiu: 亢
-    xiu_degree: 2.519257562634664
+    xiu_degree: 2.519258305180074
     speed_state: 疾
     is_stationary: false
   - name: 计
-    long: 77.99961942327226
-    speed: -0.052922587675684814
+    long: 77.99961909709593
+    speed: -0.05292257118409474
     xiu: 毕
-    xiu_degree: 9.761336500615386
+    xiu_degree: 9.76133617365997
     speed_state: 均
     is_stationary: false
   - name: 罗
-    long: 257.9996194232723
-    speed: -0.052922587675684814
+    long: 257.99961909709594
+    speed: -0.05292257118409474
     xiu: 尾
-    xiu_degree: 2.079368119218543
+    xiu_degree: 2.0793677930435592
     speed_state: 均
     is_stationary: false
   - name: 孛
-    long: 324.8627729043782
-    speed: 0.1118949107739026
+    long: 324.86277359405216
+    speed: 0.1118949272199122
     xiu: 虚
-    xiu_degree: 1.6966763546651578
+    xiu_degree: 1.696677044490741
     speed_state: 均
     is_stationary: false
   - name: 气
-    long: 341.3729472541222
+    long: 341.37294725976085
     speed: 0.035200321903032655
     xiu: 危
-    xiu_degree: 8.248409817487186
+    xiu_degree: 8.248409823235534
     speed_state: 均
     is_stationary: false
 process_planets:
   - name: 日
-    long: 213.742216909942
-    speed: 0.9971603968055087
+    long: 213.74221771231998
+    speed: 0.9971603973713578
     xiu: 角
-    xiu_degree: 10.137356603559027
+    xiu_degree: 10.137357405400621
     speed_state: 均
     is_stationary: false
   - name: 月
-    long: 14.84028604703537
-    speed: 14.503362513958626
+    long: 14.840297717350646
+    speed: 14.503362408628552
     xiu: 壁
-    xiu_degree: 5.909526347193573
+    xiu_degree: 5.9095380173375816
     speed_state: 疾
     is_stationary: false
   - name: 水
-    long: 218.43541721999705
-    speed: 1.612525145461763
+    long: 218.43541851753244
+    speed: 1.612525149748312
     xiu: 亢
-    xiu_degree: 4.178367781787301
+    xiu_degree: 4.178369078980893
     speed_state: 疾
     is_stationary: false
   - name: 金
-    long: 167.3689627818675
-    speed: 1.0199107160381207
+    long: 167.36896360255466
+    speed: 1.0199107254670385
     xiu: 张
-    xiu_degree: 11.91119273964594
+    xiu_degree: 11.911193559331963
     speed_state: 均
     is_stationary: false
   - name: 火
-    long: 220.41109195270445
-    speed: 0.6879781213716387
+    long: 220.4110925062939
+    speed: 0.6879781180111654
     xiu: 亢
-    xiu_degree: 6.154042514494705
+    xiu_degree: 6.15404306774235
     speed_state: 疾
     is_stationary: false
   - name: 木
-    long: 41.423996506602826
-    speed: -0.1337138991798827
+    long: 41.42399639900753
+    speed: -0.13371389113560544
     xiu: 娄
-    xiu_degree: 7.679235873520518
+    xiu_degree: 7.67923576549218
     speed_state: 均
     is_stationary: false
   - name: 土
-    long: 330.5666176557897
-    speed: -0.01347265288867621
+    long: 330.5666176449513
+    speed: -0.013472640657722235
     xiu: 虚
-    xiu_degree: 7.400521106076667
+    xiu_degree: 7.400521095389877
     speed_state: 迟
     is_stationary: false
   - name: 计
-    long: 24.347842186385694
-    speed: -0.0529848099513207
+    long: 24.34784214374342
+    speed: -0.052984826498965944
     xiu: 奎
-    xiu_degree: 2.1962422303790703
+    xiu_degree: 2.1962421874307267
     speed_state: 均
     is_stationary: false
   - name: 罗
-    long: 204.3478421863857
-    speed: -0.0529848099513207
+    long: 204.34784214374343
+    speed: -0.052984826498965944
     xiu: 角
-    xiu_degree: 0.7429818800027306
+    xiu_degree: 0.7429818368240717
     speed_state: 均
     is_stationary: false
   - name: 孛
-    long: 152.66657082930743
-    speed: 0.11152635427839173
+    long: 152.66657091902903
+    speed: 0.11152633770542879
     xiu: 星
-    xiu_degree: 5.619899146581844
+    xiu_degree: 5.619899235273181
     speed_state: 均
     is_stationary: false
   - name: 气
-    long: 135.64965025742936
+    long: 135.64965007443539
     speed: 0.035200321903032655
     xiu: 柳
-    xiu_degree: 5.576302478045193
+    xiu_degree: 5.576302294003938
     speed_state: 均
     is_stationary: false
 distance_star_long:
   - lunar_mansions: 角
-    long: 203.60486030638296
+    long: 203.60486030691936
   - lunar_mansions: 亢
-    long: 214.25704943820975
+    long: 214.25704943855155
   - lunar_mansions: 氐
-    long: 224.84635223692615
+    long: 224.8463522372374
   - lunar_mansions: 房
-    long: 242.7038746913695
+    long: 242.7038746914961
   - lunar_mansions: 心
-    long: 247.56383081638413
+    long: 247.56383081646712
   - lunar_mansions: 尾
-    long: 255.92025130405375
+    long: 255.92025130405239
   - lunar_mansions: 箕
-    long: 271.02744024396395
+    long: 271.02744024387204
   - lunar_mansions: 斗
-    long: 279.94766076889016
+    long: 279.9476607687569
   - lunar_mansions: 牛
-    long: 303.81620519787145
+    long: 303.816205197688
   - lunar_mansions: 女
-    long: 311.49298060410473
+    long: 311.49298060392334
   - lunar_mansions: 虚
-    long: 323.166096549713
+    long: 323.1660965495614
   - lunar_mansions: 危
-    long: 333.124537436635
+    long: 333.1245374365253
   - lunar_mansions: 室
-    long: 353.2596952304448
+    long: 353.2596952304572
   - lunar_mansions: 壁
-    long: 8.930759699841797
+    long: 8.930759700013065
   - lunar_mansions: 奎
-    long: 22.151599956006624
+    long: 22.151599956312694
   - lunar_mansions: 娄
-    long: 33.74476063308231
+    long: 33.74476063351535
   - lunar_mansions: 胃
-    long: 46.70990476245799
+    long: 46.70990476303153
   - lunar_mansions: 昴
-    long: 59.18610095622858
+    long: 59.18610095692502
   - lunar_mansions: 毕
-    long: 68.23828292265688
+    long: 68.23828292343596
   - lunar_mansions: 觜
-    long: 83.4796301615932
+    long: 83.47963016250384
   - lunar_mansions: 参
-    long: 84.45432225162948
+    long: 84.45432225258405
   - lunar_mansions: 井
-    long: 95.07338175577337
+    long: 95.07338175673972
   - lunar_mansions: 鬼
-    long: 125.49749030204352
+    long: 125.49749030308075
   - lunar_mansions: 柳
-    long: 130.07334777938416
+    long: 130.07334778043145
   - lunar_mansions: 星
-    long: 147.0466716827256
+    long: 147.04667168375585
   - lunar_mansions: 张
-    long: 155.45777004222157
+    long: 155.4577700432227
   - lunar_mansions: 翼
-    long: 173.45689085597388
+    long: 173.45689085682127
   - lunar_mansions: 轸
-    long: 190.4904092505354
+    long: 190.49040925120565
 asc_house:
   asc_long: 58.97712440546679
   xiu: 奎
-  xiu_degree: 11.2784046103185
+  xiu_degree: 11.278410759506002
 houses:
   - name: 命
     long: 30
     xiu: 奎
-    xiu_degree: 7.848400043993376
+    xiu_degree: 7.848400043687306
   - name: 财
     long: 60
     xiu: 昴
-    xiu_degree: 0.8138990437714213
+    xiu_degree: 0.8138990430749828
   - name: 兄
     long: 90
     xiu: 参
-    xiu_degree: 5.545677748370522
+    xiu_degree: 5.545677747415951
   - name: 田
     long: 120
     xiu: 井
-    xiu_degree: 24.92661824422663
+    xiu_degree: 24.92661824326028
   - name: 子
     long: 150
     xiu: 星
-    xiu_degree: 2.953328317274412
+    xiu_degree: 2.9533283162441535
   - name: 奴
     long: 180
     xiu: 翼
-    xiu_degree: 6.543109144026118
+    xiu_degree: 6.543109143178725
   - name: 妻
     long: 210
     xiu: 角
-    xiu_degree: 6.39513969361704
+    xiu_degree: 6.395139693080637
   - name: 疾
     long: 240
     xiu: 氐
-    xiu_degree: 15.153647763073849
+    xiu_degree: 15.153647762762603
   - name: 迁
     long: 270
     xiu: 尾
-    xiu_degree: 14.07974869594625
+    xiu_degree: 14.079748695947615
   - name: 官
     long: 300
     xiu: 斗
-    xiu_degree: 20.05233923110984
+    xiu_degree: 20.05233923124308
   - name: 福
     long: 330
     xiu: 虚
-    xiu_degree: 6.833903450286982
+    xiu_degree: 6.833903450438584
   - name: 相
     long: 0
     xiu: 室
-    xiu_degree: 6.740304769555223
+    xiu_degree: 6.7403047695427745
 native_lunar_calendar:
   is_lean_year: false
   lunar_year: 癸亥
@@ -345,105 +346,105 @@ bazi:
 dong_wei:
   long_of_per_year:
     - 60
-    - 57.30242155574113
-    - 54.612213544390066
-    - 51.922005533039
-    - 49.23179752168794
-    - 46.53421907742907
-    - 43.844011066078004
-    - 41.15380305472694
-    - 38.46359504337588
-    - 35.76601659911701
-    - 33.07580858776595
-    - 30.385600576414884
-    - 27.43211515659727
-    - 24.426366456886896
-    - 21.42883018531781
-    - 18.431293913748725
-    - 15.433757642179636
-    - 12.428008942469265
-    - 9.430472670900176
-    - 6.432936399331091
-    - 3.4354001277620014
-    - 0.42965142805163126
-    - 357.66480374399777
-    - 354.9388888743065
-    - 352.21297400461526
-    - 349.47959087500703
-    - 346.7536760053158
-    - 344.02776113562453
-    - 341.30184626593325
-    - 338.5684631363251
-    - 335.8425482666338
-    - 333.1166333969426
-    - 330.3907185272513
-    - 328.28244503001395
-    - 326.28390515047386
-    - 324.28536527093377
-    - 322.28682539139373
-    - 320.2828100601289
-    - 318.28427018058886
-    - 316.2857303010488
-    - 314.28719042150874
-    - 312.2831750902439
-    - 310.2846352107038
-    - 308.2860953311638
-    - 306.2875554516237
-    - 304.28354012035885
-    - 302.2850002408188
-    - 300.2864603612787
-    - 296.7897044214395
-    - 293.0320042161007
-    - 289.28457095121365
-    - 285.53713768632656
-    - 281.7897044214395
-    - 278.0320042161007
-    - 274.28457095121365
-    - 270.53713768632656
-    - 266.33144947964263
-    - 262.03735483748386
-    - 257.7549926943474
-    - 253.4726305512109
-    - 249.19026840807442
-    - 244.89617376591565
-    - 240.61381162277914
-    - 237.66538484804536
-    - 234.94014841200755
-    - 232.20744557477508
-    - 229.48220913873726
-    - 226.75697270269941
-    - 224.0317362666616
-    - 221.29903342942913
-    - 218.5737969933913
-    - 215.84856055735347
-    - 213.12332412131565
-    - 210.39062128408318
-    - 204.2923737873114
-    - 197.62976350437862
-    - 190.96715322144587
-    - 184.28628921171054
-    - 177.62367892877776
-    - 170.96106864584502
-    - 164.29845836291224
-    - 157.6175943531769
-    - 150.95498407024417
-    - 144.2923737873114
-    - 137.62976350437862
-    - 130.94889949464329
-    - 124.28628921171054
-    - 117.86118089783474
-    - 111.86446676859052
-    - 105.8513232855675
-    - 99.85460915632325
-    - 93.857895027079
-    - 87.86235157057814
-    - 81.85249935382939
-    - 75.85906749832856
-    - 69.86563564282773
-    - 63.872203787326896
-  long: 314.28719042150874
+    - 57.30242205159832
+    - 54.612214534749654
+    - 51.92200701790099
+    - 49.23179950105232
+    - 46.53422155265064
+    - 43.844014035801976
+    - 41.1538065189533
+    - 38.463599002104644
+    - 35.766021053702964
+    - 33.0758135368543
+    - 30.38560602000563
+    - 27.432121295804286
+    - 24.426372589966135
+    - 21.428836312286013
+    - 18.43130003460589
+    - 15.433763756925766
+    - 12.428015051087616
+    - 9.43047877340749
+    - 6.432942495727367
+    - 3.4354062180472447
+    - 0.42965751220909354
+    - 357.6648092827717
+    - 354.93889442093456
+    - 352.21297955909733
+    - 349.4795964373647
+    - 346.75368157552754
+    - 344.0277667136903
+    - 341.30185185185314
+    - 338.5684687301205
+    - 335.8425538682833
+    - 333.1166390064461
+    - 330.3907241446089
+    - 328.28244914927797
+    - 326.28390926973793
+    - 324.28536939019784
+    - 322.2868295106578
+    - 320.282814179393
+    - 318.2842742998529
+    - 316.28573442031285
+    - 314.28719454077276
+    - 312.2831792095079
+    - 310.2846393299679
+    - 308.2860994504278
+    - 306.28755957088777
+    - 304.2835442396229
+    - 302.2850043600829
+    - 300.2864644805428
+    - 296.78971214541207
+    - 293.03201194007323
+    - 289.2845786751862
+    - 285.5371454102991
+    - 281.78971214541207
+    - 278.03201194007323
+    - 274.2845786751862
+    - 270.5371454102991
+    - 266.3314583061768
+    - 262.037363664018
+    - 257.7550015208815
+    - 253.47263937774503
+    - 249.19027723460852
+    - 244.89618259244975
+    - 240.61382044931327
+    - 237.66539046513043
+    - 234.94015402909258
+    - 232.20745119186012
+    - 229.4822147558223
+    - 226.75697831978448
+    - 224.03174188374663
+    - 221.2990390465142
+    - 218.57380261047638
+    - 215.84856617443853
+    - 213.1233297384007
+    - 210.39062690116825
+    - 204.2923875198625
+    - 197.62977723692973
+    - 190.96716695399698
+    - 184.28630294426165
+    - 177.62369266132887
+    - 170.96108237839613
+    - 164.29847209546335
+    - 157.61760808572802
+    - 150.95499780279528
+    - 144.2923875198625
+    - 137.62977723692973
+    - 130.94891322719442
+    - 124.28630294426165
+    - 117.8611932578828
+    - 111.86447912863858
+    - 105.85133564561556
+    - 99.85462151637131
+    - 93.85790738712706
+    - 87.86236392386098
+    - 81.85251170711223
+    - 75.8590798516114
+    - 69.86564799611057
+    - 63.87221614060974
+  long: 314.28719454077276
   xiu: 女
-  xiu_degree: 2.7942098174040098
+  xiu_degree: 2.7942139368494168
   lunar_mansions_dong_wei_time:
     - lunar_mansions: 胃
       time:
@@ -452,7 +453,7 @@ dong_wei:
         day: 15
         hour: 4
         minute: 45
-        second: 42
+        second: 44
         tz: 8
     - lunar_mansions: 娄
       time:
@@ -461,7 +462,7 @@ dong_wei:
         day: 3
         hour: 22
         minute: 25
-        second: 22
+        second: 50
         tz: 8
     - lunar_mansions: 奎
       time:
@@ -469,8 +470,8 @@ dong_wei:
         month: 7
         day: 29
         hour: 0
-        minute: 13
-        second: 20
+        minute: 14
+        second: 17
         tz: 8
     - lunar_mansions: 壁
       time:
@@ -478,8 +479,8 @@ dong_wei:
         month: 7
         day: 31
         hour: 18
-        minute: 16
-        second: 39
+        minute: 17
+        second: 43
         tz: 8
     - lunar_mansions: 室
       time:
@@ -487,8 +488,8 @@ dong_wei:
         month: 12
         day: 27
         hour: 14
-        minute: 51
-        second: 40
+        minute: 52
+        second: 44
         tz: 8
     - lunar_mansions: 危
       time:
@@ -496,8 +497,8 @@ dong_wei:
         month: 6
         day: 9
         hour: 14
-        minute: 45
-        second: 24
+        minute: 46
+        second: 28
         tz: 8
     - lunar_mansions: 虚
       time:
@@ -505,8 +506,8 @@ dong_wei:
         month: 10
         day: 26
         hour: 17
-        minute: 5
-        second: 58
+        minute: 7
+        second: 3
         tz: 8
     - lunar_mansions: 女
       time:
@@ -514,8 +515,8 @@ dong_wei:
         month: 5
         day: 20
         hour: 4
-        minute: 28
-        second: 43
+        minute: 29
+        second: 48
         tz: 8
     - lunar_mansions: 牛
       time:
@@ -523,8 +524,8 @@ dong_wei:
         month: 3
         day: 21
         hour: 2
-        minute: 4
-        second: 49
+        minute: 5
+        second: 54
         tz: 8
     - lunar_mansions: 斗
       time:
@@ -532,8 +533,8 @@ dong_wei:
         month: 1
         day: 21
         hour: 2
-        minute: 55
-        second: 20
+        minute: 56
+        second: 25
         tz: 8
     - lunar_mansions: 箕
       time:
@@ -541,8 +542,8 @@ dong_wei:
         month: 4
         day: 24
         hour: 4
-        minute: 27
-        second: 40
+        minute: 28
+        second: 45
         tz: 8
     - lunar_mansions: 尾
       time:
@@ -550,8 +551,8 @@ dong_wei:
         month: 9
         day: 10
         hour: 0
-        minute: 22
-        second: 7
+        minute: 23
+        second: 12
         tz: 8
     - lunar_mansions: 心
       time:
@@ -559,8 +560,8 @@ dong_wei:
         month: 4
         day: 2
         hour: 3
-        minute: 38
-        second: 49
+        minute: 39
+        second: 54
         tz: 8
     - lunar_mansions: 房
       time:
@@ -568,8 +569,8 @@ dong_wei:
         month: 3
         day: 14
         hour: 9
-        minute: 32
-        second: 26
+        minute: 33
+        second: 31
         tz: 8
     - lunar_mansions: 氐
       time:
@@ -577,17 +578,17 @@ dong_wei:
         month: 5
         day: 2
         hour: 15
-        minute: 4
-        second: 1
+        minute: 5
+        second: 6
         tz: 8
     - lunar_mansions: 亢
       time:
         year: 2051
         month: 7
         day: 10
-        hour: 15
-        minute: 59
-        second: 54
+        hour: 16
+        minute: 0
+        second: 59
         tz: 8
     - lunar_mansions: 角
       time:
@@ -595,8 +596,8 @@ dong_wei:
         month: 5
         day: 28
         hour: 22
-        minute: 15
-        second: 12
+        minute: 16
+        second: 17
         tz: 8
     - lunar_mansions: 轸
       time:
@@ -604,8 +605,8 @@ dong_wei:
         month: 12
         day: 4
         hour: 10
-        minute: 26
-        second: 33
+        minute: 27
+        second: 38
         tz: 8
     - lunar_mansions: 翼
       time:
@@ -613,17 +614,17 @@ dong_wei:
         month: 11
         day: 22
         hour: 21
-        minute: 19
-        second: 22
+        minute: 20
+        second: 27
         tz: 8
     - lunar_mansions: 张
       time:
         year: 2062
         month: 6
         day: 13
-        hour: 0
-        minute: 59
-        second: 34
+        hour: 1
+        minute: 0
+        second: 39
         tz: 8
     - lunar_mansions: 星
       time:
@@ -631,8 +632,8 @@ dong_wei:
         month: 2
         day: 23
         hour: 2
-        minute: 14
-        second: 13
+        minute: 15
+        second: 18
         tz: 8
     - lunar_mansions: 柳
       time:
@@ -640,8 +641,8 @@ dong_wei:
         month: 5
         day: 29
         hour: 21
-        minute: 8
-        second: 56
+        minute: 10
+        second: 1
         tz: 8
     - lunar_mansions: 鬼
       time:
@@ -649,8 +650,8 @@ dong_wei:
         month: 12
         day: 14
         hour: 17
-        minute: 40
-        second: 31
+        minute: 41
+        second: 36
         tz: 8
     - lunar_mansions: 井
       time:
@@ -658,8 +659,8 @@ dong_wei:
         month: 8
         day: 22
         hour: 10
-        minute: 0
-        second: 46
+        minute: 1
+        second: 51
         tz: 8
     - lunar_mansions: 参
       time:
@@ -667,8 +668,8 @@ dong_wei:
         month: 8
         day: 14
         hour: 18
-        minute: 55
-        second: 1
+        minute: 56
+        second: 6
         tz: 8
     - lunar_mansions: 觜
       time:
@@ -676,8 +677,8 @@ dong_wei:
         month: 5
         day: 22
         hour: 7
-        minute: 40
-        second: 32
+        minute: 41
+        second: 37
         tz: 8
     - lunar_mansions: 毕
       time:
@@ -685,8 +686,8 @@ dong_wei:
         month: 7
         day: 20
         hour: 16
-        minute: 17
-        second: 8
+        minute: 18
+        second: 13
         tz: 8
     - lunar_mansions: 昴
       time:
@@ -694,8 +695,8 @@ dong_wei:
         month: 2
         day: 3
         hour: 21
-        minute: 2
-        second: 19
+        minute: 3
+        second: 24
         tz: 8
 native_transformed_stars:
   - star: 罗

@@ -76,7 +76,7 @@ fn çtest_horoscope_compare_new() {
     }
 
     // 12宫
-    let yy = swe_houses(native_date.jd_ut1, geo.lat, geo.long, &(&house).into());
+    let yy = swe_houses(native_date.jd_ut1, geo.lat, geo.long, house.into());
     assert!(yy.is_ok(), "swe_houses()调用失败");
     let (houses_cups, ascmc) = yy.unwrap();
     let houses_cups = &houses_cups[1..13];
@@ -88,7 +88,7 @@ fn çtest_horoscope_compare_new() {
     }
 
     // 本盘四轴
-    let eps = calc_eps(native_date.jd_utc, &ephe_path).unwrap();
+    let eps = calc_eps(native_date.jd_ut1, &ephe_path).unwrap();
     let asc_equator = swe_cotrans(ascmc[0], 0.0, 1.0, -eps);
 
     assert_eq!(ASC, horo.original_asc.name, "asc name");
@@ -142,13 +142,13 @@ fn çtest_horoscope_compare_new() {
         compare_date.jd_ut1,
         process_geo.lat,
         process_geo.long,
-        &(&house).into(),
+        house.into(),
     );
     assert!(yy.is_ok(), "swe_houses()调用失败");
     let (_, ascmc) = yy.unwrap();
 
     // 比较盘四轴
-    let eps = calc_eps(compare_date.jd_utc, &ephe_path).unwrap();
+    let eps = calc_eps(compare_date.jd_ut1, &ephe_path).unwrap();
 
     let asc_equator = swe_cotrans(ascmc[0], 0.0, 1.0, -eps);
     assert_eq!(ASC, horo.comparison_asc.name, "asc name");
@@ -216,8 +216,8 @@ fn çtest_horoscope_compare_new() {
         };
 
         swe_set_ephe_path(&ephe_path);
-        let xx = swe_calc_ut(native_date.jd_utc, &body, &[Flag::SeflgSpeed]);
-        let yy = swe_calc_ut(native_date.jd_utc, &body, &[Flag::SeflgEquatorial]); //计算赤经和赤纬
+        let xx = swe_calc_ut(native_date.jd_ut1, body, &[Flag::SeflgSpeed]);
+        let yy = swe_calc_ut(native_date.jd_ut1, body, &[Flag::SeflgEquatorial]); //计算赤经和赤纬
         swe_close();
 
         assert!(xx.is_ok(), "计算行星错误");
@@ -267,8 +267,8 @@ fn çtest_horoscope_compare_new() {
         };
 
         swe_set_ephe_path(&ephe_path);
-        let xx = swe_calc_ut(compare_date.jd_utc, &body, &[Flag::SeflgSpeed]);
-        let yy = swe_calc_ut(compare_date.jd_utc, &body, &[Flag::SeflgEquatorial]); //计算赤经和赤纬
+        let xx = swe_calc_ut(compare_date.jd_ut1, body, &[Flag::SeflgSpeed]);
+        let yy = swe_calc_ut(compare_date.jd_ut1, body, &[Flag::SeflgEquatorial]); //计算赤经和赤纬
         swe_close();
 
         assert!(xx.is_ok(), "计算行星错误");
@@ -312,10 +312,10 @@ fn çtest_horoscope_compare_new() {
         .unwrap();
 
     swe_set_ephe_path(&ephe_path);
-    let xx = swe_calc_ut(native_date.jd_utc, &Body::SeMeanNode, &[Flag::SeflgSpeed]);
+    let xx = swe_calc_ut(native_date.jd_ut1, Body::SeMeanNode, &[Flag::SeflgSpeed]);
     let yy = swe_calc_ut(
-        native_date.jd_utc,
-        &Body::SeMeanNode,
+        native_date.jd_ut1,
+        Body::SeMeanNode,
         &[Flag::SeflgEquatorial],
     ); //计算赤经和赤纬
     swe_close();
@@ -357,10 +357,10 @@ fn çtest_horoscope_compare_new() {
         .unwrap();
 
     swe_set_ephe_path(&ephe_path);
-    let xx = swe_calc_ut(compare_date.jd_utc, &Body::SeMeanNode, &[Flag::SeflgSpeed]);
+    let xx = swe_calc_ut(compare_date.jd_ut1, Body::SeMeanNode, &[Flag::SeflgSpeed]);
     let yy = swe_calc_ut(
-        compare_date.jd_utc,
-        &Body::SeMeanNode,
+        compare_date.jd_ut1,
+        Body::SeMeanNode,
         &[Flag::SeflgEquatorial],
     ); //计算赤经和赤纬
     swe_close();
@@ -403,7 +403,7 @@ fn çtest_horoscope_compare_new() {
         .find(|p| p.name == Moon)
         .unwrap();
 
-    let eps = calc_eps(native_date.jd_utc, &ephe_path).unwrap();
+    let eps = calc_eps(native_date.jd_ut1, &ephe_path).unwrap();
 
     let part_of_fortune_long = swe_degnorm(asc.long + moon.long - sun.long);
     let part_of_fortune_equator = swe_cotrans(part_of_fortune_long, 0.0, 1.0, -eps);
@@ -438,7 +438,7 @@ fn çtest_horoscope_compare_new() {
         .find(|p| p.name == Moon)
         .unwrap();
 
-    let eps = calc_eps(compare_date.jd_utc, &ephe_path).unwrap();
+    let eps = calc_eps(compare_date.jd_ut1, &ephe_path).unwrap();
 
     let compa_part_of_fortune_long = swe_degnorm(compa_asc.long + compa_sun.long - compa_moon.long);
     let compa_part_of_fortune_equator = swe_cotrans(compa_part_of_fortune_long, 0.0, 1.0, -eps);

@@ -8,8 +8,8 @@ use crate::{
 };
 use geo_position::GeoPosition;
 use swe::{
-    Body, Flag, HouseSystem, swe_calc_ut, swe_close, swe_cotrans, swe_degnorm, swe_houses,
-    swe_set_ephe_path,
+    Body, CalcFlag, Flag, HouseSystem, swe_azalt, swe_calc_ut, swe_close, swe_cotrans, swe_degnorm,
+    swe_houses, swe_set_ephe_path,
 };
 
 use horo_date_time::HoroDateTime;
@@ -69,17 +69,13 @@ impl Horoscope {
         ephe_path: &str,
     ) -> Result<Self, Error> {
         // 计算宫位
-        let (cups, ascmc) =
-            if let Ok(v) = swe_houses(date.jd_ut1, geo.lat, geo.long, &(&house_name).into()) {
-                v
-            } else {
-                return Err(Error::Function("swe_houses()调用失败".to_owned()));
-            };
+        let (cups, ascmc) = swe_houses(date.jd_ut1, geo.lat, geo.long, house_name.into())
+            .map_err(|_| Error::Function("swe_houses()调用失败".to_owned()))?;
 
         // 计算四轴
         // 计算四轴的赤经，赤纬
         // 先计算黄赤倾角
-        let eps = calc_eps(date.jd_utc, ephe_path)?;
+        let eps = calc_eps(date.jd_ut1, ephe_path)?;
         // 0: ASC, 1: MC
         // 计算asc的赤经、赤纬
         let default_planet_config = PlanetConfig::default_config(&PlanetName::ASC);
@@ -149,13 +145,22 @@ impl Horoscope {
         );
 
         // 计算行星
-        let planets = calc_planets(date.jd_utc, planets_config, ephe_path)?;
+        let planets = calc_planets(date.jd_ut1, planets_config, ephe_path)?;
 
         // 星盘昼夜
         let sun = planets.iter().find(|p| p.name == PlanetName::Sun).unwrap();
 
-        let diff = swe_degnorm(asc.long - sun.long);
-        let is_diurnal = diff <= 180.0;
+        // 获取太阳地平坐标，以海平面高度为准，因地理位置数组的第三个参数设置为0
+        let azalt = swe_azalt(
+            date.jd_ut1,
+            CalcFlag::ECL2HOR,
+            &[geo.long, geo.lat, 0.0],
+            0.0,
+            0.0,
+            &[sun.long, sun.lat, 0.0],
+        );
+
+        let is_diurnal = azalt[1] >= 0.0;
 
         // 计算福点
         let moon = planets.iter().find(|p| p.name == PlanetName::Moon).unwrap();
@@ -244,23 +249,19 @@ impl Horoscope {
         let planetary_hours = if date.jd_utc < sun_on_dsc_time.jd_utc {
             let m = (12.0 * (date.jd_utc - sun_on_asc_time.jd_utc)
                 / (sun_on_dsc_time.jd_utc - sun_on_asc_time.jd_utc)) as usize;
-            planetary_hours_list[(first_planetary_hours_index + m) % 7].clone()
+            planetary_hours_list[(first_planetary_hours_index + m) % 7]
         } else {
             let m = (12.0 * (date.jd_utc - sun_on_dsc_time.jd_utc)
                 / (sun_on_asc_time_next.jd_utc - sun_on_dsc_time.jd_utc))
                 as usize;
-            planetary_hours_list[(first_planetary_hours_index + m + 12) % 7].clone()
+            planetary_hours_list[(first_planetary_hours_index + m + 12) % 7]
         };
 
         // 计算相位和映点
         let mut aspects: Vec<Aspect> = vec![];
         let mut antiscoins: Vec<Aspect> = vec![];
         let mut contraantiscias: Vec<Aspect> = vec![];
-        // let asm_and_planets = [
-        //     planets.clone(),
-        //     vec![asc.clone(), mc.clone(), dsc.clone(), ic.clone()],
-        // ]
-        // .concat();
+
         let mut asm_and_planets: Vec<_> = planets.iter().collect();
         asm_and_planets.push(&asc);
         asm_and_planets.push(&mc);
@@ -287,7 +288,7 @@ impl Horoscope {
         }
 
         // 计算恒星
-        let fixed_stars = calc_fixed_star_long(date.jd_utc, ephe_path)?;
+        let fixed_stars = calc_fixed_star_long(date.jd_ut1, ephe_path)?;
 
         Ok(Self {
             date,
@@ -459,7 +460,7 @@ impl HoroscopeComparison {
 
 //   计算行星
 fn calc_planets(
-    jd_utc: f64,
+    jd_ut: f64,
     planets_config: &[PlanetConfig],
     ephe_path: &str,
 ) -> Result<Vec<Planet>, Error> {
@@ -487,10 +488,10 @@ fn calc_planets(
             PlanetName::Saturn => Body::SeSaturn,
             _ => Body::SeMeanNode,
         };
-        let xx = swe_calc_ut(jd_utc, &body, &[Flag::SeflgSpeed])
+        let xx = swe_calc_ut(jd_ut, body, &[Flag::SeflgSpeed])
             .map_err(|e| Error::Function(format!("计算行星错误:{e}")))?;
         //计算赤经和赤纬
-        let yy = swe_calc_ut(jd_utc, &body, &[Flag::SeflgEquatorial])
+        let yy = swe_calc_ut(jd_ut, body, &[Flag::SeflgEquatorial])
             .map_err(|e| Error::Function(format!("计算行星错误:{e}")))?;
 
         swe_close();
@@ -530,13 +531,13 @@ fn calc_planets(
 /// 计算给定时刻之前，太阳在东方地平线上的时刻
 fn sun_on_asc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<HoroDateTime, Error> {
     swe_set_ephe_path(ephe_path);
-    let xx = swe_calc_ut(t.jd_utc, &Body::SeSun, &[])
+    let xx = swe_calc_ut(t.jd_ut1, Body::SeSun, &[])
         .map_err(|e| Error::Function(format!("函数sun_on_asc计算太阳位置错误:{e}")))?;
     swe_close();
 
     let sun_long = xx[0];
 
-    let (_, ascmc) = swe_houses(t.jd_ut1, geo.lat, geo.long, &HouseSystem::B)
+    let (_, ascmc) = swe_houses(t.jd_ut1, geo.lat, geo.long, HouseSystem::B)
         .map_err(|_e| Error::Function("函数sun_on_asc()，计算asc错误".to_string()))?;
 
     let asc_long = ascmc[0];
@@ -545,15 +546,14 @@ fn sun_on_asc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<Ho
     let d = swe_degnorm(asc_long - sun_long);
     // 太阳周日运动，1天走过360度，走1度需要1/360天，走d度，需要1/360*d天
     // 因此jd0 = jd_utc - d/360.0
-    let jd0 = t.jd_utc - d / 360.0;
+    let jd0 = t.jd_ut1 - d / 360.0;
 
     let jd = newton_iteration(jd0, |jd| {
-        let t0 = HoroDateTime::from_jd_zone(jd, t.tz)?;
         swe_set_ephe_path(ephe_path);
-        let xx = swe_calc_ut(t0.jd_utc, &Body::SeSun, &[]).map_err(|e| {
+        let xx = swe_calc_ut(jd, Body::SeSun, &[]).map_err(|e| {
             Error::Function(format!("函数sun_on_asc()，牛顿迭代计算太阳位置错误:{e}"))
         })?;
-        let (_, ascmc) = swe_houses(t0.jd_ut1, geo.lat, geo.long, &HouseSystem::B)
+        let (_, ascmc) = swe_houses(jd, geo.lat, geo.long, HouseSystem::B)
             .map_err(|_e| Error::Function("函数sun_on_asc()，牛顿迭代计算asc错误".to_string()))?;
         swe_close();
 
@@ -562,7 +562,7 @@ fn sun_on_asc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<Ho
         Ok(mod180(swe_degnorm(ascmc[0] - xx[0])))
     })?;
 
-    let date = HoroDateTime::from_jd_zone(jd, t.tz)?;
+    let date = HoroDateTime::from_jd_ut1_zone(jd, t.tz)?;
     Ok(date)
 }
 
@@ -571,29 +571,28 @@ fn sun_on_asc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<Ho
 /// 如果太阳在地平线下，则计算之前的时刻
 fn sun_on_dsc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<HoroDateTime, Error> {
     swe_set_ephe_path(ephe_path);
-    let xx = swe_calc_ut(t.jd_utc, &Body::SeSun, &[])
+    let xx = swe_calc_ut(t.jd_ut1, Body::SeSun, &[])
         .map_err(|e| Error::Function(format!("函数sun_on_dsc计算太阳位置错误:{e}")))?;
     swe_close();
 
     let sun_long = xx[0];
 
-    let (_, ascmc) = swe_houses(t.jd_ut1, geo.lat, geo.long, &HouseSystem::B)
+    let (_, ascmc) = swe_houses(t.jd_ut1, geo.lat, geo.long, HouseSystem::B)
         .map_err(|_e| Error::Function("函数sun_on_dsc()，计算asc错误".to_string()))?;
 
     let asc_long = ascmc[0];
 
     let d = swe_degnorm(asc_long - sun_long);
     // 假定白天长度为0.5天
-    let jd0 = t.jd_utc - d / 360.0 + 0.5;
+    let jd0 = t.jd_ut1 - d / 360.0 + 0.5;
 
     let jd = newton_iteration(jd0, |jd| {
-        let t0 = HoroDateTime::from_jd_zone(jd, t.tz)?;
         swe_set_ephe_path(ephe_path);
 
-        let xx = swe_calc_ut(t0.jd_utc, &Body::SeSun, &[]).map_err(|e| {
+        let xx = swe_calc_ut(jd, Body::SeSun, &[]).map_err(|e| {
             Error::Function(format!("函数sun_on_dsc()，牛顿迭代计算太阳位置错误:{e}"))
         })?;
-        let (_, ascmc) = swe_houses(t0.jd_ut1, geo.lat, geo.long, &HouseSystem::B)
+        let (_, ascmc) = swe_houses(jd, geo.lat, geo.long, HouseSystem::B)
             .map_err(|_e| Error::Function("函数sun_on_dsc()，牛顿迭代计算asc错误".to_string()))?;
 
         swe_close();
@@ -603,6 +602,6 @@ fn sun_on_dsc(t: &HoroDateTime, geo: &GeoPosition, ephe_path: &str) -> Result<Ho
         Ok(mod180(swe_degnorm(swe_degnorm(ascmc[0] + 180.0) - xx[0])))
     })?;
 
-    let date = HoroDateTime::from_jd_zone(jd, t.tz)?;
+    let date = HoroDateTime::from_jd_ut1_zone(jd, t.tz)?;
     Ok(date)
 }

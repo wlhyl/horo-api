@@ -59,7 +59,7 @@ pub struct DistanceStarLong {
 
 /// 计算二十八宿黄道经度
 pub fn calc_distance_star_long(
-    jd_utc: f64,
+    jd_ut: f64,
     distance_star_config: &[DistanceStarConfig],
     ephe_path: &str,
 ) -> Result<Vec<DistanceStarLong>, Error> {
@@ -68,7 +68,7 @@ pub fn calc_distance_star_long(
 
     for distance_star in distance_star_config {
         let star_name = format!(",{}", distance_star.distance_star);
-        let (_, xx) = swe_fixstar2_ut(&star_name, jd_utc, &[Flag::SeflgSwieph])
+        let (_, xx) = swe_fixstar2_ut(&star_name, jd_ut, &[Flag::SeflgSwieph])
             .map_err(|e| Error::Function(format!("计算二十八距星错误:{e}")))?;
         distance_star_long.push(DistanceStarLong {
             lunar_mansions: distance_star.lunar_mansions,
@@ -498,9 +498,9 @@ mod tests {
             .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
 
         let distance_star_config = DistanceStarConfig::default_all_configs();
-        let jd_utc = 2451545.0; // J2000.0
+        let jd_ut = 2451545.0; // J2000.0
 
-        let result = calc_distance_star_long(jd_utc, &distance_star_config, &ephe_path).unwrap();
+        let result = calc_distance_star_long(jd_ut, &distance_star_config, &ephe_path).unwrap();
         insta::assert_yaml_snapshot!(result);
     }
 }

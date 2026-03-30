@@ -91,10 +91,10 @@ impl FixedStarName {
 }
 
 /// 计算恒星的黄道经度
-pub fn calc_fixed_star_long(jd_utc: f64, ephe_path: &str) -> Result<Vec<FixedStar>, Error> {
+pub fn calc_fixed_star_long(jd_ut: f64, ephe_path: &str) -> Result<Vec<FixedStar>, Error> {
     let distance_star_config = DistanceStarConfig::default_all_configs();
 
-    let distance_star_long = calc_distance_star_long(jd_utc, &distance_star_config, ephe_path)?;
+    let distance_star_long = calc_distance_star_long(jd_ut, &distance_star_config, ephe_path)?;
 
     let mut fixed_star_long = vec![];
 
@@ -117,7 +117,7 @@ pub fn calc_fixed_star_long(jd_utc: f64, ephe_path: &str) -> Result<Vec<FixedSta
         轩辕十四,
     ] {
         let star_name = format!(",{}", fixed_star.to_swe_name());
-        let (_, xx) = swe_fixstar2_ut(&star_name, jd_utc, &[Flag::SeflgSwieph])
+        let (_, xx) = swe_fixstar2_ut(&star_name, jd_ut, &[Flag::SeflgSwieph])
             .map_err(|e| Error::Function(format!("计算恒星星`{:?}`错误:{}", fixed_star, e)))?;
 
         let star_long = xx[0];
@@ -146,9 +146,9 @@ mod tests {
         let ephe_path = std::env::var("EPHE_PATH")
             .expect("没设置 EPHE_PATH 环境变量，可在.env文件中设置或export EPHE_PATH=...");
 
-        let jd_utc = 2451545.0; // J2000.0
+        let jd_ut = 2451545.0; // J2000.0
 
-        let result = calc_fixed_star_long(jd_utc, &ephe_path).unwrap();
+        let result = calc_fixed_star_long(jd_ut, &ephe_path).unwrap();
         insta::assert_yaml_snapshot!(result);
     }
 }

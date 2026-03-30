@@ -100,17 +100,17 @@ impl Horoscope {
         }
 
         let distance_star_long =
-            calc_distance_star_long(native_date.jd_utc, distance_star_config, ephe_path)?;
+            calc_distance_star_long(native_date.jd_ut1, distance_star_config, ephe_path)?;
         // 计算行星
         let native_planets = calc_planets(
-            native_date.jd_utc,
+            native_date.jd_ut1,
             &distance_star_long,
             &planets_config,
             ephe_path,
         )?;
 
         let process_planets = calc_planets(
-            process_date.jd_utc,
+            process_date.jd_ut1,
             &distance_star_long,
             &planets_config,
             ephe_path,
@@ -118,7 +118,7 @@ impl Horoscope {
 
         // 计算命宫
         let (_, ascmc) =
-            if let Ok(v) = swe_houses(native_date.jd_ut1, geo.lat, geo.long, &HouseSystem::B) {
+            if let Ok(v) = swe_houses(native_date.jd_ut1, geo.lat, geo.long, HouseSystem::B) {
                 v
             } else {
                 return Err(Error::Function("swe_houses()调用失败".to_owned()));

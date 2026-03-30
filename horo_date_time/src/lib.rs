@@ -150,7 +150,13 @@ impl HoroDateTime {
         let jd_et_ut1 = swe_utc_to_jd(year, month, day, hour, min, dsec, calendar)
             .map_err(|e| Error::Function(format!("swe_utc_to_jd()调用失败:{}", e)))?;
 
-        let jd_utc = swe_julday(year, month, day, dsec, calendar);
+        let jd_utc = swe_julday(
+            year,
+            month,
+            day,
+            f64::from(hour) + f64::from(min) / 60.0 + dsec / 3600.0,
+            calendar,
+        );
 
         let t_local = swe_utc_time_zone(year, month, day, hour, min, dsec, -time_zone);
 
@@ -787,9 +793,14 @@ mod test {
         assert_eq!(t.day, t2.day, "日");
         assert_eq!(t.hour, t2.hour, "时");
         assert_eq!(t.minute, t2.minute, "分");
-        assert!((t.second as i32 - t2.second as i32).abs() <= 1, "秒数差异应在1秒内");
+        assert!(
+            (t.second as i32 - t2.second as i32).abs() <= 1,
+            "秒数差异应在1秒内"
+        );
         assert_eq!(t.tz, t2.tz, "时区");
         assert!((t.jd_ut1 - t2.jd_ut1).abs() < 1e-6, "jd_ut1应一致");
+        assert!((t.jd_et - t2.jd_et).abs() < 1e-6, "jd_et应一致");
+        assert!((t.jd_utc - t2.jd_utc).abs() < 1e-6, "jd_utc应一致");
     }
 
     #[test]
@@ -809,7 +820,12 @@ mod test {
         assert_eq!(t.day, t2.day, "日");
         assert_eq!(t.hour, t2.hour, "时");
         assert_eq!(t.minute, t2.minute, "分");
-        assert!((t.second as i32 - t2.second as i32).abs() <= 1, "秒数差异应在1秒内");
+        assert!(
+            (t.second as i32 - t2.second as i32).abs() <= 1,
+            "秒数差异应在1秒内"
+        );
         assert!((t.jd_ut1 - t2.jd_ut1).abs() < 1e-6, "jd_ut1应一致");
+        assert!((t.jd_et - t2.jd_et).abs() < 1e-6, "jd_et应一致");
+        assert!((t.jd_utc - t2.jd_utc).abs() < 1e-6, "jd_utc应一致");
     }
 }

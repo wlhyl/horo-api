@@ -64,7 +64,7 @@ fn test_horoscope_new() {
     }
 
     // 12宫
-    let yy = swe_houses(t.jd_ut1, geo.lat, geo.long, &(&house).into());
+    let yy = swe_houses(t.jd_ut1, geo.lat, geo.long, house.into());
     assert!(yy.is_ok(), "swe_houses()调用失败");
     let (houses_cups, ascmc) = yy.unwrap();
     let houses_cups = &houses_cups[1..13];
@@ -76,7 +76,7 @@ fn test_horoscope_new() {
     }
 
     // 四轴
-    let eps = calc_eps(t.jd_utc, &ephe_path);
+    let eps = calc_eps(t.jd_ut1, &ephe_path);
     assert!(eps.is_ok());
     let eps = eps.unwrap();
     // 0: ASC, 1: MC
@@ -136,8 +136,8 @@ fn test_horoscope_new() {
         };
 
         swe_set_ephe_path(&ephe_path);
-        let xx = swe_calc_ut(t.jd_utc, &body, &[Flag::SeflgSpeed]);
-        let yy = swe_calc_ut(t.jd_utc, &body, &[Flag::SeflgEquatorial]); //计算赤经和赤纬
+        let xx = swe_calc_ut(t.jd_ut1, body, &[Flag::SeflgSpeed]);
+        let yy = swe_calc_ut(t.jd_ut1, body, &[Flag::SeflgEquatorial]); //计算赤经和赤纬
 
         assert!(xx.is_ok(), "计算行星错误");
         assert!(yy.is_ok(), "计算行星错误");
@@ -179,8 +179,8 @@ fn test_horoscope_new() {
     let south_node = south_node.unwrap();
 
     swe_set_ephe_path(&ephe_path);
-    let xx = swe_calc_ut(t.jd_utc, &Body::SeMeanNode, &[Flag::SeflgSpeed]);
-    let yy = swe_calc_ut(t.jd_utc, &Body::SeMeanNode, &[Flag::SeflgEquatorial]); //计算赤经和赤纬
+    let xx = swe_calc_ut(t.jd_ut1, Body::SeMeanNode, &[Flag::SeflgSpeed]);
+    let yy = swe_calc_ut(t.jd_ut1, Body::SeMeanNode, &[Flag::SeflgEquatorial]); //计算赤经和赤纬
 
     assert!(xx.is_ok(), "计算行星错误");
     assert!(yy.is_ok(), "计算行星错误");
@@ -468,7 +468,7 @@ fn test_daytime_fortunes() {
         .long;
     let part_of_fortune_long = swe_degnorm(asc + moon - sun);
 
-    let eps = calc_eps(diurnal.jd_utc, &ephe_path);
+    let eps = calc_eps(diurnal.jd_ut1, &ephe_path);
     let eps = eps.unwrap();
 
     let part_of_fortune_equator = swe_cotrans(part_of_fortune_long, 0.0, 1.0, -eps);
@@ -539,7 +539,7 @@ fn test_nocturnal_fortunes() {
         .long;
     let part_of_fortune_long = swe_degnorm(asc + sun - moon);
 
-    let eps = calc_eps(nocturnal.jd_utc, &ephe_path);
+    let eps = calc_eps(nocturnal.jd_ut1, &ephe_path);
     let eps = eps.unwrap();
 
     let part_of_fortune_equator = swe_cotrans(part_of_fortune_long, 0.0, 1.0, -eps);

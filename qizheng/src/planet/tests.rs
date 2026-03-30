@@ -231,19 +231,19 @@ fn test_calc_planets_long() {
 
     // 1. 设置一个固定的测试时间
     let dt = HoroDateTime::new(2025, 7, 13, 12, 0, 0, 8.0).unwrap();
-    let jd_utc = dt.jd_utc;
+    let jd_ut1 = dt.jd_ut1;
 
     // 3. 生成 distance_star_long
     let distance_star_configs = DistanceStarConfig::default_all_configs();
     let distance_star_long =
-        calc_distance_star_long(jd_utc, &distance_star_configs, &ephe_path).unwrap();
+        calc_distance_star_long(jd_ut1, &distance_star_configs, &ephe_path).unwrap();
 
     // 4. 生成 planets_config
     let planets_config = PlanetConfig::default_all_configs();
 
     // 5. 调用 calc_planets 函数
     let planets_result =
-        super::calc_planets(jd_utc, &distance_star_long, &planets_config, &ephe_path);
+        super::calc_planets(jd_ut1, &distance_star_long, &planets_config, &ephe_path);
 
     // 6. 验证结果
     assert!(planets_result.is_ok(), "calc_planets should return Ok");
@@ -279,7 +279,7 @@ fn test_calc_planets_long() {
         (计, Body::SeMeanNode),
     ] {
         swe_set_ephe_path(&ephe_path);
-        let xx = swe_calc_ut(jd_utc, &planet_body, &[Flag::SeflgSpeed]).unwrap();
+        let xx = swe_calc_ut(jd_ut1, planet_body, &[Flag::SeflgSpeed]).unwrap();
         let long = xx[0];
         swe_close();
 
@@ -330,7 +330,7 @@ fn test_calc_planets_xiu_degree() {
 
     // 1. 设置一个固定的测试时间
     let dt = HoroDateTime::new(2025, 7, 13, 12, 0, 0, 8.0).unwrap();
-    let jd_utc = dt.jd_utc;
+    let jd_ut1 = dt.jd_ut1;
 
     // 3. 生成 distance_star_long
     // 每宿宽13度，轸宿宽9度
@@ -455,7 +455,7 @@ fn test_calc_planets_xiu_degree() {
 
     // 5. 调用 calc_planets 函数
     let planets_result =
-        super::calc_planets(jd_utc, &distance_star_long, &planets_config, &ephe_path);
+        super::calc_planets(jd_ut1, &distance_star_long, &planets_config, &ephe_path);
 
     // 6. 验证结果
     assert!(planets_result.is_ok(), "calc_planets should return Ok");
@@ -562,19 +562,19 @@ fn test_calc_planets_speed_state() {
 
     // 1. 设置一个固定的测试时间
     let dt = HoroDateTime::new(2025, 7, 13, 12, 0, 0, 8.0).unwrap();
-    let jd_utc = dt.jd_utc;
+    let jd_ut1 = dt.jd_ut1;
 
     // 3. 生成 distance_star_long
     let distance_star_configs = DistanceStarConfig::default_all_configs();
     let distance_star_long =
-        calc_distance_star_long(jd_utc, &distance_star_configs, &ephe_path).unwrap();
+        calc_distance_star_long(jd_ut1, &distance_star_configs, &ephe_path).unwrap();
 
     // 4. 生成 planets_config
     let planets_config = PlanetConfig::default_all_configs();
 
     // 5. 调用 calc_planets 函数
     let planets_result =
-        super::calc_planets(jd_utc, &distance_star_long, &planets_config, &ephe_path);
+        super::calc_planets(jd_ut1, &distance_star_long, &planets_config, &ephe_path);
 
     // 6. 验证结果
     assert!(planets_result.is_ok(), "calc_planets should return Ok");

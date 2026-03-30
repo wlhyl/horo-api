@@ -1,17 +1,17 @@
-use swe::{swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path, Body};
+use swe::{Body, swe_calc_ut, swe_close, swe_degnorm, swe_set_ephe_path};
 
 use crate::error::Error;
 
 /// 计算给定时刻的黄赤倾角
-pub fn calc_eps(jd_utc: f64, ephe_path: &str) -> Result<f64, Error> {
+/// @param jd_ut: 是ut儒略日，不是utc儒略日
+/// @param ephe_path, swisseph路径
+pub fn calc_eps(jd_ut: f64, ephe_path: &str) -> Result<f64, Error> {
     swe_set_ephe_path(ephe_path);
-    let ret = swe_calc_ut(jd_utc, &Body::SeEclNut, &[]);
+    let ret = swe_calc_ut(jd_ut, Body::SeEclNut, &[]);
     swe_close();
 
-    match ret {
-        Ok(v) => Ok(v[0]),
-        Err(e) => Err(Error::Function(format!("计算黄赤倾角错误:{e}"))),
-    }
+    ret.map(|v| v[0])
+        .map_err(|e| Error::Function(format!("计算黄赤倾角错误:{e}")))
 }
 
 /// ModPi 把角度限制在[-180, 180]之间
@@ -68,11 +68,7 @@ where
 pub fn included_angle(d0: f64, d1: f64) -> f64 {
     let x0 = swe_degnorm(d0 - d1);
     let x1 = swe_degnorm(d1 - d0);
-    if x0 <= x1 {
-        x0
-    } else {
-        x1
-    }
+    if x0 <= x1 { x0 } else { x1 }
 }
 
 #[cfg(test)]
@@ -81,7 +77,7 @@ mod tests {
     use crate::utils::{calc_eps, included_angle, mod180};
     use horo_date_time::HoroDateTime;
     use std::env;
-    use swe::{swe_calc_ut, swe_close, swe_set_ephe_path, Body};
+    use swe::{Body, swe_calc_ut, swe_close, swe_set_ephe_path};
 
     // 计算黄赤倾角
     #[test]
@@ -94,13 +90,13 @@ mod tests {
         assert!(t.is_ok());
         let t = t.unwrap();
         swe_set_ephe_path(&ephe_path);
-        let ret = swe_calc_ut(t.jd_utc, &Body::SeEclNut, &[]);
+        let ret = swe_calc_ut(t.jd_ut1, Body::SeEclNut, &[]);
         swe_close();
 
         assert!(ret.is_ok(), "计算黄赤倾角错误！");
         let expected = ret.unwrap()[0];
 
-        let actual = calc_eps(t.jd_utc, &ephe_path);
+        let actual = calc_eps(t.jd_ut1, &ephe_path);
         assert!(actual.is_ok());
         let actual = actual.unwrap();
 
