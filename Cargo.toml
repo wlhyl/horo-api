@@ -13,18 +13,18 @@ serde = { version = "1.0.228", features = ["derive"] }
 utoipa = { version = "5.4.0", features = ["actix_extras"] }
 utoipa-swagger-ui = { version = "9.0.2", features = ["actix-web", "vendored"] }
 
-actix-web = "4.12.1"
+actix-web = "4.13.0"
 actix-cors = "0.7.1"
-clap = { version = "4.5.54", features = ["derive"] }
+clap = { version = "4.6.0", features = ["derive"] }
 dotenvy = "0.15.7"
 log = "0.4.29"
 log4rs = "1.4.0"
 validator = { version = "0.20.0", features = ["derive", "unic"] }
 actix-web-validator = "7.0.0"
-serde_json = "1.0.140"
+serde_json = "1.0.149"
 
 parameterized = "2.1.0"
-insta = { version = "1.46.0", features = ["yaml"] }
+insta = { version = "1.47.2", features = ["yaml"] }
 
 
 [profile.release]

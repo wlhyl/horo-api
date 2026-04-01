@@ -1,11 +1,23 @@
 # Changelog
 
-##[unreleased]
+##[1.0.0] - 2026-04-01
+
+### Added
+
+- horo_date_time: 新增 `from_jd_ut1_zone` 方法，支持从 UT1 儒略日构造 HoroDateTime
+
+### Fixed
+
+- 修改因rust-sw变动导致的swe_calc_ut调用参数改变
+- 修正星盘昼夜判断计算错误，根据太阳的地平坐标高度判断
+- 修正horo_date_time的from_jd_ut1_zone函数计算jd_utc错误
 
 ### Changed
 
+- 瑞士星历表的函数调用参数从jd_utc改为jd_ut
+- 将项目依赖迁移到 workspace 统一管理
 - 更新 Dockerfile：
-  - 升级 Rust 版本到 1.93.1
+  - 升级 Rust 版本到 1.94.1
   - swisseph 总是使用最新版本
 
 ##[0.4.0] - 2026-01-24
