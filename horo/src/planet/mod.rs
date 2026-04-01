@@ -14,7 +14,7 @@ use crate::config::PlanetConfig;
 use crate::utils::included_angle;
 use PlanetSpeedState::*;
 
-#[derive(PartialEq, Eq, Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
 pub enum PlanetSpeedState {
@@ -89,7 +89,7 @@ impl PlanetName {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Copy)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]
 pub struct Planet {

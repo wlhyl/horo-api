@@ -1,21 +1,23 @@
 pub use aspect::Aspect;
 pub use config::PlanetConfig;
 pub use error::*;
-pub use firdaria::{firdaria_process, FirdariaPeriod, FirdariaSubPeriod};
+pub use firdaria::{FirdariaPeriod, FirdariaSubPeriod, firdaria_process};
 pub use horoscope::{Horoscope, HoroscopeComparison};
 pub use house::HouseName;
 pub use planet::*;
 pub use profection::Profection;
-pub use return_horoscop::{lunar_return, solar_return, ReturnHoroscop};
+pub use return_horoscop::{ReturnHoroscop, lunar_return, solar_return};
+pub use direction::{direction_process, Direction, Promittor};
 
 mod aspect;
 mod config;
+mod direction;
 mod error;
 mod firdaria;
+mod fixed_star;
 mod horoscope;
 mod house;
 mod planet;
 mod profection;
 mod return_horoscop;
 mod utils;
-mod fixed_star;

@@ -2,6 +2,7 @@ use actix_web::web;
 
 use crate::handlers::{
     compare_horoscop::compare,
+    direction::directions,
     firdaria::firdaria,
     healthz::{liveness_handler, readiness_handler},
     horo::horo_native,
@@ -24,7 +25,8 @@ pub fn horo_routes(cfg: &mut web::ServiceConfig) {
                 .service(firdaria)
                 .service(compare)
                 .service(solar_return_horo)
-                .service(lunar_return_horo),
+                .service(lunar_return_horo)
+                .service(directions),
         )
         .service(web::scope("/qizheng").service(qizheng_horo));
 }

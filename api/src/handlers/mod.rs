@@ -6,4 +6,5 @@ pub mod compare_horoscop;
 pub mod return_horoscop;
 pub mod firdaria;
 pub mod qizheng;
+pub mod direction;
 

@@ -5,6 +5,7 @@ use crate::handlers::{
     house::__path_houses,
     profection::__path_profection,
     return_horoscop::{__path_lunar_return_horo, __path_solar_return_horo},
+    direction::__path_directions,
 };
 use crate::request::{
     HoroscopeComparisonRequst, DateRequest, FirdariaRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest,
@@ -35,6 +36,8 @@ use utoipa::OpenApi;
         lunar_return_horo,
         // 法达
         firdaria,
+        // 主向推运
+        directions,
     ),
     components(schemas(
         DateRequest,

@@ -124,6 +124,8 @@ pub struct FirdariaRequest {
     pub geo: GeoRequest,
 }
 
+pub type DirectionRequest = FirdariaRequest;
+
 /// 七政
 #[derive(Deserialize, Validate)]
 #[cfg_attr(feature = "swagger", derive(ToSchema))]

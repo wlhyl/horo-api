@@ -58,6 +58,10 @@ pub struct Horoscope {
     pub contraantiscias: Vec<Aspect>,
     // 恒星
     pub fixed_stars: Vec<FixedStar>,
+
+    /// 黄赤倾角
+    #[cfg_attr(feature = "serde", serde(skip_serializing))]
+    pub eps: f64,
 }
 
 impl Horoscope {
@@ -308,6 +312,7 @@ impl Horoscope {
             antiscoins,
             contraantiscias,
             fixed_stars,
+            eps,
         })
     }
 }
