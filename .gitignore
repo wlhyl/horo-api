@@ -9,3 +9,5 @@ log4rs.yaml
 .vscode
 
 .DS_Store
+
+horo/src/bin
