@@ -1,4 +1,4 @@
-FROM rust:1.94.1-alpine as build
+FROM rust:1.95.0-alpine as build
 WORKDIR /app
 
 RUN sed -i s/dl-cdn.alpinelinux.org/mirror.tuna.tsinghua.edu.cn/g  /etc/apk/repositories

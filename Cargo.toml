@@ -15,7 +15,7 @@ utoipa-swagger-ui = { version = "9.0.2", features = ["actix-web", "vendored"] }
 
 actix-web = "4.13.0"
 actix-cors = "0.7.1"
-clap = { version = "4.6.0", features = ["derive"] }
+clap = { version = "4.6.1", features = ["derive"] }
 dotenvy = "0.15.7"
 log = "0.4.29"
 log4rs = "1.4.0"
