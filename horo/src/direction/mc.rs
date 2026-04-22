@@ -10,6 +10,14 @@ pub(crate) fn mc_direction(
     horo: &Horoscope,
     promittors: &[(Promittor, Planet)],
 ) -> Result<Vec<Direction>, Error> {
+    // 找出所有 Term 的索引
+    let term_indices: Vec<usize> = promittors
+        .iter()
+        .enumerate()
+        .filter(|(_, (promittor, _))| matches!(promittor, Promittor::Term(_, _)))
+        .map(|(i, _)| i)
+        .collect();
+
     let mut directions = vec![];
 
     for (index, &(promittor, planet)) in promittors.iter().enumerate() {
@@ -24,8 +32,11 @@ pub(crate) fn mc_direction(
         }
 
         // 反向弧
+        // 界是逆时针推运，调整为前一个界（首尾相连）
         let promittor = if matches!(promittor, Promittor::Term(_, _)) {
-            promittors[(index + promittors.len() - 1) % promittors.len()].0
+            let term_pos = term_indices.iter().position(|&i| i == index).unwrap();
+            let prev_term_index = term_indices[(term_pos + term_indices.len() - 1) % term_indices.len()];
+            promittors[prev_term_index].0
         } else {
             promittor
         };
@@ -45,6 +56,14 @@ pub(crate) fn ic_direction(
     horo: &Horoscope,
     promittors: &[(Promittor, Planet)],
 ) -> Result<Vec<Direction>, Error> {
+    // 找出所有 Term 的索引
+    let term_indices: Vec<usize> = promittors
+        .iter()
+        .enumerate()
+        .filter(|(_, (promittor, _))| matches!(promittor, Promittor::Term(_, _)))
+        .map(|(i, _)| i)
+        .collect();
+
     let mut directions = vec![];
 
     for (index, &(promittor, planet)) in promittors.iter().enumerate() {
@@ -59,8 +78,11 @@ pub(crate) fn ic_direction(
         }
 
         // 反向弧
+        // 界是逆时针推运，调整为前一个界（首尾相连）
         let promittor = if matches!(promittor, Promittor::Term(_, _)) {
-            promittors[(index + promittors.len() - 1) % promittors.len()].0
+            let term_pos = term_indices.iter().position(|&i| i == index).unwrap();
+            let prev_term_index = term_indices[(term_pos + term_indices.len() - 1) % term_indices.len()];
+            promittors[prev_term_index].0
         } else {
             promittor
         };

@@ -125,6 +125,8 @@ pub struct FirdariaRequest {
 }
 
 pub type DirectionRequest = FirdariaRequest;
+pub type QuadrantProcessRequest = HoroNativeRenReust;
+pub type QuadrantProcessLongitudeRequest = ReturnRequest;
 
 /// 七政
 #[derive(Deserialize, Validate)]

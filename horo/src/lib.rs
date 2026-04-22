@@ -1,13 +1,14 @@
 pub use aspect::Aspect;
 pub use config::PlanetConfig;
+pub use direction::{Direction, Promittor, direction_process};
 pub use error::*;
 pub use firdaria::{FirdariaPeriod, FirdariaSubPeriod, firdaria_process};
 pub use horoscope::{Horoscope, HoroscopeComparison};
 pub use house::HouseName;
 pub use planet::*;
 pub use profection::Profection;
+pub use quadrant_process::{QuadrantProcess, quadrant_process, quadrant_process_longitude};
 pub use return_horoscop::{ReturnHoroscop, lunar_return, solar_return};
-pub use direction::{direction_process, Direction, Promittor};
 
 mod aspect;
 mod config;
@@ -19,5 +20,6 @@ mod horoscope;
 mod house;
 mod planet;
 mod profection;
+mod quadrant_process;
 mod return_horoscop;
 mod utils;

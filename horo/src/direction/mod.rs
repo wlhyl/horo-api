@@ -4,6 +4,8 @@ mod planet;
 mod term;
 mod utils;
 
+pub(crate) use term::{PTOLEMY_TERM, PtolemyTerm};
+
 use geo_position::GeoPosition;
 use horo_date_time::{HoroDateTime, horo_date_time};
 
@@ -75,6 +77,9 @@ pub enum Promittor {
     Antiscoins(PlanetName),
     // 反映点
     Contraantiscias(PlanetName),
+
+    // 宫头
+    Cusp(u8),
 }
 // 推运点
 // ASC

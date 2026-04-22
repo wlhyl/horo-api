@@ -1,15 +1,16 @@
 use crate::handlers::{
     compare_horoscop::__path_compare,
+    direction::__path_directions,
     firdaria::__path_firdaria,
     horo::__path_horo_native,
     house::__path_houses,
     profection::__path_profection,
+    quadrant_process::{__path_quadrant_process_handler, __path_quadrant_process_longitude_handler},
     return_horoscop::{__path_lunar_return_horo, __path_solar_return_horo},
-    direction::__path_directions,
 };
 use crate::request::{
-    HoroscopeComparisonRequst, DateRequest, FirdariaRequest, GeoRequest, HoroNativeRenReust, ProfectionRequest,
-    ReturnRequest,
+    DateRequest, FirdariaRequest, GeoRequest, HoroNativeRenReust, HoroscopeComparisonRequst,
+    ProfectionRequest, ReturnRequest,
 };
 use geo_position::GeoPosition;
 use horo::{
@@ -38,6 +39,9 @@ use utoipa::OpenApi;
         firdaria,
         // 主向推运
         directions,
+        // 象限推运
+        quadrant_process_handler,
+        quadrant_process_longitude_handler,
     ),
     components(schemas(
         DateRequest,

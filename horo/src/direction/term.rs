@@ -1,6 +1,6 @@
 use crate::PlanetName;
 
-pub struct PtolemyTerm {
+pub(crate) struct PtolemyTerm {
     pub planet: PlanetName,
     // 界开始的度数
     pub long: u16,
@@ -189,7 +189,7 @@ pub struct PtolemyTerm {
 //     }
 // }
 
-pub(super) const PTOLEMY_TERM: [PtolemyTerm; 60] = [
+pub(crate) const PTOLEMY_TERM: [PtolemyTerm; 60] = [
     //    白羊座
     PtolemyTerm {
         planet: PlanetName::Jupiter,

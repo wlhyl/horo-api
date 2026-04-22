@@ -7,4 +7,5 @@ pub mod return_horoscop;
 pub mod firdaria;
 pub mod qizheng;
 pub mod direction;
+pub mod quadrant_process;
 

@@ -36,6 +36,14 @@ pub(crate) fn asc_direction(
 ) -> Result<Vec<Direction>, Error> {
     let asc_oa = calc_asc_oa(horo.mc.ra);
 
+    // 找出所有 Term 的索引
+    let term_indices: Vec<usize> = promittors
+        .iter()
+        .enumerate()
+        .filter(|(_, (promittor, _))| matches!(promittor, Promittor::Term(_, _)))
+        .map(|(i, _)| i)
+        .collect();
+
     let mut directions = vec![];
 
     for (index, &(promittor, planet)) in promittors.iter().enumerate() {
@@ -50,8 +58,11 @@ pub(crate) fn asc_direction(
         }
 
         // 反向弧
+        // 界是逆时针推运，调整为前一个界（首尾相连）
         let promittor = if matches!(promittor, Promittor::Term(_, _)) {
-            promittors[(index + promittors.len() - 1) % promittors.len()].0
+            let term_pos = term_indices.iter().position(|&i| i == index).unwrap();
+            let prev_term_index = term_indices[(term_pos + term_indices.len() - 1) % term_indices.len()];
+            promittors[prev_term_index].0
         } else {
             promittor
         };
@@ -74,6 +85,14 @@ pub(crate) fn dsc_direction(
 ) -> Result<Vec<Direction>, Error> {
     let dsc_od = swe_degnorm(horo.ic.ra + 90.0);
 
+    // 找出所有 Term 的索引
+    let term_indices: Vec<usize> = promittors
+        .iter()
+        .enumerate()
+        .filter(|(_, (promittor, _))| matches!(promittor, Promittor::Term(_, _)))
+        .map(|(i, _)| i)
+        .collect();
+
     let mut directions = vec![];
 
     for (index, &(promittor, planet)) in promittors.iter().enumerate() {
@@ -88,8 +107,11 @@ pub(crate) fn dsc_direction(
         }
 
         // 反向弧
+        // 界是逆时针推运，调整为前一个界（首尾相连）
         let promittor = if matches!(promittor, Promittor::Term(_, _)) {
-            promittors[(index + promittors.len() - 1) % promittors.len()].0
+            let term_pos = term_indices.iter().position(|&i| i == index).unwrap();
+            let prev_term_index = term_indices[(term_pos + term_indices.len() - 1) % term_indices.len()];
+            promittors[prev_term_index].0
         } else {
             promittor
         };
