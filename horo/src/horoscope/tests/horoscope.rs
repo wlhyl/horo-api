@@ -66,13 +66,13 @@ fn test_horoscope_new() {
     // 12宫
     let yy = swe_houses(t.jd_ut1, geo.lat, geo.long, house.into());
     assert!(yy.is_ok(), "swe_houses()调用失败");
-    let (houses_cups, ascmc) = yy.unwrap();
-    let houses_cups = &houses_cups[1..13];
+    let (house_cusps, ascmc) = yy.unwrap();
+    let house_cusps = &house_cusps[1..13];
 
-    assert_eq!(12, horo.houses_cups.len());
+    assert_eq!(12, horo.cusps.len());
 
     for i in 0..12 {
-        assert_eq!(houses_cups[i], horo.houses_cups[i]);
+        assert_eq!(house_cusps[i], horo.cusps[i]);
     }
 
     // 四轴

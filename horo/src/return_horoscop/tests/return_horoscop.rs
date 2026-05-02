@@ -61,8 +61,8 @@ fn test_solar_return() {
     assert_eq!(solar_return_horo.return_date.tz, 7.0);
 
     // 验证星盘数据存在
-    assert!(!solar_return_horo.houses_cups.is_empty(), "应该有宫位数据");
-    assert_eq!(solar_return_horo.houses_cups.len(), 12, "应该有12个宫位");
+    assert!(!solar_return_horo.cusps.is_empty(), "应该有宫位数据");
+    assert_eq!(solar_return_horo.cusps.len(), 12, "应该有12个宫位");
     assert!(!solar_return_horo.planets.is_empty(), "应该有行星数据");
     assert!(!solar_return_horo.aspects.is_empty(), "应该有相位数据");
 }
@@ -119,8 +119,8 @@ fn test_lunar_return() {
     assert_eq!(lunar_return_horo.return_date.tz, 7.0);
 
     // 验证星盘数据存在
-    assert!(!lunar_return_horo.houses_cups.is_empty(), "应该有宫位数据");
-    assert_eq!(lunar_return_horo.houses_cups.len(), 12, "应该有12个宫位");
+    assert!(!lunar_return_horo.cusps.is_empty(), "应该有宫位数据");
+    assert_eq!(lunar_return_horo.cusps.len(), 12, "应该有12个宫位");
     assert!(!lunar_return_horo.planets.is_empty(), "应该有行星数据");
     assert!(!lunar_return_horo.aspects.is_empty(), "应该有相位数据");
 }

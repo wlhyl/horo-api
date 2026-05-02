@@ -299,7 +299,7 @@ fn promittors_of_process(horo: &Horoscope) -> Vec<(Promittor, f64)> {
         .collect();
 
     let cusp = horo
-        .houses_cups
+        .cusps
         .iter()
         .enumerate()
         .map(|(i, long)| (Promittor::Cusp((i + 1) as u8), *long))

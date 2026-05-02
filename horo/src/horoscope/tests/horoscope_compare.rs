@@ -78,13 +78,13 @@ fn çtest_horoscope_compare_new() {
     // 12宫
     let yy = swe_houses(native_date.jd_ut1, geo.lat, geo.long, house.into());
     assert!(yy.is_ok(), "swe_houses()调用失败");
-    let (houses_cups, ascmc) = yy.unwrap();
-    let houses_cups = &houses_cups[1..13];
+    let (house_cusps, ascmc) = yy.unwrap();
+    let house_cusps = &house_cusps[1..13];
 
-    assert_eq!(12, horo.houses_cups.len());
+    assert_eq!(12, horo.houses_cusps.len());
 
     for i in 0..12 {
-        assert_eq!(houses_cups[i], horo.houses_cups[i]);
+        assert_eq!(house_cusps[i], horo.houses_cusps[i]);
     }
 
     // 本盘四轴

@@ -31,7 +31,7 @@ pub struct ReturnHoroscop {
     /// 星盘的宫位
     pub house_name: HouseName,
     /// 12宫头黄经度数
-    pub houses_cups: Vec<f64>,
+    pub cusps: Vec<f64>,
 
     /// 上升点
     pub asc: Planet,
@@ -111,7 +111,7 @@ pub fn solar_return(
         return_date: solar_return_date,
         geo,
         house_name,
-        houses_cups: horo.houses_cups,
+        cusps: horo.cusps,
         asc: horo.asc,
         mc: horo.mc,
         dsc: horo.dsc,
@@ -178,7 +178,7 @@ pub fn lunar_return(
         return_date: lunar_return_date,
         geo,
         house_name,
-        houses_cups: horo.houses_cups,
+        cusps: horo.cusps,
         asc: horo.asc,
         mc: horo.mc,
         dsc: horo.dsc,

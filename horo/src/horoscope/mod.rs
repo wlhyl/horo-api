@@ -31,7 +31,7 @@ pub struct Horoscope {
     /// 星盘的宫位
     pub house_name: HouseName,
     /// 12宫头黄经度数
-    pub houses_cups: Vec<f64>,
+    pub cusps: Vec<f64>,
     //     @field:Schema(description = "上升点")
     pub asc: Planet,
     //     @field:Schema(description = "中天")
@@ -73,7 +73,7 @@ impl Horoscope {
         ephe_path: &str,
     ) -> Result<Self, Error> {
         // 计算宫位
-        let (cups, ascmc) = swe_houses(date.jd_ut1, geo.lat, geo.long, house_name.into())
+        let (cusps, ascmc) = swe_houses(date.jd_ut1, geo.lat, geo.long, house_name.into())
             .map_err(|_| Error::Function("swe_houses()调用失败".to_owned()))?;
 
         // 计算四轴
@@ -298,7 +298,7 @@ impl Horoscope {
             date,
             geo,
             house_name,
-            houses_cups: cups[1..13].to_vec(),
+            cusps: cusps[1..13].to_vec(),
             asc,
             mc,
             dsc,
@@ -332,9 +332,9 @@ pub struct HoroscopeComparison {
     /// 星盘的宫位
     pub house_name: HouseName,
     /// 原盘12宫头黄经度数
-    pub houses_cups: Vec<f64>,
+    pub houses_cusps: Vec<f64>,
     /// 比较盘12宫头黄经度数
-    comparison_cups: Vec<f64>,
+    comparison_cusps: Vec<f64>,
 
     /// 上升点
     pub original_asc: Planet,
@@ -393,8 +393,8 @@ impl HoroscopeComparison {
             original_geo: geo,
             comparison_geo: process_geo,
             house_name,
-            houses_cups: horo.houses_cups,
-            comparison_cups: horo_compare.houses_cups,
+            houses_cusps: horo.cusps,
+            comparison_cusps: horo_compare.cusps,
             original_asc: horo.asc,
             comparison_asc: horo_compare.asc,
             original_mc: horo.mc,
